@@ -1,46 +1,60 @@
-# Getting Started with Create React App
+# 🦁 Haru-Log 프론트엔드 개발 레포지토리 🦁
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## ☁️ 프로젝트 개요 ☁️
+- MA 아키텍처로 회원, 챌린지 관리, 채팅, 활동기록 등을 관리한다.
+- 추후에 MSA 아키텍처로 전환한다.
 
-## Available Scripts
+### 📅 개발 기간:
+- 2024/1/15 ~ 2024/2/16
 
-In the project directory, you can run:
+### ⚙️ 개발 환경
+- **`React + TypeScript`**
+- **`Tailwind CSS`**
+- **`Zustand`**
 
-### `npm start`
+### 담당 기능
+- **김동진** : 챌린지 기능, 팔로우/팔로잉 기능, 채팅
+- **원정민** : 기록관리 기능, 유저 검색, 사용자 정보 관리 기능
+- **이강혁** : 로그인/회원가입, 피드 관련 기능
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+### Git branch 전략
+- Github Flow 전략 채택
+- main 브랜치는 안정된 코드 조각의 모음
+- **feature/GJNS-이슈번호-기능이름** 형식의 브랜치 사용
+  - ex) feature/GJNS-7-user-entity
+  - 하위 이슈 번호 사용
+- **기능 단위의 커밋 필수**
+  - 몰아서 커밋 지양하기
+- 브랜치 push 후 main 브랜치로 pull request
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+### 커밋 메세지
+- 커밋 메세지 형식은 다음과 같습니다.
 
-### `npm test`
+> type(타입) : title(제목)
+>
+> body(본문, 생략 가능)
+>
+> Resolves : #issueNo, ...(해결한 이슈 , 생략 가능)
+>
+> See also : #issueNo, ...(참고 이슈, 생략 가능)
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+- feat : 새로운 기능을 추가하거나, 기존 기능을 요구사항 변경으로 인해 변경한 경우
+- fix : 버그를 수정한 경우
+- remove : 파일 혹은 코드를 삭제한 경우
+- docs : 문서(주석) 추가/수정의 경우, 직접적인 코드의 변화 없이 문서만 추가 수정 했을 때
+- refactor : 기능의 변경 없이, 코드를 리팩토링 한 경우
+- test : 테스트 코드를 추가/수정한 경우
+- chore : 기능/테스트, 문서, 스타일, 리팩토링 외에 배포, 빌드와 같이 프로젝트의 기타 작업들에 대해 추가/수정한 경우
 
-### `npm run build`
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+## ❗️ 커밋 전 체크 리스트 ❗️
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
+- ✅ 브랜치 체크
+  - 사용 중인 브랜치가 feature 브랜치가 맞는지 확인 필수
+- ✅ conflict 우려가 있는 파일 확인하기
+- ✅ main에 직접 merge 금지
+- ✅ 중요 리소스 정보 노출된 곳 없는지 확인
+  - url, password 등 노출된 곳 없는지 확인
+- ✅ local 설정이 올라가진 않았는지 확인
+- ✅ 커밋 메세지 컨벤션 확인
