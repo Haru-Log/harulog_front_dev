@@ -1,24 +1,42 @@
-import React from 'react';
-import logo from './logo.svg';
 import './App.css';
+import { Route, Routes } from "react-router-dom";
+import Layout from './components/Layout/Layout';
+import MainPage from './pages/MainPage';
+import LoginPage from './pages/LoginPage';
+import ProfilePage from './pages/ProfilePage';
+import FeedPage from './pages/FeedPage';
+import ChallengePage from './pages/ChallengePage';
+import SocialPage from './pages/SocialPage';
+import ChattingPage from './pages/ChattingPage';
+import RecordPage from './pages/RecordPage';
+import CreateChallengePage from './pages/CreateChallengePage';
+import GrowPage from './pages/GrowPage';
+import FeedDetail from './pages/FeedDetail';
+import ChallengeDetailPage from './pages/ChallengeDetailPage';
+import EditMyInfoPage from './pages/EditMyInfoPage';
+import RegisterPage from './pages/RegisterPage';
 
 function App() {
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <Routes>
+        <Route element={<Layout />}>
+          <Route path="/" element={<MainPage />} />
+          <Route path="profile" element={<ProfilePage />} />
+          <Route path="edit" element={<EditMyInfoPage />} />
+          <Route path="feed" element={<FeedPage />} />
+          <Route path="feed/create" element={<RecordPage />} />
+          <Route path="feed/:id" element={<FeedDetail />} />
+          <Route path="challenge" element={<ChallengePage />} />
+          <Route path="challenge/:id" element={<ChallengeDetailPage />} />
+          <Route path="challenge/create" element={<CreateChallengePage />} />
+          <Route path="social" element={<SocialPage />} />
+          <Route path="chat" element={<ChattingPage />} />
+          <Route path="grow" element={<GrowPage />} />
+        </Route>
+        <Route path="/login" element={<LoginPage />} />
+        <Route path="/register" element={<RegisterPage />} />
+      </Routes>
     </div>
   );
 }
