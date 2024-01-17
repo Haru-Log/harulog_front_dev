@@ -16,6 +16,7 @@ import ChallengeDetailPage from './pages/ChallengeDetailPage';
 import EditMyInfoPage from './pages/EditMyInfoPage';
 import RegisterPage from './pages/RegisterPage';
 import DashboardPage from './pages/DashboardPage';
+import LayoutWithTitle from './components/Layout/LayoutWithTitle';
 
 function App() {
   return (
@@ -24,20 +25,22 @@ function App() {
         <Route element={<Layout />}>
           <Route path="/" element={<MainPage />} />
           <Route path="profile" element={<ProfilePage />} />
+          <Route path="feed/:id" element={<FeedDetail />} />
+          <Route path="challenge/:id" element={<ChallengeDetailPage />} />
+          <Route path="chat" element={<ChattingPage />} />
+        </Route>
+        <Route element={<LayoutWithTitle />}>
           <Route path="edit" element={<EditMyInfoPage />} />
           <Route path="feed" element={<FeedPage />} />
           <Route path="feed/create" element={<RecordPage />} />
-          <Route path="feed/:id" element={<FeedDetail />} />
           <Route path="challenge" element={<ChallengePage />} />
-          <Route path="challenge/:id" element={<ChallengeDetailPage />} />
           <Route path="challenge/create" element={<CreateChallengePage />} />
           <Route path="social" element={<SocialPage />} />
-          <Route path="chat" element={<ChattingPage />} />
           <Route path="grow" element={<GrowPage />} />
           <Route path="dashboard" element={<DashboardPage />} />
         </Route>
-        <Route path="/login" element={<LoginPage />} />
-        <Route path="/register" element={<RegisterPage />} />
+        <Route path="login" element={<LoginPage />} />
+        <Route path="register" element={<RegisterPage />} />
       </Routes>
     </div>
   );
