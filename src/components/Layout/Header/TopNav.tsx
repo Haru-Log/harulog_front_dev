@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import MenuIcon from '@mui/icons-material/Menu';
+import CloseIcon from '@mui/icons-material/Close';
 import { useNavigate } from 'react-router';
 import NavItem from './NavItem';
 
@@ -32,14 +33,14 @@ const TopNav: React.FC = () => {
   return (
     <>
       <div onClick={toggleNav}>
-        <MenuIcon />
+        {isNavOpen ? <CloseIcon /> : <MenuIcon />}
       </div>
       {isNavOpen && (
         <div className="fixed top-12 left-0 z-50 w-full h-auto bg-slate-100 border-b border-gray-400 flex flex-col p-3">
           {navItems.map((item, index) => (
             <div
               key={index}
-              className="cursor-pointer"
+              className="cursor-pointer w-fit hover:underline"
               onClick={() => handleNavigation(item.path)}
             >
               <NavItem title={item.title} />
