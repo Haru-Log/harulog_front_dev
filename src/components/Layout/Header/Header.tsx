@@ -4,7 +4,7 @@ import Title from './Title'
 import NavLogin from './NavLogin'
 import NavRegister from './NavRegister'
 
-const Header: React.FC<{ setLoginModal: any; setRegisterModal: any }> = ({ setLoginModal, setRegisterModal }) => {
+const Header = () => {
   return (
     <div className='flex w-full h-12 px-3 items-center justify-between border-b border-gray-400'>
       <TopNav />

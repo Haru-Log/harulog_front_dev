@@ -23,10 +23,12 @@ const Layout = () => {
 
   return (
     <div>
-      <SetModalContext.Provider value={{ setLoginModal, setRegisterModal }}>
-        <Header setLoginModal={setLoginModal} setRegisterModal={setRegisterModal} />
-      </SetModalContext.Provider>
-      <Outlet />
+      <ModalContext.Provider value={{ loginModal, registerModal }}>
+        <SetModalContext.Provider value={{ setLoginModal, setRegisterModal }}>
+          <Header />
+          <Outlet />
+        </SetModalContext.Provider>
+      </ModalContext.Provider>
       <Footer />
     </div>
   )
