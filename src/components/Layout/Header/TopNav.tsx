@@ -3,19 +3,7 @@ import MenuIcon from '@mui/icons-material/Menu';
 import CloseIcon from '@mui/icons-material/Close';
 import { useNavigate } from 'react-router';
 import NavItem from './NavItem';
-
-interface NavListProps {
-  title: string;
-  path: string;
-}
-
-const navItems: NavListProps[] = [
-  { title: "CHALLENGE", path: "/challenge" },
-  { title: "FEED", path: "/feed" },
-  { title: "DASHBOARD", path: "/dashboard" },
-  { title: "SOCIAL", path: "/social" },
-  { title: "GROW", path: "/grow" },
-];
+import { NavItemList } from '../../../types/NavItem.type';
 
 const TopNav: React.FC = () => {
   const [isNavOpen, setNavOpen] = useState(false);
@@ -37,7 +25,7 @@ const TopNav: React.FC = () => {
       </div>
       {isNavOpen && (
         <div className="fixed top-12 left-0 z-50 w-full h-auto bg-slate-100 border-b border-gray-400 flex flex-col p-3">
-          {navItems.map((item, index) => (
+          {NavItemList.map((item, index) => (
             <div
               key={index}
               className="cursor-pointer w-fit hover:underline"
