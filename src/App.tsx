@@ -15,6 +15,7 @@ import FeedDetail from './pages/FeedDetail';
 import ChallengeDetailPage from './pages/ChallengeDetailPage';
 import EditMyInfoPage from './pages/EditMyInfoPage';
 import RegisterPage from './pages/RegisterPage';
+import DashboardPage from './pages/DashboardPage';
 
 function App() {
   return (
@@ -33,6 +34,7 @@ function App() {
           <Route path="social" element={<SocialPage />} />
           <Route path="chat" element={<ChattingPage />} />
           <Route path="grow" element={<GrowPage />} />
+          <Route path="dashboard" element={<DashboardPage />} />
         </Route>
         <Route path="/login" element={<LoginPage />} />
         <Route path="/register" element={<RegisterPage />} />
