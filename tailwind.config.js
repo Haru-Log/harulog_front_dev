@@ -47,6 +47,13 @@ module.exports = {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",
         },
+
+        // 카테고리용 색깔
+        category_1:'#92C7CF', // 운동
+        category_2:'#F0E57F',
+        category_3:'#fd8446',
+        category_4:'#CFA892',
+
       },
       borderRadius: {
         lg: `var(--radius)`,
