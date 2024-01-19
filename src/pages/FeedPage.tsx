@@ -9,7 +9,7 @@ const FeedPage = () => {
   // api 불러서 작업할 것이지만 지금은 dummy
 
   return (
-    <div className='flex'>
+    <div className='flex flex-col'>
       <FilterGroup />
       <CreateButton />
       <Cards cards={dummy_sample} />
