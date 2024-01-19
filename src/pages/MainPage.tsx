@@ -33,7 +33,7 @@ const MainPage = () => {
 
 
   return (
-    <div className="flex flex-col w-full h-full pl-5 pr-6 items-center">
+    <div className="flex flex-col w-full h-full pl-5 pr-6 pt-12 items-center">
       <Slogan />
       <div className="w-[80%] flex flex-col mb-10">
         <div className="flex flex-row justify-between items-baseline w-full mb-5">
