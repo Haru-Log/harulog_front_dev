@@ -47,8 +47,16 @@ module.exports = {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",
         },
+
+        // 카테고리용 색깔
+        category_1:'#92C7CF', // 운동
+        category_2:'#F0E57F',
+        category_3:'#fd8446',
+        category_4:'#CFA892',
+
         'main':'#D9D9D9',
         'second':'#8D8D8D',
+        'point':'#84B4BB',
       },
       borderRadius: {
         lg: `var(--radius)`,
@@ -74,5 +82,5 @@ module.exports = {
       },
     },
   },
-  plugins: [require("tailwindcss-animate")],
+  plugins: [require("tailwindcss-animate"), require("tailwind-scrollbar-hide")],
 }

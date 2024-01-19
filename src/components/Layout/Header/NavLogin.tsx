@@ -1,10 +1,15 @@
-import React from 'react'
-import { useNavigate } from 'react-router'
+import React, { useContext } from 'react'
+// import { useNavigate } from 'react-router'
+import { SetModalContext } from "../Layout";
 
 const NavLogin = () => {
-  const navi = useNavigate()
+  // const navi = useNavigate();
+  const setLoginModal = useContext(SetModalContext)?.setLoginModal;
   return (
-    <div onClick={() => navi("/login")} className='mx-3 cursor-pointer'>
+
+    <div onClick={() => {
+      // navi("/login"); 
+      setLoginModal(true)}} className='cursor-pointer'>
       로그인
     </div>
   )

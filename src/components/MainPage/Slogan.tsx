@@ -15,7 +15,7 @@ const Slogan = () => {
               매일 반복되는 하루, 기록을 통해 성장하는 자신을 발견해보세요.
             </div>
           </div>
-          <button className="bg-main-color w-fit px-5 py-2 text-white rounded-xl mt-5">
+          <button className="bg-[#92C7CF] w-fit px-5 py-2 text-white rounded-xl mt-5">
             가입하기
           </button>
         </div>
