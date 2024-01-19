@@ -5,7 +5,7 @@ const FilterGroup = () => {
   const [selectedValue, setSelectedValue] = useState("전체")
   console.log(selectedValue)
   return (
-    <div>
+    <div className='absolute left-0'>
         <ToggleGroup type="single" value={selectedValue} onValueChange={setSelectedValue} className='ml-7'>
         <ToggleGroupItem value="전체">전체</ToggleGroupItem>
         <ToggleGroupItem value="공부">공부</ToggleGroupItem>
