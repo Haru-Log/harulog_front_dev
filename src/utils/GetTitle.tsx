@@ -4,9 +4,9 @@ const GetTitle = (): string => {
   const location = useLocation();
 
   const titleMap: { [key: string]: string } = {
-    '/feed': '피드',
+    '/feed': '오늘의 하루로그',
     '/feed/create': '활동 기록',
-    '/challenge': '챌린지',
+    '/challenge': '모두의 챌린지',
     '/challenge/create': '챌린지 생성',
     '/social': '소셜',
     '/grow': 'GROW',
