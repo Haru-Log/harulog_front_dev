@@ -2,7 +2,6 @@ import React from 'react'
 import { ToggleGroup, ToggleGroupItem } from "src/ui/toggle-group"
 
 const FilterGroup: React.FC<{ selectedValue: string; setSelectedValue: any; }> = ({ selectedValue, setSelectedValue }) => {
-  console.log(selectedValue)
   return (
     <div>
       <ToggleGroup type="single" value={selectedValue} onValueChange={setSelectedValue} className='ml-7'>
