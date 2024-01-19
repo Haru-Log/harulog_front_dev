@@ -22,7 +22,7 @@ const Card: React.FC<ChallengeItem> = ({ challenge_id, category_id, chatroom_id,
       <div className="w-72 h-72 rounded-xl">
         <img src={challenge_image} alt="챌린지 이미지" className="object-cover w-full h-full rounded-xl" />
       </div>
-      <div className="absolute bottom-0 left-0 right-0 p-3 pt-7 bg-gradient-to-b from-transparent to-slate-800 rounded-b-xl">
+      <div className="absolute bottom-0 left-0 right-0 p-3 pt-9 bg-gradient-to-b from-transparent to-slate-800 rounded-b-xl">
         <span className="text-white text-lg font-semibold">{challenge_title}</span>
         <div className="flex flex-col items-center absolute bottom-0 right-0 pb-3 pr-3">
           <Flame color="white" strokeWidth={4} />
