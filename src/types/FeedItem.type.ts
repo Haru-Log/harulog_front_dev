@@ -15,14 +15,14 @@ export interface FeedItem {
   user_idx: number;
   category_idx: number;
   content: string;
-  post_image: any; //더미 쓸 동안은 any, 실제론 string
+  post_image: string;
   like: number;
   comment: number;
   created_at: Date;
   updated_at?: Date;
 }
 
-const dummy_sample: FeedItem[] = [
+export const dummy_sample: FeedItem[] = [
   {
     content: '인상 깊었던 구절', post_image: dummyImage1, like: 3, comment: 5, category_idx: 1, user_idx: 1, post_id: 1, created_at: new Date()
   },
