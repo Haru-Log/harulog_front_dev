@@ -33,6 +33,7 @@ function App() {
           <Route path="edit" element={<EditMyInfoPage />} />
           <Route path="feed" element={<FeedPage />} />
           <Route path="feed/create" element={<RecordPage />} />
+          <Route path="feed/edit/:id" element={<RecordPage />} />
           <Route path="challenge" element={<ChallengePage />} />
           <Route path="challenge/create" element={<CreateChallengePage />} />
           <Route path="social" element={<SocialPage />} />
