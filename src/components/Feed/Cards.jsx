@@ -6,8 +6,8 @@ const Cards = ({ cards }) => {
   return (
     <div className="w-full h-full p-12">
       <MagicGrid items={cards.length} gutter={50} animate={true}>
-        {cards.map((item, idx) => (
-            <Card key={idx} img={item.img} name={item.name} likes={item.likes} comment={item.comment} />
+        {cards.map(item => (
+            <Card key={item.post_id} {...item} />
         ))}
       </MagicGrid>
     </div>
