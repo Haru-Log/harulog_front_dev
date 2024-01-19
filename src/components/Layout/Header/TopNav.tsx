@@ -24,7 +24,7 @@ const TopNav: React.FC = () => {
         {isNavOpen ? <CloseIcon /> : <MenuIcon />}
       </div>
       {isNavOpen && (
-        <div className="fixed top-12 left-0 z-50 w-full h-auto bg-slate-100 border-b border-gray-400 flex flex-col p-3">
+        <div className="fixed top-12 left-0 z-50 w-full h-auto bg-slate-100 border-b border-gray-200 flex flex-col p-3 shadow-lg">
           {NavItemList.map((item, index) => (
             <div
               key={index}

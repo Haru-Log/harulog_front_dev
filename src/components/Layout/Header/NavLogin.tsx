@@ -6,6 +6,7 @@ const NavLogin = () => {
   // const navi = useNavigate();
   const setLoginModal = useContext(SetModalContext)?.setLoginModal;
   return (
+
     <div onClick={() => {
       // navi("/login"); 
       setLoginModal(true)}} className='cursor-pointer'>
