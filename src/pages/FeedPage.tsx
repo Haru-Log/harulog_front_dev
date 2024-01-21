@@ -19,18 +19,18 @@ const FeedPage = () => {
 
   useEffect(() => {
     if (selectedValue !== '전체') {
-      const selectedId = dummy_categories.find(x=>x.category === selectedValue)?.category_id
+      const selectedId = dummy_categories.find(x => x.category === selectedValue)?.category_id
       setFiltered(feedItems.filter((it) => it.category_idx === selectedId))
     } else {
       setFiltered(feedItems);
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedValue, feedItems])
 
   return (
     <div className='flex flex-col'>
       <FilterGroup selectedValue={selectedValue} setSelectedValue={setSelectedValue} />
-      {filtered.length && <Cards cards={filtered} />}
+      {filtered.length ? <Cards cards={filtered} /> : <></>}
       <CreateButton />
     </div>
   )
