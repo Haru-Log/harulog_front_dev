@@ -8,7 +8,7 @@ const ChallengePage = () => {
     <div className='flex flex-col items-center'>
       <FilterGroup />
       <CreateButton />
-      <Cards cards={dummyChallengeData} />
+      <Cards data={dummyChallengeData} />
     </div>
   );
 };
