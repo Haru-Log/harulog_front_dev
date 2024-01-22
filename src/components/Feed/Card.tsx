@@ -14,7 +14,7 @@ const Card: React.FC<FeedItem> =
 
     useEffect(() => {
       setTheme(category_themes[category_idx - 1])
-      setCategory(dummy_categories.filter((x) => x.category_id === category_idx)[0].category);
+      setCategory(dummy_categories.filter((x) => x.category_id === category_idx)[0].category || 'bg-category_1');
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 

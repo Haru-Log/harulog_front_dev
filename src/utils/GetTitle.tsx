@@ -6,6 +6,7 @@ const GetTitle = (): string => {
   const titleMap: { [key: string]: string } = {
     '/feed': '오늘의 하루로그',
     '/feed/create': '활동 기록',
+    '/feed/edit/': '활동 기록 수정',
     '/challenge': '모두의 챌린지',
     '/challenge/create': '챌린지 생성',
     '/social': '소셜',
@@ -18,7 +19,7 @@ const GetTitle = (): string => {
     return '활동 기록';
   }
 
-  const title: string = titleMap[location.pathname] || '';
+  const title: string = titleMap[location.pathname.replace(/[0-9]/g, '')] || '';
 
   return title;
 }

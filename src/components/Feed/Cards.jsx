@@ -5,13 +5,12 @@ import Card from "./Card"
 const Cards = ({ cards }) => {
   return (
     <div className="w-full h-full p-12">
-      <MagicGrid items={cards.length} gutter={50} animate={true}>
+      <MagicGrid items={cards.length} gutter={30} animate={true}>
         {cards.map(item => (
             <Card key={item.post_id} {...item} />
         ))}
       </MagicGrid>
     </div>
-
   )
 }
 
