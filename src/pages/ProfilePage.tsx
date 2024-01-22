@@ -8,9 +8,9 @@ import { dummy_categories } from "../types/Category.type";
 import { Archive, Mountain } from "lucide-react";
 import { Jandi } from "../types/HeatmapData.type";
 import FeedCard from "../components/Feed/Cards";
+import ChallengeCard from './../components/ChallengePage/Cards';
 import { dummy_sample } from "../types/FeedItem.type";
 import dummyChallengeData from "../types/ChallengeItem.dummy";
-import Cards from './../components/ChallengePage/Cards';
 
 const today = new Date(); // dummy data용
 
@@ -82,9 +82,9 @@ const ProfilePage = () => {
               <Mountain className="mr-2" strokeWidth={2.5} size={32} />챌린지
             </div>
           </div>
-          <div>
+          <div className='flex flex-col items-center'>
             {feedToggle ?
-              <Cards data={dummyChallengeData} />
+              <ChallengeCard data={dummyChallengeData} />
               :
               <FeedCard data={dummy_sample} />
             }
