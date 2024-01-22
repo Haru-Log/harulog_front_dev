@@ -9,4 +9,5 @@ export const NavItemList: NavItemProps[] = [
   { title: "DASHBOARD", path: "/dashboard" },
   { title: "SOCIAL", path: "/social" },
   { title: "GROW", path: "/grow" },
+  { title: "PROFILE", path: "/profile"}
 ];

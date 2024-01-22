@@ -20,7 +20,7 @@ const TopNav: React.FC = () => {
 
   return (
     <>
-      <div onClick={toggleNav}>
+      <div onClick={toggleNav} className='cursor-pointer hover:opacity-50'>
         {isNavOpen ? <CloseIcon /> : <MenuIcon />}
       </div>
       {isNavOpen && (
