@@ -1,7 +1,7 @@
 import React, { useContext, useRef, useState } from 'react'
 import { Link } from "react-router-dom";
 import KakaoIcon from '../../assets/kakao_icon.png'
-import { SetModalContext } from "../Layout/Layout";
+import { SetModalContext } from "../../App";
 import useOnClickOutside from "../../hooks/useOnClickOutside";
 
 

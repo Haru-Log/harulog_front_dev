@@ -1,7 +1,7 @@
 import React, { useContext, useRef, useState } from 'react'
 import { Link } from "react-router-dom"
 import KakaoIcon from '../../assets/kakao_icon.png'
-import { SetModalContext } from "../Layout/Layout"
+import { SetModalContext } from'../../App'
 import useOnClickOutside from "../../hooks/useOnClickOutside"
 
 const LoginModal = () => {
@@ -13,7 +13,9 @@ const LoginModal = () => {
   const [password, setPassword] = useState("");
 
   const ref: any = useRef();
-  useOnClickOutside(ref, () => { setLoginModal(false) });
+  useOnClickOutside(ref, () => { 
+    console.log('setmodalcon', setLoginModal);
+    setLoginModal(false) });
 
 
   return (
