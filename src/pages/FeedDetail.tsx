@@ -32,7 +32,7 @@ const FeedDetail = () => {
   useEffect(() => {
     if (post) {
       setTheme(category_themes[post!.category_idx - 1])
-      setCategory(dummy_categories.filter((x) => post && x.category_id === post!.category_idx)[0]?.category)
+      setCategory(dummy_categories.filter((x) => post && x.category_id === post!.category_idx)[0]?.category_name)
     }
   }, [post])
 
