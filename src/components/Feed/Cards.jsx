@@ -1,6 +1,6 @@
 import React from 'react'
 import MagicGrid from "react-magic-grid"
-import Card from "./Card"
+import FeedCard from "./FeedCard"
 import { useFilterStore } from 'src/zustand/filterStore.ts';
 
 const Cards = ({ data }) => {
@@ -12,7 +12,7 @@ const Cards = ({ data }) => {
     <div className="w-full h-full p-12">
       <MagicGrid items={data.length} gutter={30} animate={true}>
         {filteredCards.map(item => (
-            <Card key={item.post_id} {...item} />
+            <FeedCard key={item.post_id} {...item} />
         ))}
       </MagicGrid>
     </div>
