@@ -1,9 +1,11 @@
 import React from 'react'
 import { ToggleGroup, ToggleGroupItem } from "src/ui/toggle-group"
+import { useFilterStore } from '../zustand/filterStore';
 
-const FilterGroup: React.FC<{ selectedValue: string; setSelectedValue: any; }> = ({ selectedValue, setSelectedValue }) => {
+const FilterGroup = () => {
+  const { selectedValue, setSelectedValue } = useFilterStore();
   return (
-    <div>
+    <div className='absolute left-0'>
       <ToggleGroup type="single" value={selectedValue} onValueChange={setSelectedValue} className='ml-7'>
         <ToggleGroupItem value="전체">전체</ToggleGroupItem>
         <ToggleGroupItem value="공부">공부</ToggleGroupItem>

@@ -7,6 +7,7 @@ const NavRegister = () => {
   const setRegisterModal = useContext(SetModalContext)?.setRegisterModal;
 
   return (
+
     <div onClick={() => { 
       // navi("/register"); 
       setRegisterModal(true) }} className='ml-3 cursor-pointer'>

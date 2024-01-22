@@ -1,18 +1,16 @@
-import { useState } from "react"
+import Cards from '../components/ChallengePage/Cards'
 import CreateButton from '../components/CreateButton'
 import FilterGroup from '../components/FilterGroup'
+import dummyChallengeData from '../types/ChallengeItem.dummy'
 
 const ChallengePage = () => {
-
-  const [selectedValue, setSelectedValue] = useState("전체")
-
-
   return (
-    <div className='flex'>
-      <FilterGroup selectedValue={selectedValue} setSelectedValue={setSelectedValue} />
+    <div className='flex flex-col items-center'>
+      <FilterGroup />
       <CreateButton />
+      <Cards data={dummyChallengeData} />
     </div>
-  )
-}
+  );
+};
 
 export default ChallengePage

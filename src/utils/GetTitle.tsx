@@ -14,6 +14,10 @@ const GetTitle = (): string => {
     '/dashboard': '대시보드',
     '/edit': '내 정보 수정',
   };
+  
+  if (location.pathname.includes('/feed/edit/')) {
+    return '활동 기록';
+  }
 
   const title: string = titleMap[location.pathname.replace(/[0-9]/g, '')] || '';
 
