@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react'
 import { Heart, MessageSquareMore } from "lucide-react";
 import { useNavigate } from "react-router-dom";
-import { FeedItem } from './../../types/FeedItem.type';
+import { FeedItem } from '../../types/FeedItem.type';
 import { category_themes, dummy_categories } from "../../types/Category.type";
 
-const Card: React.FC<FeedItem> =
+const FeedCard: React.FC<FeedItem> =
   ({ post_id, user_idx, category_idx, content, post_image, like, comment, created_at, updated_at }) => {
 
     const [theme, setTheme] = useState("");
@@ -14,7 +14,7 @@ const Card: React.FC<FeedItem> =
 
     useEffect(() => {
       setTheme(category_themes[category_idx - 1])
-      setCategory(dummy_categories.filter((x) => x.category_id === category_idx)[0].category_name || 'bg-category_1');
+      setCategory(dummy_categories.filter((x) => x.category_id === category_idx)[0].category_name || '운동');
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
@@ -44,4 +44,4 @@ const Card: React.FC<FeedItem> =
     )
   }
 
-export default Card
+export default FeedCard

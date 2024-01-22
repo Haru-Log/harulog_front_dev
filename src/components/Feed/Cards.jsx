@@ -1,13 +1,18 @@
 import React from 'react'
 import MagicGrid from "react-magic-grid"
-import Card from "./Card"
+import FeedCard from "./FeedCard"
+import { useFilterStore } from 'src/zustand/filterStore.ts';
 
-const Cards = ({ cards }) => {
+const Cards = ({ data }) => {
+
+  const { selectedValue } = useFilterStore();
+  const filteredCards = selectedValue === '전체' ? data : data.filter(item => item.category_name === selectedValue);
+
   return (
     <div className="w-full h-full p-12">
-      <MagicGrid items={cards.length} gutter={30} animate={true}>
-        {cards.map(item => (
-            <Card key={item.post_id} {...item} />
+      <MagicGrid items={data.length} gutter={30} animate={true}>
+        {filteredCards.map(item => (
+            <FeedCard key={item.post_id} {...item} />
         ))}
       </MagicGrid>
     </div>
