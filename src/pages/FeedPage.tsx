@@ -29,7 +29,7 @@ const FeedPage = () => {
 
   return (
     <div className='flex flex-col'>
-      <FilterGroup selectedValue={selectedValue} setSelectedValue={setSelectedValue} />
+      <FilterGroup />
       {filtered.length ? <Cards cards={filtered} /> : <></>}
       <CreateButton />
     </div>
