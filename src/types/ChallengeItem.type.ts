@@ -6,7 +6,7 @@ export interface ChallengeItem {
   chatroom_id : number;
   challenge_title: string;
   challenge_content: string;
-  challenge_goal: string;
+  challenge_goal: number;
   challenge_image: string;
   participants : number;
   submission : string;

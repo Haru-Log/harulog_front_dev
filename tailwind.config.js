@@ -57,6 +57,8 @@ module.exports = {
         'main':'#D9D9D9',
         'second':'#8D8D8D',
         'point':'#84B4BB',
+        'point-hover':'#ACD1D7',
+        'point-active':'#a0c0c0',
       },
       borderRadius: {
         lg: `var(--radius)`,
