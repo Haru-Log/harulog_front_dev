@@ -3,7 +3,7 @@ import Header from './Header/Header'
 import { Outlet } from 'react-router'
 import Footer from './Footer/Footer'
 import PageTitle from './PageTitle'
-import GetTitle from '../../utils/GetTitle'
+import GetTitle from '../../utils/getTitle'
 
 const LayoutWithTitle = () => {
 
