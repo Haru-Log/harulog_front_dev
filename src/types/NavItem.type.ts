@@ -4,8 +4,8 @@ interface NavItemProps {
 }
 
 export const NavItemList: NavItemProps[] = [
-  { title: "CHALLENGE", path: "/challenge" },
   { title: "FEED", path: "/feed" },
+  { title: "CHALLENGE", path: "/challenge" },
   { title: "DASHBOARD", path: "/dashboard" },
   { title: "SOCIAL", path: "/social" },
   { title: "GROW", path: "/grow" },
