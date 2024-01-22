@@ -18,7 +18,7 @@ export const useChallengeStore = create<ChallengeState>()(
           chatroom_id: 0,
           challenge_title: '',
           challenge_content: '',
-          challenge_goal: '',
+          challenge_goal: 0,
           challenge_image: '',
           participants: 0,
           submission: '',

@@ -1,7 +1,8 @@
 import { useParams } from 'react-router-dom';
 import useChallengeFetcher from '../hooks/useChallengeFetcher';
 import ChallengeDetailHeader from '../components/ChallengeDetailPage/ChallengeDetailHeader'
-import ChallengeDetailBody from '../components/ChallengeDetailPage/ChallengeInfo';
+import ChallengeInfo from '../components/ChallengeDetailPage/ChallengeInfo';
+import ChallengeMemberList from '../components/ChallengeDetailPage/ChallengeMemberList';
 
 const ChallengeDetailPage = () => {
   const { id } = useParams();
@@ -12,9 +13,10 @@ const ChallengeDetailPage = () => {
       {selectedChallenge ?
         <div>
           <ChallengeDetailHeader />
-          <ChallengeDetailBody />
+          <ChallengeInfo />
+          <ChallengeMemberList />
         </div>
-        : <p>챌린지를 찾을 수 없습니다.</p>}
+        : <div className='text-center'>챌린지를 찾을 수 없습니다.</div>}
     </div>
   )
 }

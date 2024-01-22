@@ -1,11 +1,15 @@
-import React from 'react'
-import { useChallengeStore } from 'src/zustand/challengeStore';
+import ChallengeTopBadge from './ChallengeTopBadge';
+import ChallengeInfoLeft from './ChallengeInfoLeft';
+import ChallengeInfoRight from './ChallengeInfoRight';
 
 const ChallengeInfo = () => {
-  const challenge = useChallengeStore((state) => state.challenge);
   return (
-    <div className='border-2 rounded-xl mt-10 px-14 py-6'>
-      <div className={`bg-${challenge.category_name}`}>{challenge.category_name}</div>
+    <div className='border-2 rounded-xl mt-7 px-10 py-6'>
+      <ChallengeTopBadge />
+      <div className='flex flex-row mt-4'>
+        <ChallengeInfoLeft />
+        <ChallengeInfoRight />
+      </div>
     </div>
   )
 }
