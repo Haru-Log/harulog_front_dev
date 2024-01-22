@@ -3,12 +3,7 @@ import CalendarHeatmap from "react-calendar-heatmap"
 import './react-calendar-heatmap.css';
 import shiftDate from './../../utils/shiftDate';
 import { Tooltip } from 'react-tooltip';
-
-interface Jandi {
-  date: Date;
-  count: number;
-  category: string
-}
+import { Jandi } from "@/src/types/HeatmapData.type";
 
 const today = new Date();
 
@@ -21,7 +16,6 @@ const Heatmap: React.FC<{ data: Jandi[] }> = ({ data }) => {
         endDate={today}
         values={data}
         classForValue={value => {
-          console.log(value?.category);
           if (!value || !value.count) {
             return 'color-empty';
           }
@@ -39,7 +33,7 @@ const Heatmap: React.FC<{ data: Jandi[] }> = ({ data }) => {
           key={value.date.toDateString()}
           id={value.date.toDateString()}
           place="top"
-          content={value.date.toISOString().slice(0, 10)}
+          content={`${value.date.toISOString().slice(0, 10)} ${value.category}`}
         />
       )}
 
