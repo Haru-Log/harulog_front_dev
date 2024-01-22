@@ -12,12 +12,22 @@ import { Textarea } from "../ui/textarea"
 import { Input } from "../ui/input"
 import { Button } from "../ui/button"
 import { Switch } from "../ui/switch"
+import { useNavigate, useParams } from "react-router-dom"
 
 
 const RecordPage = () => {
 
   const [date, setDate] = useState<Date | undefined>(new Date())
   const [time, setTime] = useState("");
+  
+
+  const id = useParams().id;
+
+  const navigate = useNavigate();
+
+  const handleSubmit = () => {
+    navigate(`/feed/${id}`, { replace: true })
+  }
 
 
   return (
@@ -58,24 +68,24 @@ const RecordPage = () => {
               />
             </div>
             <div className="flex mt-5">
-              <div className="font-bold mr-[3.25rem] whitespace-nowrap">
+              <div className="font-bold mr-[3rem] whitespace-nowrap">
                 사진
               </div>
               <Input type="file" />
             </div>
           </div>
-          <div className="w-full h-full">
-            <Textarea className="w-full h-full border-2" placeholder="내용을 입력하세요." />
-            <div className="flex">
-              <div className="mr-5">자동게시</div>
+          <div className="w-full h-full ml-[3rem]">
+            <Textarea className="w-full h-[25rem] border-2" placeholder="내용을 입력하세요." />
+            <div className="flex mt-5 justify-end">
+              <div className="mr-5 font-bold">자동게시</div>
               <Switch /></div>
           </div>
         </section>
-        <section className="w-full flex justify-between">
-          <Button className="bg-gray-500 hover:opacity-70 shadow-xl rounded-xl">
+        <section className="w-full flex justify-between mt-8">
+          <Button className="bg-gray-500 hover:opacity-70 shadow-xl rounded-xl" onClick={() => navigate(`/feed/${id}`, { replace: true })}>
             취소
           </Button>
-          <Button className="bg-point hover:opacity-70 shadow-xl rounded-xl">
+          <Button className="bg-point hover:opacity-70 shadow-xl rounded-xl" onClick={handleSubmit}>
             저장
           </Button>
         </section>
