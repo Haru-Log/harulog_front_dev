@@ -1,9 +1,7 @@
 import React, { useContext } from 'react'
-// import { useNavigate } from 'react-router'
-import { SetModalContext } from "../Layout"
+import { SetModalContext } from './../../../App';
 
 const NavRegister = () => {
-  // const navi = useNavigate()
   const setRegisterModal = useContext(SetModalContext)?.setRegisterModal;
 
   return (

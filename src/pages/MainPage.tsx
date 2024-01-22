@@ -1,4 +1,3 @@
-import React, { useContext } from 'react'
 import Slogan from "../components/MainPage/Slogan"
 import ChallengeCard from "../components/MainPage/ChallengeCard"
 
@@ -6,17 +5,8 @@ import ChallengeCard from "../components/MainPage/ChallengeCard"
 import achievement from '../assets/achievement-5597527_640.png'
 import nodap from '../assets/20231010_084411.jpg'
 import FeedCard from "../components/MainPage/FeedCard"
-import { ModalContext } from "../components/Layout/Layout"
-import LoginModal from "../components/LoginRegister/LoginModal"
-import RegisterModal from "../components/LoginRegister/RegisterModal"
-
-
 
 const MainPage = () => {
-
-  const loginModal = useContext(ModalContext)?.loginModal;
-  const registerModal = useContext(ModalContext)?.registerModal;
-
   const dummy_chals = [
     { name: '한 달 영어완성 챌린지', img: achievement },
     { name: '아침 조깅', img: achievement },
@@ -59,14 +49,6 @@ const MainPage = () => {
           }
         </div>
       </div>
-
-      {loginModal && (
-        <LoginModal />
-      )}
-
-      {registerModal && (
-        <RegisterModal />
-      )}
     </div>
   )
 }
