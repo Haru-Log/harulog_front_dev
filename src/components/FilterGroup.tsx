@@ -1,8 +1,8 @@
-import React, { useState } from 'react'
 import { ToggleGroup, ToggleGroupItem } from "src/ui/toggle-group"
+import { useFilterStore } from '../zustand/filterStore';
 
 const FilterGroup = () => {
-  const [selectedValue, setSelectedValue] = useState("전체")
+  const { selectedValue, setSelectedValue } = useFilterStore();
   console.log(selectedValue)
   return (
     <div className='absolute left-0'>
