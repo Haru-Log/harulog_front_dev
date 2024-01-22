@@ -16,7 +16,7 @@ const GetTitle = (): string => {
   };
   
   if (location.pathname.includes('/feed/edit/')) {
-    return '활동 기록';
+    return '활동 수정';
   }
 
   const title: string = titleMap[location.pathname.replace(/[0-9]/g, '')] || '';

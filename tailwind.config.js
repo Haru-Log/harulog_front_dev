@@ -49,10 +49,10 @@ module.exports = {
         },
 
         // 카테고리용 색깔
-        category_1:'#92C7CF', // 운동
-        category_2:'#F0E57F',
-        category_3:'#fd8446',
-        category_4:'#CFA892',
+        운동:'#B1D9AA', // 운동
+        공부:'#F0E57F',
+        독서:'#fd8446',
+        기상:'#87B7FF',
 
         'main':'#D9D9D9',
         'second':'#8D8D8D',
