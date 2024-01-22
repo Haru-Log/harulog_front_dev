@@ -1,7 +1,7 @@
 import { useParams } from 'react-router-dom';
 import useChallengeFetcher from '../hooks/useChallengeFetcher';
 import ChallengeDetailHeader from '../components/ChallengeDetailPage/ChallengeDetailHeader'
-import ChallengeDetailBody from '../components/ChallengeDetailPage/ChallengeDetailBody';
+import ChallengeDetailBody from '../components/ChallengeDetailPage/ChallengeInfo';
 
 const ChallengeDetailPage = () => {
   const { id } = useParams();
