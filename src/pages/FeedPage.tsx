@@ -19,7 +19,7 @@ const FeedPage = () => {
 
   useEffect(() => {
     if (selectedValue !== '전체') {
-      const selectedId = dummy_categories.find(x => x.category === selectedValue)?.category_id
+      const selectedId = dummy_categories.find(x => x.category_name === selectedValue)?.category_id
       setFiltered(feedItems.filter((it) => it.category_idx === selectedId))
     } else {
       setFiltered(feedItems);

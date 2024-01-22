@@ -14,6 +14,7 @@ export const useChallengeStore = create<ChallengeState>()(
         challenge: {
           challenge_id: 0,
           category_id: 0,
+          category_name: '',
           chatroom_id: 0,
           challenge_title: '',
           challenge_content: '',

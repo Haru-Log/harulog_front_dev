@@ -34,7 +34,7 @@ const RecordPage = () => {
                 <SelectContent>
                   {
                     dummy_categories.map((it) => (
-                      <SelectItem value="light" key={it.category_id}>{it.category}</SelectItem>
+                      <SelectItem value="light" key={it.category_id}>{it.category_name}</SelectItem>
                     ))
                   }
                 </SelectContent>

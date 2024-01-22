@@ -2,6 +2,7 @@
 export interface ChallengeItem {
   challenge_id: number;
   category_id: number;
+  category_name: string;
   chatroom_id : number;
   challenge_title: string;
   challenge_content: string;
