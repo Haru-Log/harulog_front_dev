@@ -55,10 +55,11 @@ module.exports = {
         기상:'#87B7FF',
 
         'main':'#D9D9D9',
-        'second':'#8D8D8D',
+        'main-hover':'#8D8D8D',
+        'main-active':'#6E6E6E',
         'point':'#84B4BB',
-        'point-hover':'#ACD1D7',
-        'point-active':'#a0c0c0',
+        'point-hover':'#75A0A6',
+        'point-active':'#557377',
       },
       borderRadius: {
         lg: `var(--radius)`,
