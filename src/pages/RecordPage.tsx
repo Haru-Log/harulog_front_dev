@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { LegacyRef, RefObject, useEffect, useRef, useState } from 'react'
 import { Calendar } from "../ui/calendar"
 import {
   Select,
@@ -13,20 +13,68 @@ import { Input } from "../ui/input"
 import { Button } from "../ui/button"
 import { Switch } from "../ui/switch"
 import { useNavigate, useParams } from "react-router-dom"
+import { SelectGroup, SelectLabel } from "@radix-ui/react-select"
+import { FeedItem, dummy_sample } from "../types/FeedItem.type"
 
 
 const RecordPage = () => {
 
   const [date, setDate] = useState<Date | undefined>(new Date())
-  const [time, setTime] = useState("");
-  
+  const [minute, setMinute] = useState("")
+  const [hour, setHour] = useState("")
+  const [category, setCategory] = useState("");
+  const [content, setContent] = useState("");
+  const [imgURL, setImgURL] = useState("")
+
+  const imgRef: RefObject<HTMLImageElement> = useRef<HTMLImageElement>(null);
 
   const id = useParams().id;
 
   const navigate = useNavigate();
+  useEffect(() => {
+    if (id) {
+      const post = dummy_sample.find((it) => it.post_id === parseInt(id));
+      if (post) {
+        setDate(post.created_at);
+        if (imgRef.current) {
+          imgRef.current.setAttribute('src', post?.post_image);
+        }
+        setContent(post.content);
+        setCategory(post.category_name);
+      }
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   const handleSubmit = () => {
-    navigate(`/feed/${id}`, { replace: true })
+    if (window.confirm(id ? "피드 수정을 완료하시겠습니까?" : "피드 작성을 완료하시겠습니까?")) {
+      //더미코드
+      localStorage.setItem((dummy_sample.length + 1).toString(), JSON.stringify(imgURL))
+
+      const newFeed: FeedItem = {
+        post_id: dummy_sample.length + 1,
+        user_idx: 2,
+        category_name: category,
+        content: content,
+        post_image: imgURL,
+        like: 0,
+        comment: 0,
+        created_at: new Date()
+      }
+      dummy_sample.push(newFeed);
+      navigate(`/feed/${id}`, { replace: true })
+    }
+  }
+
+  const handleUploadImage = (event: React.ChangeEvent<HTMLInputElement>) => {
+    if (event.target.files) {
+      const file = event.target.files[0]
+      setImgURL(URL.createObjectURL(file))
+
+      if (imgRef.current) {
+        imgRef.current.setAttribute('src', imgURL)
+      }
+    }
   }
 
 
@@ -37,23 +85,33 @@ const RecordPage = () => {
           <div className="w-fit h-full flex flex-col mr-5" >
             <div className="flex items-center">
               <div className="font-bold mr-5">카테고리</div>
-              <Select>
+              <Select onValueChange={(e) => { setCategory(e) }} defaultValue={category}>
                 <SelectTrigger className="w-[180px] border-2">
                   <SelectValue placeholder="선택" />
                 </SelectTrigger>
                 <SelectContent>
-                  {
-                    dummy_categories.map((it) => (
-                      <SelectItem value="light" key={it.category_id}>{it.category_name}</SelectItem>
-                    ))
-                  }
+                  <SelectGroup>
+                    <SelectLabel>카테고리</SelectLabel>
+                    {
+                      dummy_categories.map((it) => (
+                        <SelectItem value={it.category_name} key={it.category_id}>{it.category_name}</SelectItem>
+                      ))
+                    }
+                  </SelectGroup>
                 </SelectContent>
               </Select>
 
             </div>
             <div className="flex my-5">
               <div className="font-bold mr-[3.25rem] whitespace-nowrap">성취</div>
-              <Input type="text" placeholder="성취 시간을 입력하세요." value={time} onChange={(e) => setTime(e.target.value.replace(/[^0-9]/g, ""))} />
+              {category === "기상" ?
+                <div className="flex items-center">
+                  <Input type="number" placeholder="시" className="mr-5" value={hour} onChange={(e) => setHour(e.target.value)} /> 시
+                  <Input type="number" placeholder="분" className="mx-5" value={minute} onChange={(e) => setMinute(e.target.value)} /> 분
+                </div>
+                :
+                <Input type="number" placeholder="성취 시간을 입력하세요." value={minute} onChange={(e) => setMinute(e.target.value)} />
+              }
 
             </div>
             <div className="flex">
@@ -67,15 +125,16 @@ const RecordPage = () => {
                 className="rounded-md border-2"
               />
             </div>
-            <div className="flex mt-5">
-              <div className="font-bold mr-[3rem] whitespace-nowrap">
+          </div>
+          <div className="w-full h-full flex flex-col justify-center">
+            <div className="flex">
+              <div className="font-bold mr-[3rem] whitespace-nowrap mb-5">
                 사진
               </div>
-              <Input type="file" />
+              <Input accept="image/jpeg, image/png" type="file" onChange={handleUploadImage} />
             </div>
-          </div>
-          <div className="w-full h-full ml-[3rem]">
-            <Textarea className="w-full h-[25rem] border-2" placeholder="내용을 입력하세요." />
+            <img ref={imgRef} alt="사진을 업로드하세요." className="mb-5 max-h-96 object-contain" />
+            <Textarea className="w-full border-2" placeholder="내용을 입력하세요." value={content} onChange={(e) => setContent(e.target.value)} />
             <div className="flex mt-5 justify-end">
               <div className="mr-5 font-bold">자동게시</div>
               <Switch /></div>
