@@ -1,4 +1,4 @@
-import React, { LegacyRef, RefObject, useEffect, useRef, useState } from 'react'
+import React, { RefObject, useEffect, useRef, useState } from 'react'
 import { Calendar } from "../ui/calendar"
 import {
   Select,

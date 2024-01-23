@@ -14,7 +14,7 @@ const FeedDetail = () => {
   const [post, setPost] = useState<FeedItem>();
   const [post_image, setPost_image] = useState("");
   const [content, setContent] = useState("");
-  const [date, setDate] = useState<Date>();
+  const [date, setDate] = useState("");
   const [category, setcategory] = useState("")
 
   useEffect(() => {
@@ -28,12 +28,12 @@ const FeedDetail = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [post_id])
 
-  useEffect(()=>{
+  useEffect(() => {
     if (post) {
       setPost_image(post.post_image);
       setContent(post.content)
       setcategory(post.category_name)
-
+      setDate(post.created_at.toLocaleDateString())
       //postId에 따라서 comment 불러오는 로직 추가해야함
     }
   }, [post])
@@ -63,7 +63,7 @@ const FeedDetail = () => {
             </div>
           </div>
           <div className="text-xl">
-            {post && post?.created_at.toLocaleDateString()}
+            {date}
           </div>
         </section>
         <section className="mt-5 flex items-center">
@@ -73,7 +73,7 @@ const FeedDetail = () => {
           </div>
         </section>
         <section className="mt-5 text-4xl">
-          {post && post.content}
+          {content}
         </section>
         <section className="mt-10">
           {dummy_comment.map(it => (
