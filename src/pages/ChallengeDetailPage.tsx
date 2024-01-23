@@ -9,7 +9,7 @@ const ChallengeDetailPage = () => {
   const selectedChallenge = useChallengeFetcher(Number(id));
 
   return (
-    <div className='mt-12 mx-10'>
+    <div className='mx-10'>
       {selectedChallenge ?
         <div>
           <ChallengeDetailHeader />

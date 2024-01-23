@@ -6,7 +6,7 @@ interface PageTitleProps {
 
 const PageTitle: React.FC<PageTitleProps> = ({ title }) => {
   return (
-    <div className='text-4xl font-black m-7 pt-12'>
+    <div className='text-4xl font-black mx-10 mt-10 pt-12'>
       {title}
     </div>
   );

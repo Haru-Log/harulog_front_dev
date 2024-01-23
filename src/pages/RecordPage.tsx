@@ -31,10 +31,10 @@ const RecordPage = () => {
 
 
   return (
-    <div className="w-full h-full p-5 flex justify-center">
-      <div className="w-full h-full border-2 rounded-xl px-14 py-6">
+    <div className="mx-5 p-5 flex justify-center">
+      <div className="w-full h-full border-2 rounded-xl px-10 py-10">
         <section className="w-full h-full flex">
-          <div className="w-fit h-full flex flex-col mr-5" >
+          <div className="w-fit h-full flex flex-col" >
             <div className="flex items-center">
               <div className="font-bold mr-5">카테고리</div>
               <Select>
@@ -75,7 +75,7 @@ const RecordPage = () => {
             </div>
           </div>
           <div className="w-full h-full ml-[3rem]">
-            <Textarea className="w-full h-[25rem] border-2" placeholder="내용을 입력하세요." />
+            <Textarea className="w-full h-[30rem] border-2" placeholder="내용을 입력하세요." />
             <div className="flex mt-5 justify-end">
               <div className="mr-5 font-bold">자동게시</div>
               <Switch /></div>
@@ -85,7 +85,7 @@ const RecordPage = () => {
           <Button className="bg-gray-500 hover:opacity-70 shadow-xl rounded-xl" onClick={() => navigate(`/feed/${id}`, { replace: true })}>
             취소
           </Button>
-          <Button className="bg-point hover:opacity-70 shadow-xl rounded-xl" onClick={handleSubmit}>
+          <Button className="bg-point hover:bg-point-hover active:bg-point-active shadow-xl rounded-xl" onClick={handleSubmit}>
             저장
           </Button>
         </section>

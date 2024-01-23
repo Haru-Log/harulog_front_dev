@@ -6,7 +6,7 @@ const FilterGroup = () => {
   const { selectedValue, setSelectedValue } = useFilterStore();
   return (
     <div className='absolute left-0'>
-      <ToggleGroup type="single" value={selectedValue} onValueChange={setSelectedValue} className='ml-7'>
+      <ToggleGroup type="single" value={selectedValue} onValueChange={setSelectedValue} className='mt-5 ml-10'>
         <ToggleGroupItem value="전체">전체</ToggleGroupItem>
         <ToggleGroupItem value="공부">공부</ToggleGroupItem>
         <ToggleGroupItem value="운동">운동</ToggleGroupItem>
