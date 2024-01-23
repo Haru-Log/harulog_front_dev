@@ -3,7 +3,6 @@ import { useNavigate, useParams } from "react-router-dom"
 import { FeedItem, dummy_sample } from "../types/FeedItem.type"
 import dummyImage1 from '../assets/20231010_084411.jpg' // 임시 이미지
 import { Heart, Pencil } from "lucide-react"
-import { category_themes, dummy_categories } from "../types/Category.type"
 import { dummy_comment } from "../types/Comment.type"
 import Comment from "../components/Feed/Comment"
 
@@ -13,8 +12,6 @@ const FeedDetail = () => {
   const post_id = parseInt(useParams().id || "");
   const navigate = useNavigate();
   const [post, setPost] = useState<FeedItem>();
-  const [theme, setTheme] = useState<string>("")
-  const [category, setCategory] = useState("");
 
   useEffect(() => {
     // api로 postID 요청해서 없으면 navigate를 통해 피드 페이지로 이동 시키기.
@@ -27,15 +24,6 @@ const FeedDetail = () => {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [post_id])
-
-
-  useEffect(() => {
-    if (post) {
-      setTheme(category_themes[post!.category_idx - 1])
-      setCategory(dummy_categories.filter((x) => post && x.category_id === post!.category_idx)[0]?.category_name)
-    }
-  }, [post])
-
 
   return (
     <div className="w-full flex justify-center">
@@ -54,10 +42,10 @@ const FeedDetail = () => {
         </section>
         <section className="flex items-center justify-between">
           <div className="flex flex-row">
-            <div className={`text-white px-3 py-1 rounded-full h-fit w-fit text-center mr-3 text-2xl ${theme}`}>
-              {category}
+            <div className={`text-white px-3 py-1 rounded-full h-fit w-fit text-center mr-3 text-2xl bg-${post?.category_name}`}>
+              {post?.category_name}
             </div>
-            <div className={`text-white px-3 py-1 rounded-full h-fit w-fit text-center text-2xl ${theme}`}>
+            <div className={`text-white px-3 py-1 rounded-full h-fit w-fit text-center text-2xl bg-${post?.category_name}`}>
               60분
             </div>
           </div>
