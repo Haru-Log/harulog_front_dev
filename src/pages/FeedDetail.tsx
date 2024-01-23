@@ -12,18 +12,31 @@ const FeedDetail = () => {
   const post_id = parseInt(useParams().id || "");
   const navigate = useNavigate();
   const [post, setPost] = useState<FeedItem>();
+  const [post_image, setPost_image] = useState("");
+  const [content, setContent] = useState("");
+  const [date, setDate] = useState<Date>();
+  const [category, setcategory] = useState("")
 
   useEffect(() => {
     // api로 postID 요청해서 없으면 navigate를 통해 피드 페이지로 이동 시키기.
     if (post_id) {
       // 나중에는 api로 요청할 것
       setPost(dummy_sample.find(x => x.post_id === post_id));
-      // 그리고 포스트 아이디 불러오면 프로필 정보 불러오는 그것도 추가 해야함
     } else {
       navigate('/feed', { replace: true });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [post_id])
+
+  useEffect(()=>{
+    if (post) {
+      setPost_image(post.post_image);
+      setContent(post.content)
+      setcategory(post.category_name)
+
+      //postId에 따라서 comment 불러오는 로직 추가해야함
+    }
+  }, [post])
 
   return (
     <div className="w-full flex justify-center">
@@ -38,14 +51,14 @@ const FeedDetail = () => {
           </div>
         </section>
         <section className="w-full mb-5">
-          <img src={dummyImage1} alt="post" className="max-h-[100vh] w-full object-cover" />
+          <img src={post_image} alt="post" className="max-h-[100vh] w-full object-cover" />
         </section>
         <section className="flex items-center justify-between">
           <div className="flex flex-row">
-            <div className={`text-white px-3 py-1 rounded-full h-fit w-fit text-center mr-3 text-2xl bg-${post?.category_name}`}>
-              {post?.category_name}
+            <div className={`text-white px-3 py-1 rounded-full h-fit w-fit text-center mr-3 text-2xl bg-${category}`}>
+              {category}
             </div>
-            <div className={`text-white px-3 py-1 rounded-full h-fit w-fit text-center text-2xl bg-${post?.category_name}`}>
+            <div className={`text-white px-3 py-1 rounded-full h-fit w-fit text-center text-2xl bg-${category}`}>
               60분
             </div>
           </div>
