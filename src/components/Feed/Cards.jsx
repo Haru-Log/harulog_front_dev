@@ -9,7 +9,7 @@ const Cards = ({ data }) => {
   const filteredCards = selectedValue === '전체' ? data : data.filter(item => item.category_name === selectedValue);
 
   return (
-    <div className="w-full h-full p-12">
+    <div className="w-full h-full p-12 mt-8">
       <MagicGrid items={data.length} gutter={30} animate={true}>
         {filteredCards.map(item => (
             <FeedCard key={item.post_id} {...item} />

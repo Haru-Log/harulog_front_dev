@@ -12,7 +12,7 @@ const ChallengeInfoLeft = () => {
   return (
     <div className='flex flex-col basis-2/5 mr-10'>
       <img src={challenge.challenge_image} alt="챌린지 이미지" className="object-cover aspect-square max-w-96 rounded-xl drop-shadow-md" />
-      <div className='flex flex-row mt-10 items-center'>
+      <div className='flex flex-row mt-3 items-center'>
         <span className='font-bold text-base mr-10 whitespace-nowrap'>목표</span>
         <span className='font-bold'>{challenge.challenge_goal}{challenge.category_name === "기상" ? "일" : "분"}</span>
       </div>
