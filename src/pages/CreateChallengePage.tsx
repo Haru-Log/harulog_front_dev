@@ -1,9 +1,10 @@
 import React from 'react'
+import InputCard from '../components/CreateChallengePage/InputCard'
 
 const CreateChallengePage = () => {
   return (
     <div>
-      CreateChallengePage
+      <InputCard />
     </div>
   )
 }

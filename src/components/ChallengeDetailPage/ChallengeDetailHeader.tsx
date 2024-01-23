@@ -8,7 +8,7 @@ const ChallengeDetailHeader = () => {
   return (
     <div>
       {challenge &&
-        <div className='flex justify-between items-end mt-20'>
+        <div className='flex justify-between items-end mt-[85px]'>
           <div>
             <span className='text-4xl font-black mr-3 whitespace-nowrap'>{challenge.challenge_title}</span>
             <span className='font-black whitespace-nowrap'>{status}</span>
