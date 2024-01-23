@@ -22,11 +22,11 @@ const ChallengeInfoRight = () => {
       </div>
       <div className='mt-5'>
         <span className='font-bold text-lg mr-10 whitespace-nowrap'>챌린지 설명</span>
-        <Textarea value={challenge.challenge_content} disabled className='min-h-32 mt-3' />
+        <Textarea value={challenge.challenge_content} disabled className='resize-none min-h-32 mt-3' />
       </div>
       <div className='mt-5'>
         <span className='font-bold text-lg mr-10 whitespace-nowrap'>인증 방법</span>
-        <Textarea value={challenge.submission} disabled className='min-h-28 mt-3' />
+        <Textarea value={challenge.submission} disabled className='resize-none min-h-28 mt-3' />
       </div>
     </div>
   )

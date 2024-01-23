@@ -6,7 +6,7 @@ const NavLogin = () => {
   return (
 
     <div onClick={() => {
-      setLoginModal(true)}} className='cursor-pointer'>
+      setLoginModal(true)}} className='cursor-pointer text-sm'>
       로그인
     </div>
   )
