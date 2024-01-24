@@ -42,3 +42,7 @@
 .react-calendar-heatmap .color-기상 {
   fill: #87B7FF;
 }
+
+.react-calendar-heatmap .color-multiple{
+  fill: #92C7CF;
+}

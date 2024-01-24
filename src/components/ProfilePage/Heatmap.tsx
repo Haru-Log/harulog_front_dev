@@ -1,9 +1,9 @@
 import React from 'react'
 import CalendarHeatmap from "react-calendar-heatmap"
 import './react-calendar-heatmap.css';
-import shiftDate from './../../utils/shiftDate';
 import { Tooltip } from 'react-tooltip';
-import { Jandi } from "@/src/types/HeatmapData.type";
+import { Jandi } from "../../types/HeatmapData.type";
+import { shiftDate } from "../../utils/rawDatatoJandi";
 
 const today = new Date();
 
@@ -16,24 +16,26 @@ const Heatmap: React.FC<{ data: Jandi[] }> = ({ data }) => {
         endDate={today}
         values={data}
         classForValue={value => {
-          if (!value || !value.count) {
+          if (!value || value.category[0]==="") {
             return 'color-empty';
+          } else if(value.category.length>1){
+            return 'color-multiple'
           }
-          return `color-${value.category}`;
+          return `color-${value.category[0]}`;
         }}
         tooltipDataAttrs={(value: Jandi) => {
           return {
-            'data-tooltip-id': value.date.toDateString(),
+            'data-tooltip-id': value.date?.getTime()+"",
           };
         }}
         showWeekdayLabels={true}
       />
-      {data.map((value) =>
+      {data && data.map((value, idx) =>
         <Tooltip
-          key={value.date.toDateString()}
-          id={value.date.toDateString()}
+          key={idx}
+          id={value.date?.getTime()+""}
           place="top"
-          content={`${value.date.toISOString().slice(0, 10)} ${value.category}`}
+          content={`${value.date?.toISOString().slice(0, 10)} ${value.category}`}
         />
       )}
 

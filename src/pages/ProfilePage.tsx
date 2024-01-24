@@ -3,14 +3,14 @@ import { Button } from "../ui/button"
 import ProfileNumber from "../components/ProfilePage/ProfileNumber"
 import Heatmap from "../components/ProfilePage/Heatmap";
 import { useEffect, useState } from "react";
-import shiftDate from "../utils/shiftDate";
-import { dummy_categories } from "../types/Category.type";
 import { Archive, Mountain } from "lucide-react";
 import { Jandi } from "../types/HeatmapData.type";
 import FeedCard from "../components/Feed/Cards";
 import ChallengeCard from './../components/ChallengePage/Cards';
 import { dummy_sample } from "../types/FeedItem.type";
 import dummyChallengeData from "../types/ChallengeItem.dummy";
+import dummy_jandi from "../types/HeatmapData.dummy";
+import { mergeCategory, mergeJandi, shiftDate } from "../utils/rawDatatoJandi";
 
 const today = new Date(); // dummy data용
 
@@ -20,27 +20,26 @@ const ProfilePage = () => {
     getRange(51 * 7 + today.getDay() + 1).map(index => {
       return {
         date: shiftDate(new Date(), -index),
-        count: 0,
-        category: ""
+        category: [""]
       };
     })
   );
 
   const [feedToggle, setFeedToggle] = useState(false);
 
+  // 전체 필터링을 위한 작업
   useEffect(() => {
 
-    const randomValues = getRange(51 * 7 + today.getDay() + 1).map(index => {
-      return {
-        date: shiftDate(new Date(), -index),
-        count: getRandomInt(0, 2),
-        category: dummy_categories[getRandomInt(0, 3)]?.category_name
-      };
-    });
-    setChartData(randomValues)
 
+    dummy_jandi.sort((a, b) => a.date.getTime() - b.date.getTime());    
+    const mergedJandi = mergeJandi(chartData, mergeCategory(dummy_jandi))
 
-  }, [])
+    if (mergedJandi.length) {
+      setChartData(mergedJandi)
+    }
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [dummy_jandi])
 
   return (
     <div className="w-full flex justify-center py-16">
@@ -99,8 +98,4 @@ export default ProfilePage
 
 function getRange(count: number) {
   return Array.from({ length: count }, (_, i) => i);
-}
-
-function getRandomInt(min: number, max: number) {
-  return Math.floor(Math.random() * (max - min + 1)) + min;
 }
