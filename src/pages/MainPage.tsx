@@ -45,7 +45,10 @@ const MainPage = () => {
           <div className="text-sm text-[#92C7CF] cursor-pointer" onClick={() => { setRegisterModal(true) }}>가입하기</div>
         </div>
 
-        <FeedSlide data={dummy_sample} />
+        <div className="flex justify-center pl-16">
+          <FeedSlide data={dummy_sample} />
+        </div>
+
 
       </div>
     </div>

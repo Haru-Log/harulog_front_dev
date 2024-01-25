@@ -43,6 +43,74 @@
   fill: #87B7FF;
 }
 
-.react-calendar-heatmap .color-multiple{
+.react-calendar-heatmap .color-multiple {
   fill: #92C7CF;
+}
+
+/* 
+ * Excercise COlors
+ */
+
+.react-calendar-heatmap .color-운동-1 {
+  fill: rgb(213, 231, 209);
+}
+
+.react-calendar-heatmap .color-운동-2 {
+  fill: #B1D9AA;
+}
+
+.react-calendar-heatmap .color-운동-3 {
+  fill: #94dd87;
+}
+
+.react-calendar-heatmap .color-운동-4 {
+  fill: #5ad844;
+}
+
+.react-calendar-heatmap .color-공부-1 {
+  fill: rgb(245, 239, 195);
+}
+
+.react-calendar-heatmap .color-공부-2 {
+  fill: #f7ee9c;
+}
+
+.react-calendar-heatmap .color-공부-3 {
+  fill: #faed75;
+}
+
+.react-calendar-heatmap .color-공부-4 {
+  fill: rgb(245, 225, 7);
+}
+
+.react-calendar-heatmap .color-독서-1 {
+  fill: #f5bea2;
+}
+
+.react-calendar-heatmap .color-독서-2 {
+  fill: #f38852;
+}
+
+.react-calendar-heatmap .color-독서-3 {
+  fill: #fc7532;
+}
+
+.react-calendar-heatmap .color-독서-4 {
+  fill: #fa5807;
+}
+
+.react-calendar-heatmap .color-기상-1 {
+  fill: #bed5f7;
+}
+
+.react-calendar-heatmap .color-기상-2 {
+  fill: #87B7FF;
+}
+
+.react-calendar-heatmap .color-기상-3 {
+  fill: #3c86f4;
+}
+
+.react-calendar-heatmap .color-기상-4 {
+  fill: #0969f8;
 }
