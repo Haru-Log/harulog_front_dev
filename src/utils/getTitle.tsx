@@ -19,6 +19,10 @@ const GetTitle = (): string => {
     return '활동 수정';
   }
 
+  if (location.pathname.includes('/challenge/edit/')) {
+    return '챌린지 수정';
+  }
+
   const title: string = titleMap[location.pathname.replace(/[0-9]/g, '')] || '';
 
   return title;
