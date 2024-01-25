@@ -4,7 +4,6 @@ import { SetModalContext } from './../../../App';
 const NavLogin = () => {
   const setLoginModal = useContext(SetModalContext)?.setLoginModal;
   return (
-
     <div onClick={() => {
       setLoginModal(true)}} className='cursor-pointer text-sm'>
       로그인
