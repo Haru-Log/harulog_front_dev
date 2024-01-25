@@ -138,9 +138,9 @@ const RecordPage = () => {
             <div className="font-bold mr-5 w-16">
               사진
             </div>
-            <Input accept="image/jpeg, image/png" type="file" onChange={handleUploadImage} className='w-[280px] border-2' />
+            <Input accept="image/jpeg, image/png" type="file" onChange={handleUploadImage} className='w-full border-2' />
           </div>
-          <img ref={imgRef} alt="사진을 업로드하세요." className="mb-5 max-h-96 object-contain" />
+          <img ref={imgRef} alt="사진을 업로드하세요." className="object-contain mb-5 h-[265px] rounded-lg max-h-96 border-2 " />
           <Textarea className="resize-none w-full border-2" placeholder="내용을 입력하세요." value={content} onChange={(e) => setContent(e.target.value)} />
           <div className="flex mt-8 justify-end items-center">
             <div className="mr-5 font-bold">자동게시</div>

@@ -8,6 +8,10 @@ const ChallengeDetailPage = () => {
   const { id } = useParams();
   const selectedChallenge = useChallengeFetcher(Number(id));
 
+  if (!selectedChallenge) {
+    localStorage.removeItem('challengeStore');
+  }
+
   return (
     <div className='mx-10'>
       {selectedChallenge ?
