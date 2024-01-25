@@ -19,9 +19,9 @@ const Heatmap: React.FC<{ data: Jandi[] }> = ({ data }) => {
           if (!value || value.category[0]==="") {
             return 'color-empty';
           } else if(!isNaN(value.category[1])){
-            // if(value.category[0]==='기상'){
-            //   return `color-${value.category[0]}`
-            // }
+            if(value.category[0]==='기상'){
+              return `color-${value.category[0]}`
+            }
             if(value.category[1] > '3'){
               return `color-${value.category[0]}-4`
             }
