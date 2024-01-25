@@ -57,6 +57,7 @@ function App() {
               <Route path="feed/edit/:id" element={<RecordPage />} />
               <Route path="challenge" element={<ChallengePage />} />
               <Route path="challenge/create" element={<CreateChallengePage />} />
+              <Route path="challenge/edit/:id" element={<CreateChallengePage />} />
               <Route path="social" element={<SocialPage />} />
               <Route path="grow" element={<GrowPage />} />
               <Route path="dashboard" element={<DashboardPage />} />

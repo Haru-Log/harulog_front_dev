@@ -28,6 +28,7 @@ export const useChallengeStore = create<ChallengeState>()(
           updated_at: undefined,
         },
         setChallenge: (challenge: ChallengeItem) => set({ challenge }),
+        
       }),
       { name: 'challengeStore' }
     ),
