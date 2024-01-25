@@ -9,6 +9,7 @@ import RadialChart from "../components/GrowPage/RadialChart";
 import TodayChart from "../components/GrowPage/TodayChart";
 import { Table, TableBody, TableHead, TableHeader, TableRow, TableCell } from "../ui/table";
 import { Input } from "../ui/input";
+import MonthlyChart from "../components/GrowPage/MonthlyChart";
 
 const today = new Date(); // dummy data용
 
@@ -158,6 +159,7 @@ const GrowPage = () => {
         <div className="text-3xl font-bold m-5">
           DAILY
         </div>
+        <MonthlyChart />
       </section>
     </div>
   )
