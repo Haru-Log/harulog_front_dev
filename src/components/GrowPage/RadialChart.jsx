@@ -1,9 +1,10 @@
-import React, { memo } from 'react'
+import React, { memo, useEffect, useState } from 'react'
 import Chart from 'react-apexcharts'
 
 const RadialChart = ({ category, goal, achievement, theme }) => {
-  const state = {
-    series: [achievement/goal * 100],
+
+  const [chartState, setChartState] = useState({
+    series: [achievement / goal * 100],
     options: {
       chart: {
         type: 'radialBar',
@@ -43,7 +44,7 @@ const RadialChart = ({ category, goal, achievement, theme }) => {
               opacity: 0.35
             }
           },
-  
+
           dataLabels: {
             show: true,
             name: {
@@ -54,7 +55,7 @@ const RadialChart = ({ category, goal, achievement, theme }) => {
             },
             value: {
               formatter: function (val) {
-                return achievement + (category==="기상"?"일" : "분");
+                return parseInt(val * 10) / 10 + '%';
               },
               color: '#111',
               fontSize: '2rem',
@@ -64,21 +65,27 @@ const RadialChart = ({ category, goal, achievement, theme }) => {
         }
       },
       fill: {
-        colors:[theme]
+        colors: [theme]
       },
       stroke: {
         lineCap: 'round'
       },
       labels: [category],
     },
-  };
+  }
+  )
+
+  useEffect(() => {
+    setChartState({ ...chartState, series: [achievement / goal * 100] })
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [goal, achievement])
 
 
   return (
     <>
       <Chart
-        options={state.options}
-        series={state.series}
+        options={chartState.options}
+        series={chartState.series}
         type="radialBar"
       />
     </>

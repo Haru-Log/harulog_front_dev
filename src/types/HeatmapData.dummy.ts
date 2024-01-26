@@ -166,6 +166,12 @@ const dummy_jandi = [
   { "date": new Date("2023-12-31T18:08:54.814Z"), "category": "독서" },
   { "date": new Date("2023-12-31T18:08:54.814Z"), "category": "독서" },
   { "date": new Date("2023-12-31T18:08:54.814Z"), "category": "독서" },
+  { "date": new Date("2024-01-26"), "category": "독서" },
+  { "date": new Date("2024-01-26"), "category": "독서" },
+  { "date": new Date("2024-01-26"), "category": "독서" },
+  { "date": new Date("2024-01-26"), "category": "기상" },
+  { "date": new Date("2024-01-26"), "category": "운동" },
+  { "date": new Date("2024-01-26"), "category": "운동" },
 ]
 
 export default dummy_jandi

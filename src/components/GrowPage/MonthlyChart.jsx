@@ -21,7 +21,7 @@ const MonthlyChart = () => {
         categories: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', "November", 'December'],
         labels: {
           formatter: function (value, timestamp, opts) {
-            return value?.slice(0,3);
+            return value?.slice(0, 3);
           }
         }
       },
@@ -33,25 +33,12 @@ const MonthlyChart = () => {
           color: '#666'
         }
       },
-      fill: {
-        type: 'gradient',
-        gradient: {
-          shade: 'light',
-          gradientToColors: ['#fd8446', "#F0E57F", "#b1d9aa", "#92C7CF", "#87b7ff"],
-          shadeIntensity: 1,
-          type: 'horizontal',
-          opacityFrom: 1,
-          opacityTo: 1,
-          stops: [0, 25, 50, 75, 100]
-        },
-      },
+      colors: ["#92C7CF"],
       yaxis: {
         min: 0,
         max: 100
       }
     },
-
-
   };
 
   return (

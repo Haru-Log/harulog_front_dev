@@ -1,12 +1,16 @@
-import React, { memo } from 'react'
+import React, { memo, useEffect, useState } from 'react'
 import Chart from 'react-apexcharts'
 
-const RadialChart = ({ category, goal, achievement, theme }) => {
-  const state = {
-    series: [achievement/goal * 100],
+const RadialChart = ({ category, goals, achievements, theme }) => {
+
+  const [goal, setGoal] = useState(1)
+  const [achievement, setAchievement] = useState(0)
+
+  const [chartState, setChartState] = useState({
+    series: [0],
     options: {
       chart: {
-        height:500,
+        height: 500,
         type: 'radialBar',
         toolbar: {
           show: true
@@ -44,7 +48,7 @@ const RadialChart = ({ category, goal, achievement, theme }) => {
               opacity: 0.35
             }
           },
-  
+
           dataLabels: {
             show: true,
             name: {
@@ -55,7 +59,7 @@ const RadialChart = ({ category, goal, achievement, theme }) => {
             },
             value: {
               formatter: function (val) {
-                return achievement;
+                return parseInt(val * 10) / 10 + "%";
               },
               color: '#111',
               fontSize: '36px',
@@ -65,21 +69,38 @@ const RadialChart = ({ category, goal, achievement, theme }) => {
         }
       },
       fill: {
-        colors:[theme]
+        colors: [theme]
       },
       stroke: {
         lineCap: 'round'
       },
       labels: [category],
     },
-  };
+  }
+  )
+
+  useEffect(() => {
+
+    const g = goals.reduce((prev, curr) => prev + (curr.category !== "기상" ? curr.goal : 0), 0)
+    const a = achievements.reduce((prev, curr) => prev + (curr.category !== "기상" ? curr.achievement : 0), 0)
+
+    setGoal(g)
+    setAchievement(a)
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [achievements, goals])
+
+  useEffect(() => {
+    setChartState({ ...chartState, series: [achievement / (goal?goal:1) * 100] })
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [achievement, goal])
 
 
   return (
     <>
       <Chart
-        options={state.options}
-        series={state.series}
+        options={chartState.options}
+        series={chartState.series}
         type="radialBar"
         height={500}
         width={500}
