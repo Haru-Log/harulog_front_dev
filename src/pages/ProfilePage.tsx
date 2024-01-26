@@ -31,8 +31,19 @@ const ProfilePage = () => {
   useEffect(() => {
     dummy_jandi.sort((a, b) => a.date.getTime() - b.date.getTime());    
     const mergedJandi = mergeJandi(chartData, mergeCategory(dummy_jandi))
+
+
+
     if (mergedJandi.length) {
-      setChartData(mergedJandi)
+      setChartData(mergedJandi.map((it) => {
+        let tmp: string[] = [];
+        for (let i of it.category) {
+          if (!tmp.includes(i)) {
+            tmp.push(i)
+          }
+        }
+        return { ...it, category: tmp }
+      }))
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [dummy_jandi])
