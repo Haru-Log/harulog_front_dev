@@ -17,8 +17,8 @@ const MyGoalRow: React.FC<{
 
 
   return (
-    <TableRow className='text-2xl text-center whitespace-nowrap  text-white bg-[#92C7CF88] border-none hover:text-black'>
-      <TableCell className={`font-bold text-center ${(isLastRow) && 'rounded-bl-2xl'} `}>{category}</TableCell>
+    <TableRow className='text-2xl text-center whitespace-nowrap text-white bg-[#92C7CF88] border-none hover:text-black'>
+      <TableCell className={`font-bold py-6 text-center ${(isLastRow) && 'rounded-bl-2xl'} `}>{category}</TableCell>
       <TableCell className={`${isEdit && 'px-0 pb-0 pt-3 flex items-center h-full whitespace-nowrap'}`}>
         {isEdit ?
           <>
@@ -27,7 +27,7 @@ const MyGoalRow: React.FC<{
                 setMyGoal(
                   myGoal.map((x: any, i: number) => {
                     if (i === idx) {
-                      return { ...x, goal: e.target.value }
+                      return { ...x, goal: parseInt(e.target.value) }
                     } else {
                       return x
                     }

@@ -85,8 +85,6 @@ const GrowPage = () => {
 
     // 목표 설정하기
     setGoal([...dummy_goal]);
-    setMyGoal([...dummy_goal])
-
     // 성취 설정하기
     setAchievement([...dummy_achievement])
 
@@ -112,6 +110,20 @@ const GrowPage = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedValue])
 
+  useEffect(() => {
+    setMyGoal(goal)
+  }, [goal])
+
+  const handleSubmit = () => {
+    setIsEdit(!isEdit)
+    setGoal(myGoal.map((x, idx) => {
+      if (goal[idx].goal !== x.goal) {
+        x.updatedAt = new Date()
+      }
+      return x
+    }))
+  }
+
   return (
     <div className="w-full h-full p-10">
       <section className="flex">
@@ -136,7 +148,7 @@ const GrowPage = () => {
             DAILY
           </div>
           <Button className="bg-main rounded-xl text-sm font-bold text-black hover:bg-main-hover hover:ring-2 hover:ring-main active:bg-main-active drop-shadow-md m-5"
-            onClick={() => setIsEdit(!isEdit)}
+            onClick={handleSubmit}
           >
             {isEdit ? "수정 완료" : "목표 수정"}
           </Button>
@@ -178,7 +190,7 @@ const GrowPage = () => {
           <div className="pr-20 h-full flex items-center">
             <Table>
               <TableHeader>
-                <TableRow className="bg-[#92C7CF] text-2xl whitespace-nowrap">
+                <TableRow className="bg-[#92C7CF] text-2xl whitespace-nowrap hover:text-black border-b-4">
                   <TableHead className="w-40 rounded-tl-2xl"></TableHead>
                   <TableHead className="w-40 text-white font-bold text-center">나의 목표</TableHead>
                   <TableHead className="font-bold w-40 text-white text-center">오늘 성취</TableHead>
