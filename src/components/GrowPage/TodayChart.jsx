@@ -13,7 +13,7 @@ const RadialChart = ({ category, goals, achievements, theme }) => {
         height: 500,
         type: 'radialBar',
         toolbar: {
-          show: true
+          show: false
         }
       },
       plotOptions: {

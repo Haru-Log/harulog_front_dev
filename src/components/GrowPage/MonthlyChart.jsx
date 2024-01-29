@@ -12,6 +12,9 @@ const MonthlyChart = () => {
       chart: {
         height: 350,
         type: 'line',
+        toolbar:{
+          show: false,
+        }
       },
       stroke: {
         width: 5,

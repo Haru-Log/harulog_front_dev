@@ -188,8 +188,7 @@ const GrowPage = () => {
               <TableBody>
                 {
                   myGoal.map((x, idx) =>
-                    <MyGoalRow key={idx} isEdit={isEdit} {...x} idx={idx} setMyGoal={setMyGoal} 
-                    // myGoal={myGoal}
+                    <MyGoalRow key={idx} isEdit={isEdit} {...x} idx={idx} setMyGoal={setMyGoal} myGoal={myGoal}
                       achievement={achievement[idx].achievement} isLastRow={idx === goal.length - 1}
                     />
                   )
