@@ -12,7 +12,6 @@ export const mergeCategory = (receieved_jandi: { date: Date, category: string }[
         mergedJandi.push(currentGroup);
       }
       currentGroup = { date: item.date, category: [item.category] };
-
     } else {
       // 같은 날짜의 그룹에 추가
       currentGroup.category.push(item.category);
@@ -50,19 +49,21 @@ export const mergeJandi = (initialState: Jandi[], receievedData: Jandi[]) => {
       return true
     }
   })
-
-  mergedJandi = mergedJandi.map((it)=>{
-
-    let tmp:string[] = [];
-
-    for(let i of it.category){
-      if (!tmp.includes(i)){
-        tmp.push(i)
-      }
-    }
-    
-    return { ...it, category: tmp}
-  })
-
   return mergedJandi;
+}
+
+export const filterJandi = (data: Jandi[], category: string) => {
+
+  let temp = data.map((it)=>{
+    if(it.category.includes(category)){
+      return {...it, category: [category, it.category.filter(x=>x===category).length + ""]}
+    } else{
+      return {...it, category: [""]}
+    }
+  })
+  return temp;
+}
+
+export function getRange(count: number) {
+  return Array.from({ length: count }, (_, i) => i);
 }

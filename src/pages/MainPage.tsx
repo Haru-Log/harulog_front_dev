@@ -24,9 +24,9 @@ const MainPage = () => {
   const setRegisterModal = useContext(SetModalContext)?.setRegisterModal;
 
   return (
-    <div className="flex flex-col w-full h-full pl-5 pr-6 pt-12 items-center">
+    <div className="flex flex-col w-full h-full pl-5 pr-6 pt-20 items-center">
       <Slogan />
-      <div className="flex flex-col mb-10 w-full px-36">
+      <div className="flex flex-col mb-10 w-full">
         <div className="flex flex-row justify-between items-baseline w-full mb-5">
           <div className="text-xl">진행중인 챌린지</div>
           <div className="text-sm text-[#92C7CF]">모든 챌린지</div>
@@ -39,13 +39,16 @@ const MainPage = () => {
           }
         </div>
       </div>
-      <div className="w-full flex flex-col px-36">
+      <div className="w-full flex flex-col">
         <div className="flex flex-row justify-between items-baseline w-full mb-5">
           <div className="text-xl">피드</div>
           <div className="text-sm text-[#92C7CF] cursor-pointer" onClick={() => { setRegisterModal(true) }}>가입하기</div>
         </div>
 
-        <FeedSlide data={dummy_sample} />
+        <div className="flex justify-center pl-16">
+          <FeedSlide data={dummy_sample} />
+        </div>
+
 
       </div>
     </div>

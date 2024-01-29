@@ -50,9 +50,9 @@ module.exports = {
 
         // 카테고리용 색깔
         운동:'#B1D9AA', // 운동
-        공부:'#F0E57F',
+        기상:'#F0E57F',
         독서:'#fd8446',
-        기상:'#87B7FF',
+        공부:'#87B7FF',
 
         'main':'#D9D9D9',
         'main-hover':'#8D8D8D',

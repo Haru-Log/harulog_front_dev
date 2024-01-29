@@ -10,7 +10,7 @@ import ChallengeCard from './../components/ChallengePage/Cards';
 import { dummy_sample } from "../types/FeedItem.type";
 import dummyChallengeData from "../types/ChallengeItem.dummy";
 import dummy_jandi from "../types/HeatmapData.dummy";
-import { mergeCategory, mergeJandi, shiftDate } from "../utils/rawDatatoJandi";
+import { getRange, mergeCategory, mergeJandi, shiftDate } from "../utils/rawDatatoJandi";
 
 const today = new Date(); // dummy data용
 
@@ -29,15 +29,22 @@ const ProfilePage = () => {
 
   // 전체 필터링을 위한 작업
   useEffect(() => {
-
-
     dummy_jandi.sort((a, b) => a.date.getTime() - b.date.getTime());    
     const mergedJandi = mergeJandi(chartData, mergeCategory(dummy_jandi))
 
-    if (mergedJandi.length) {
-      setChartData(mergedJandi)
-    }
 
+
+    if (mergedJandi.length) {
+      setChartData(mergedJandi.map((it) => {
+        let tmp: string[] = [];
+        for (let i of it.category) {
+          if (!tmp.includes(i)) {
+            tmp.push(i)
+          }
+        }
+        return { ...it, category: tmp }
+      }))
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [dummy_jandi])
 
@@ -95,7 +102,3 @@ const ProfilePage = () => {
 }
 
 export default ProfilePage
-
-function getRange(count: number) {
-  return Array.from({ length: count }, (_, i) => i);
-}
