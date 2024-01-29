@@ -7,17 +7,31 @@ import dummy_jandi from "../types/HeatmapData.dummy";
 import { Button } from "../ui/button"
 import RadialChart from "../components/GrowPage/RadialChart";
 import TodayChart from "../components/GrowPage/TodayChart";
-import { Table, TableBody, TableHead, TableHeader, TableRow, TableCell } from "../ui/table";
-import { Input } from "../ui/input";
+import { Table, TableBody, TableHead, TableHeader, TableRow } from "../ui/table";
 import MonthlyChart from "../components/GrowPage/MonthlyChart";
+import MyGoalRow from "../components/GrowPage/MyGoalRow";
 
 const today = new Date(); // dummy data용
+
+const initialGoalState = [
+  { category: "기상", goal: 0, updatedAt: new Date() },
+  { category: "공부", goal: 0, updatedAt: new Date() },
+  { category: "운동", goal: 0, updatedAt: new Date() },
+  { category: "독서", goal: 0, updatedAt: new Date() }
+]
 
 const dummy_goal = [
   { category: "기상", goal: 390, updatedAt: new Date('2024-01-01') },
   { category: "공부", goal: 180, updatedAt: new Date('2024-01-01') },
   { category: "운동", goal: 60, updatedAt: new Date('2024-01-01') },
   { category: "독서", goal: 100, updatedAt: new Date('2024-01-01') }
+]
+
+const initialAchievementState = [
+  { category: "기상", achievement: 0 },
+  { category: "공부", achievement: 0 },
+  { category: "운동", achievement: 0 },
+  { category: "독서", achievement: 0 }
 ]
 
 const dummy_achievement = [
@@ -34,8 +48,9 @@ const chartTheme = [
 const GrowPage = () => {
 
   const [isEdit, setIsEdit] = useState(false); //목표 편집
-  const [goal, setGoal] = useState<{ category: string, goal: number, updatedAt: Date }[]>([])  //목표 리스트 저장
-  const [achievement, setAchievement] = useState<{ category: string, achievement: number }[]>([])
+  const [goal, setGoal] = useState<{ category: string, goal: number, updatedAt: Date }[]>(initialGoalState)  //목표 리스트 저장
+  const [myGoal, setMyGoal] = useState<{ category: string, goal: number, updatedAt: Date }[]>(initialGoalState)  //목표 리스트 수정용
+  const [achievement, setAchievement] = useState<{ category: string, achievement: number }[]>(initialAchievementState)
   const [selectedValue, setSelectedValue] = useState("전체"); //필터 선택
   const [allChart, setAllChart] = useState<Jandi[]>([])
   const [chartData, setChartData] = useState<Jandi[]>( //잔디밭 값 초기화
@@ -47,7 +62,7 @@ const GrowPage = () => {
     })
   );
 
-  const [myGoal, setMyGoal] = useState({ "기상": 0, "공부": 0, "운동": 0, "독서": 0 })
+
 
   useEffect(() => {
     dummy_jandi.sort((a, b) => a.date.getTime() - b.date.getTime());
@@ -69,10 +84,11 @@ const GrowPage = () => {
     }
 
     // 목표 설정하기
-    setGoal(dummy_goal);
+    setGoal([...dummy_goal]);
+    setMyGoal([...dummy_goal])
 
     // 성취 설정하기
-    setAchievement(dummy_achievement)
+    setAchievement([...dummy_achievement])
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
@@ -171,23 +187,12 @@ const GrowPage = () => {
               </TableHeader>
               <TableBody>
                 {
-                  goal.map((x, idx) => {
-                    return (
-                      <TableRow key={idx} className={`text-2xl text-center whitespace-nowrap ${idx % 2 && 'bg-[#92C7CF] text-white'}`}>
-                        <TableCell className={`font-bold text-center ${(idx === goal.length - 1) && 'rounded-bl-2xl'}`}>{x.category}</TableCell>
-                        <TableCell>
-                          {isEdit ?
-                            <Input />
-                            : x.category === '기상' ? `${Math.floor(x.goal / 60).toString()}시 ${x.goal % 60}분` : `${x.goal}분`
-                          }
-                        </TableCell>
-                        <TableCell>{
-                          x.category === '기상' ? `${achievement[idx].achievement}일째` : `${achievement[idx].achievement}분`
-                        }</TableCell>
-                        <TableCell className={`${idx === goal.length - 1 && "rounded-br-2xl"}`}>{x.updatedAt.toLocaleDateString()}</TableCell>
-                      </TableRow>
-                    )
-                  })
+                  myGoal.map((x, idx) =>
+                    <MyGoalRow key={idx} isEdit={isEdit} {...x} idx={idx} setMyGoal={setMyGoal} 
+                    // myGoal={myGoal}
+                      achievement={achievement[idx].achievement} isLastRow={idx === goal.length - 1}
+                    />
+                  )
                 }
               </TableBody>
             </Table>
