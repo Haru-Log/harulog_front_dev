@@ -4,19 +4,23 @@ import { Input } from 'src/ui/input'
 import { DatePickerWithRange } from 'src/ui/date-range-picker'
 import { Textarea } from 'src/ui/textarea'
 import { Button } from 'src/ui/button'
-import { useParams } from 'react-router-dom'
 import { useChallengeStore } from 'src/zustand/challengeStore'
+import { useState } from 'react'
 
-const InputCard = () => {
+const CreateInputCard = () => {
   const challenge = useChallengeStore((state) => state.challenge);
+  const [selectedCategory, setSelectedCategory] = useState(challenge.category_name || '');
+  const isGoalInputEnabled = !!selectedCategory;
+
   console.log(challenge);
+
   return (
     <div className='flex flex-col mx-10 mt-10 border-2 rounded-xl px-10 py-10'>
       <div className='flex flex-row'>
         <div className='flex flex-col mr-10'>
-          <div className='flex flex-row'>
+          <div className='flex flex-row  items-baseline'>
             <span className="font-bold mr-5 w-16">카테고리</span>
-            <Select defaultValue={challenge.category_name}>
+            <Select defaultValue={challenge.category_name} onValueChange={(e) => setSelectedCategory(e)}>
               <SelectTrigger className="w-[280px] border-2">
                 <SelectValue placeholder="선택" />
               </SelectTrigger>
@@ -28,15 +32,21 @@ const InputCard = () => {
               </SelectContent>
             </Select>
           </div>
-          <div className='flex flex-row'>
+          <div className='flex flex-row items-baseline'>
             <span className="font-bold mr-5 mt-5 w-16">목표</span>
-            <Input type="number" placeholder="목표 시간(분)을 입력하세요" className='mt-5 w-[280px] border-2' defaultValue={challenge.challenge_goal} />
+            <Input
+              type="number"
+              placeholder="목표 시간(분)을 입력하세요"
+              className='mt-5 w-[250px] border-2'
+              defaultValue={challenge.challenge_goal}
+              disabled={!isGoalInputEnabled} />
+            <span className='pl-3'> 분</span>
           </div>
           <div className='flex flex-row'>
             <span className="font-bold mr-5 mt-5 w-16">기간</span>
             <DatePickerWithRange className='mt-5' />
           </div>
-          <div className='flex flex-row'>
+          <div className='flex flex-row  items-baseline'>
             <span className="font-bold mr-5 mt-5 w-16">사진</span>
             <Input type="file" className='mt-5 w-[280px] border-2' />
           </div>
@@ -76,4 +86,4 @@ const InputCard = () => {
   )
 }
 
-export default InputCard
+export default CreateInputCard
