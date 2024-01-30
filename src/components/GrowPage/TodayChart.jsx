@@ -28,25 +28,11 @@ const RadialChart = ({ category, goals, achievements, theme }) => {
             imageOffsetX: 0,
             imageOffsetY: 0,
             position: 'front',
-            dropShadow: {
-              enabled: true,
-              top: 3,
-              left: 0,
-              blur: 4,
-              opacity: 0.24
-            }
           },
           track: {
-            background: '#fff',
-            strokeWidth: '67%',
+            background: "#ececec",
+            strokeWidth: '100%',
             margin: 0, // margin is in pixels
-            dropShadow: {
-              enabled: true,
-              top: -3,
-              left: 0,
-              blur: 4,
-              opacity: 0.35
-            }
           },
 
           dataLabels: {
@@ -62,7 +48,7 @@ const RadialChart = ({ category, goals, achievements, theme }) => {
                 return parseInt(val * 10) / 10 + "%";
               },
               color: '#111',
-              fontSize: '36px',
+              fontSize: '2rem',
               show: true,
             }
           }
@@ -91,7 +77,7 @@ const RadialChart = ({ category, goals, achievements, theme }) => {
   }, [achievements, goals])
 
   useEffect(() => {
-    setChartState({ ...chartState, series: [achievement / (goal?goal:1) * 100] })
+    setChartState({ ...chartState, series: [achievement / (goal ? goal : 1) * 100] })
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [achievement, goal])
 

@@ -24,25 +24,11 @@ const RadialChart = ({ category, goal, achievement, theme }) => {
             imageOffsetX: 0,
             imageOffsetY: 0,
             position: 'front',
-            dropShadow: {
-              enabled: true,
-              top: 3,
-              left: 0,
-              blur: 4,
-              opacity: 0.24
-            }
           },
           track: {
-            background: '#fff',
-            strokeWidth: '67%',
+            background: '#ececec',
+            strokeWidth: '100%',
             margin: 0, // margin is in pixels
-            dropShadow: {
-              enabled: true,
-              top: -3,
-              left: 0,
-              blur: 4,
-              opacity: 0.35
-            }
           },
 
           dataLabels: {
@@ -58,7 +44,7 @@ const RadialChart = ({ category, goal, achievement, theme }) => {
                 return parseInt(val * 10) / 10 + '%';
               },
               color: '#111',
-              fontSize: '2rem',
+              fontSize: '1.5rem',
               show: true,
             }
           }
