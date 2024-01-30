@@ -7,7 +7,7 @@ interface newChallengeState {
   setNewChallenge: (newChallenge: ChallengeItem) => void;
 }
 
-export const useChallengeStore = create<newChallengeState>()(
+export const useNewChallengeStore = create<newChallengeState>()(
   devtools(
     (set) => ({
       newChallenge: {

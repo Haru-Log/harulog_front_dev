@@ -1,15 +1,16 @@
-import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from 'src/ui/select'
+import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from 'src/ui/select'
 import { dummy_categories } from 'src/types/Category.type'
 import { Input } from 'src/ui/input'
-import { DatePickerWithRangeWithoutDefaultValue } from 'src/ui/date-range-picker'
+import { DatePickerWithRangeCreate } from 'src/ui/date-range-picker'
 import { Textarea } from 'src/ui/textarea'
 import { Button } from 'src/ui/button'
-import { useState } from 'react'
-import { useChallengeStore } from 'src/zustand/newChallengeStore'
+import { useEffect, useState } from 'react'
+import { useNewChallengeStore } from 'src/zustand/newChallengeStore'
 import { DateRange } from 'react-day-picker'
+import { getTimes } from 'src/utils/getTimes'
 
 const CreateInputCard = () => {
-  const { newChallenge, setNewChallenge } = useChallengeStore();
+  const { newChallenge, setNewChallenge } = useNewChallengeStore();
 
   const [challengeCategory, setChallengeCategory] = useState('');
   const [challengeTitle, setChallengeTitle] = useState('');
@@ -22,7 +23,22 @@ const CreateInputCard = () => {
     to: new Date(""),
   })
 
+
   const isGoalInputEnabled = !!challengeCategory;
+  const times = getTimes();
+
+  useEffect(() => {
+    updateNewChallenge();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [challengeCategory, challengeTitle, challengeContent, challengeGoal, challengeImage, submission, date]);
+
+  const handleTimeChange = (selectedTime: string) => {
+    const [hourStr, minuteStr] = selectedTime.split(":");
+    const hour = parseInt(hourStr, 10);
+    const minute = parseInt(minuteStr, 10);
+    const totalMinutes = hour * 60 + minute;
+    setChallengeGoal(totalMinutes);
+  };
 
   const updateNewChallenge = () => {
     setNewChallenge({
@@ -89,9 +105,9 @@ const CreateInputCard = () => {
     <div className='flex flex-col mx-10 mt-10 border-2 rounded-xl px-10 py-10'>
       <div className='flex flex-row'>
         <div className='flex flex-col mr-10'>
-          <div className='flex flex-row items-baseline'>
+          <div className='flex flex-row items-start'>
             <span className="font-bold mr-5 w-16">카테고리</span>
-            <Select onValueChange={(e) => { setChallengeCategory(e); updateNewChallenge() }}>
+            <Select onValueChange={(e) => { setChallengeCategory(e) }}>
               <SelectTrigger className={`w-[280px] border-2 `}>
                 <SelectValue placeholder="선택" />
               </SelectTrigger>
@@ -103,32 +119,48 @@ const CreateInputCard = () => {
               </SelectContent>
             </Select>
           </div>
-          <div className='flex flex-row items-baseline'>
+          <div className='flex flex-row items-start'>
             <span className="font-bold mr-5 mt-5 w-16">목표</span>
-            <Input
-              type="number"
-              placeholder={challengeCategory ? `목표 시간(분)을 입력하세요` : '카테고리를 선택하세요'}
-              className={`mt-5 w-[250px] border-2 `}
-              disabled={!isGoalInputEnabled}
-              value={challengeGoal}
-              onChange={(e) => {
-                setChallengeGoal(parseInt(e.target.value));
-                updateNewChallenge();
-              }} />
-            <span className='pl-3'> 분</span>
+            {isGoalInputEnabled ? challengeCategory !== '기상' ?
+              <div className='flex items-baseline'>
+                <Input
+                  type="number"
+                  placeholder={'목표 시간(분)을 입력하세요'}
+                  className={`mt-5 w-[250px] border-2`}
+                  onChange={(e) => {
+                    setChallengeGoal(parseInt(e.target.value));
+                  }} /> <span className='pl-3'> 분</span>
+              </div> :
+              <div className='mt-5'>
+                <Select onValueChange={handleTimeChange}>
+                  <SelectTrigger className={`w-[280px] border-2 `}>
+                    <SelectValue placeholder="기상 시간" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectGroup>
+                      <SelectLabel>Time</SelectLabel>
+                      {times.map((time, index) => (
+                        <SelectItem key={index} value={time}>
+                          {time}
+                        </SelectItem>
+                      ))}
+                    </SelectGroup>
+                  </SelectContent>
+                </Select>
+              </div>
+              : <Input disabled={true} className={`mt-5 w-[280px] border-2`} value='카테고리를 선택하세요' />}
           </div>
-          <div className='flex flex-row'>
+          <div className='flex flex-row items-start'>
             <span className="font-bold mr-5 mt-5 w-16">기간</span>
-            <DatePickerWithRangeWithoutDefaultValue
+            <DatePickerWithRangeCreate
               className='mt-5'
               date={date}
               setDate={(newDate) => {
                 setDate(newDate);
-                updateNewChallenge();
               }}
             />
           </div>
-          <div className='flex flex-row  items-baseline'>
+          <div className='flex flex-row items-start'>
             <span className="font-bold mr-5 mt-5 w-16">사진</span>
             <Input
               type="file"
@@ -136,7 +168,6 @@ const CreateInputCard = () => {
               value={challengeImage}
               onChange={(e) => {
                 setChallengeImage(e.target.value);
-                updateNewChallenge()
               }}
             />
           </div>
@@ -150,7 +181,6 @@ const CreateInputCard = () => {
               className={`resize-none min-h-28 min-w-32 mt-1 border-2 `}
               onChange={(e) => {
                 setChallengeTitle(e.target.value);
-                updateNewChallenge()
               }}
             />
           </div>
@@ -160,7 +190,6 @@ const CreateInputCard = () => {
               value={challengeContent}
               onChange={(e) => {
                 setChallengeContent(e.target.value);
-                updateNewChallenge()
               }}
               placeholder="세부 사항을 입력해주세요."
               className={`resize-none min-h-32 min-w-32 mt-1 border-2 `}
@@ -172,7 +201,6 @@ const CreateInputCard = () => {
               value={submission}
               onChange={(e) => {
                 setSubmission(e.target.value);
-                updateNewChallenge()
               }}
               placeholder="세부 사항을 입력해주세요."
               className={`resize-none min-h-32 min-w-32 mt-1 border-2`}
