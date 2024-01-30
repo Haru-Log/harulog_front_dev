@@ -25,7 +25,6 @@ const EditInputCard = () => {
     to: new Date(challenge.end_date),
   })
 
-  const isGoalInputEnabled = !!challengeCategory;
   const times = getTimes();
   const defaultTime = challenge.challenge_goal ? getFormattedTime(challenge.challenge_goal) : '';
 
