@@ -12,7 +12,7 @@ const GetTitle = (): string => {
     '/social': '소셜',
     '/grow': 'GROW',
     '/dashboard': '대시보드',
-    '/edit': '내 정보 수정',
+    '/profile/edit': '내 정보 수정',
   };
   
   if (location.pathname.includes('/feed/edit/')) {

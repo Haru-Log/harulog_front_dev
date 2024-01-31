@@ -52,7 +52,6 @@ function App() {
               <Route path="chat" element={<ChattingPage />} />
             </Route>
             <Route element={<LayoutWithTitle />}>
-              <Route path="edit" element={<EditMyInfoPage />} />
               <Route path="feed" element={<FeedPage />} />
               <Route path="feed/create" element={<RecordPage />} />
               <Route path="feed/edit/:id" element={<RecordPage />} />
@@ -62,6 +61,7 @@ function App() {
               <Route path="social" element={<SocialPage />} />
               <Route path="grow" element={<GrowPage />} />
               <Route path="dashboard" element={<DashboardPage />} />
+              <Route path="profile/edit" element={<EditMyInfoPage />} />
             </Route>
           </Routes>
 
