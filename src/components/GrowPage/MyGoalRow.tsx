@@ -10,22 +10,30 @@ const MyGoalRow: React.FC<{
   idx: number;
   achievement: number;
   isLastRow: boolean;
-  setMyGoal:any;
-}> = ({ isEdit, category, goal, updatedAt, idx, achievement, isLastRow, setMyGoal }) => {
+  setMyGoal: any;
+  myGoal: any
+}> = ({ isEdit, category, goal, updatedAt, idx, achievement, isLastRow, setMyGoal, myGoal }) => {
 
 
 
   return (
-    <TableRow className='text-2xl text-center whitespace-nowrap  text-white bg-[#92C7CF88] border-none hover:text-black'>
-      <TableCell className={`font-bold text-center ${(isLastRow) && 'rounded-bl-2xl'} `}>{category}</TableCell>
+    <TableRow className='text-2xl text-center whitespace-nowrap text-white bg-[#92C7CF88] border-none hover:text-black'>
+      <TableCell className={`font-bold py-6 text-center ${(isLastRow) && 'rounded-bl-2xl'} `}>{category}</TableCell>
       <TableCell className={`${isEdit && 'px-0 pb-0 pt-3 flex items-center h-full whitespace-nowrap'}`}>
         {isEdit ?
           <>
             <Input value={goal} className="border-none shadow-none text-2xl bg-white text-black h-full"
-            
-            // onChange={(e)=>{
-            //   setMyGoal
-            // }}
+              onChange={(e) => {
+                setMyGoal(
+                  myGoal.map((x: any, i: number) => {
+                    if (i === idx) {
+                      return { ...x, goal: parseInt(e.target.value) }
+                    } else {
+                      return x
+                    }
+                  })
+                )
+              }}
             />
             <div className="ml-3 h-full">분</div>
           </>
