@@ -3,7 +3,7 @@ import { Button } from "../ui/button"
 import ProfileNumber from "../components/ProfilePage/ProfileNumber"
 import Heatmap from "../components/ProfilePage/Heatmap";
 import { useEffect, useState } from "react";
-import { Archive, Mountain } from "lucide-react";
+import { Archive, Mountain, Pencil, PlusSquare } from "lucide-react";
 import { Jandi } from "../types/HeatmapData.type";
 import FeedCard from "../components/Feed/Cards";
 import ChallengeCard from './../components/ChallengePage/Cards';
@@ -11,6 +11,7 @@ import { dummy_sample } from "../types/FeedItem.type";
 import dummyChallengeData from "../types/ChallengeItem.dummy";
 import dummy_jandi from "../types/HeatmapData.dummy";
 import { getRange, mergeCategory, mergeJandi, shiftDate } from "../utils/rawDatatoJandi";
+import { Link } from 'react-router-dom';
 
 const today = new Date(); // dummy data용
 
@@ -29,7 +30,7 @@ const ProfilePage = () => {
 
   // 전체 필터링을 위한 작업
   useEffect(() => {
-    dummy_jandi.sort((a, b) => a.date.getTime() - b.date.getTime());    
+    dummy_jandi.sort((a, b) => a.date.getTime() - b.date.getTime());
     const mergedJandi = mergeJandi(chartData, mergeCategory(dummy_jandi))
 
 
@@ -60,7 +61,11 @@ const ProfilePage = () => {
               <div className="font-bold text-3xl">
                 이강혁
               </div>
-              <Button className="bg-gray-400 rounded-full">프로필 편집</Button>
+                <Button className="bg-point hover:bg-point-hover active:bg-point-active shadow-xl rounded-full">
+                  <Link to={'edit'}>
+                    <span className='font-bold'>프로필 편집</span>
+                  </Link>
+                </Button>
             </div>
             <div className="flex p-6 justify-between">
               <ProfileNumber title={"게시물"} count={6} />
