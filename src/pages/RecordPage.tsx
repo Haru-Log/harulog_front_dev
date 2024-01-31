@@ -17,7 +17,6 @@ import { useNavigate, useParams } from "react-router-dom"
 import { SelectLabel } from "@radix-ui/react-select"
 import { FeedItem, dummy_sample } from "../types/FeedItem.type"
 
-
 const RecordPage = () => {
 
   const [date, setDate] = useState<Date | undefined>(new Date())
@@ -47,7 +46,7 @@ const RecordPage = () => {
   }, [])
 
   const handleSubmit = () => {
-    if (window.confirm(id ? "피드 수정을 완료하시겠습니까?" : "피드 작성을 완료하시겠습니까?")) {
+    if (window.confirm("피드 작성을 완료하시겠습니까?")) {
       //더미코드
       localStorage.setItem((dummy_sample.length + 1).toString(), JSON.stringify(imgURL))
       const newFeed: FeedItem = {
@@ -62,6 +61,31 @@ const RecordPage = () => {
       }
       dummy_sample.push(newFeed);
       navigate(`/feed/${id}`, { replace: true })
+    }
+  }
+
+  const handleEdit = () => {
+    if (window.confirm("피드 수정을 완료하시겠습니까?")) {
+      //더미코드
+      localStorage.setItem((dummy_sample.length + 1).toString(), JSON.stringify(imgURL))
+      const newFeed: FeedItem = {
+        post_id: parseInt(id!),
+        user_idx: 2,
+        category_name: category,
+        content: content,
+        post_image: imgURL,
+        like: 0,
+        comment: 0,
+        created_at: new Date()
+      }
+      dummy_sample.map((x) => {
+        if (x.post_id === parseInt(id!)) {
+          return newFeed
+        } else {
+          return x
+        }
+      })
+      navigate(`/feed`, { replace: true })
     }
   }
 
@@ -86,21 +110,22 @@ const RecordPage = () => {
         <div className='flex flex-col mr-10'>
           <div className='flex flex-row items-center'>
             <span className="font-bold mr-5 w-16">카테고리</span>
-            <Select onValueChange={(e) => { setCategory(e) }} defaultValue={category}>
-              <SelectTrigger className="w-[180px] border-2">
-                <SelectValue placeholder="선택" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectGroup>
-                  <SelectLabel>카테고리</SelectLabel>
-                  {
-                    dummy_categories.map((it) => (
-                      <SelectItem value={it.category_name} key={it.category_id}>{it.category_name}</SelectItem>
-                    ))
-                  }
-                </SelectGroup>
-              </SelectContent>
-            </Select>
+            {(id ? category : true) &&
+              <Select onValueChange={(e) => { setCategory(e) }} defaultValue={category}>
+                <SelectTrigger className="w-[180px] border-2 flex-1">
+                  <SelectValue placeholder="선택" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectGroup>
+                    <SelectLabel>카테고리</SelectLabel>
+                    {
+                      dummy_categories.map((it) => (
+                        <SelectItem value={it.category_name} key={it.category_id}>{it.category_name}</SelectItem>
+                      ))
+                    }
+                  </SelectGroup>
+                </SelectContent>
+              </Select>}
           </div>
           <div className='flex flex-row mt-5 items-center'>
             <span className="font-bold mr-5 w-16">성취</span>
@@ -151,7 +176,7 @@ const RecordPage = () => {
         <Button className="bg-main rounded-lg text-sm text-black w-28 py-2 hover:bg-main-hover hover:ring-2 hover:ring-main active:bg-main-active drop-shadow-md" onClick={() => navigate(`/feed/${id}`, { replace: true })}>
           취소
         </Button>
-        <Button className="bg-point rounded-lg text-sm w-28 py-2 hover:ring-2 hover:ring-point hover:bg-point-hover active:bg-point-active drop-shadow-md" onClick={handleSubmit}>
+        <Button className="bg-point rounded-lg text-sm w-28 py-2 hover:ring-2 hover:ring-point hover:bg-point-hover active:bg-point-active drop-shadow-md" onClick={id ? handleEdit : handleSubmit}>
           저장
         </Button>
       </div>
