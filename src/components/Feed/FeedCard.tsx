@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useEffect, useRef } from 'react'
 import { Heart, MessageSquareMore } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { FeedItem } from '../../types/FeedItem.type';
@@ -13,9 +13,7 @@ const FeedCard: React.FC<FeedCardType> =
   ({ post_id, category_name, content, post_image, like, comment, idx, setIsImgLoaded, isImgLoaded }) => {
 
     const navigate = useNavigate();
-
     const imgRef = useRef<HTMLImageElement>(null);
-
 
     useEffect(() => {
       if (!imgRef.current) {
