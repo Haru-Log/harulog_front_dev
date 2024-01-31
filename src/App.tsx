@@ -18,6 +18,7 @@ import LayoutWithTitle from './components/Layout/LayoutWithTitle';
 import { createContext, useState } from "react";
 import LoginModal from "./components/LoginRegister/LoginModal";
 import RegisterModal from "./components/LoginRegister/RegisterModal";
+import EditChallengePage from './pages/EditChallengePage';
 
 type SetModalState = {
   setLoginModal: any;
@@ -57,7 +58,7 @@ function App() {
               <Route path="feed/edit/:id" element={<RecordPage />} />
               <Route path="challenge" element={<ChallengePage />} />
               <Route path="challenge/create" element={<CreateChallengePage />} />
-              <Route path="challenge/edit/:id" element={<CreateChallengePage />} />
+              <Route path="challenge/edit/:id" element={<EditChallengePage />} />
               <Route path="social" element={<SocialPage />} />
               <Route path="grow" element={<GrowPage />} />
               <Route path="dashboard" element={<DashboardPage />} />

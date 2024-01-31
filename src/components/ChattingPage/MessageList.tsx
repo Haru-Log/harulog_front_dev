@@ -40,7 +40,6 @@ const MessageList = () => {
           <Separator />
         </div>
       ))}
-
     </div>
   )
 }

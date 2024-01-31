@@ -7,7 +7,7 @@ const ChallengeInfoRight = () => {
   const challenge = useChallengeStore((state) => state.challenge);
 
   return (
-    <div className='flex flex-col basis-3/5'>
+    <div className='flex flex-col w-full min-w-72'>
       <div>
         <span className='font-bold text-lg mr-10 whitespace-nowrap'>챌린지 마스터</span>
         <div className='flex flex-row items-center justify-between w-full py-1 mt-3  border rounded-lg'>
