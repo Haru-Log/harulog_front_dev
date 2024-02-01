@@ -15,7 +15,7 @@ import { Button } from "../ui/button"
 import { Switch } from "../ui/switch"
 import { useNavigate, useParams } from "react-router-dom"
 import { SelectLabel } from "@radix-ui/react-select"
-import { FeedItem, dummy_sample } from "../types/FeedItem.type"
+import { dummy_sample } from "../types/FeedItem.type"
 import { useFeedStore } from "../zustand/feedStore"
 
 const RecordPage = () => {
@@ -23,7 +23,7 @@ const RecordPage = () => {
   const { feed, setFeed } = useFeedStore();
   const id = useParams().id;
 
-  const [date, setDate] = useState<Date | undefined>(id ? feed.created_at : new Date());
+  const [date] = useState<Date | undefined>(id ? feed.created_at : new Date());
   const [minute, setMinute] = useState(id ? (feed.category_name === "기상" ? feed.achievement % 60 : feed.achievement) : 0)
   const [hour, setHour] = useState(id ? (feed.category_name === "기상" ? Math.floor(feed.achievement / 60) : 0) : 0)
   const [category, setCategory] = useState(id ? feed.category_name : "");
@@ -77,18 +77,14 @@ const RecordPage = () => {
     if (window.confirm("피드 작성을 완료하시겠습니까?")) {
       //더미코드
       localStorage.setItem((dummy_sample.length + 1).toString(), JSON.stringify(imgURL))
-      const newFeed: FeedItem = {
-        post_id: dummy_sample.length + 1,
-        user_idx: 2,
+      setFeed({
+        ...feed,
         category_name: category,
         content: content,
         post_image: imgURL,
-        like: 0,
-        comment: 0,
-        created_at: new Date(),
         achievement: category === "기상" ? hour * 60 + minute : minute
-      }
-      dummy_sample.push(newFeed);
+      })
+      dummy_sample.push(feed);
       navigate(`/feed/${id}`, { replace: true })
     }
   }
@@ -110,25 +106,15 @@ const RecordPage = () => {
     if (window.confirm("피드 수정을 완료하시겠습니까?")) {
       //더미코드
       localStorage.setItem((dummy_sample.length + 1).toString(), JSON.stringify(imgURL))
-      const newFeed: FeedItem = {
-        post_id: parseInt(id!),
-        user_idx: 2,
+      setFeed({
+        ...feed,
         category_name: category,
         content: content,
         post_image: imgURL,
-        like: 0,
-        comment: 0,
-        created_at: new Date(),
         achievement: category === "기상" ? hour * 60 + minute : minute
-      }
-      dummy_sample.map((x) => {
-        if (x.post_id === parseInt(id!)) {
-          return newFeed
-        } else {
-          return x
-        }
       })
-      navigate(`/feed`, { replace: true })
+
+      navigate(`/feed/${id}`, { replace: true })
     }
   }
 
@@ -144,7 +130,6 @@ const RecordPage = () => {
       imgRef.current.setAttribute('src', imgURL)
     }
   }, [imgURL])
-
 
   return (
     <div className='flex flex-col mx-10 mt-10 border-2 rounded-xl px-10 py-10 font-ibm'>
