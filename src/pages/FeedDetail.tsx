@@ -41,7 +41,9 @@ const FeedDetail = () => {
               {selectedPost?.category_name}
             </div>
             <div className={`text-white px-3 py-1 rounded-full h-fit w-fit text-center text-2xl bg-${selectedPost?.category_name}`}>
-              60분
+              {selectedPost?.category_name === "기상"
+                ? `${Math.floor(selectedPost.achievement / 60)}시 ${selectedPost.achievement % 60}분`
+                : `${selectedPost?.achievement}분`}
             </div>
           </div>
           <div className="text-xl">

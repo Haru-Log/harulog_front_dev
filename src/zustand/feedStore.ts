@@ -20,6 +20,7 @@ export const useFeedStore = create<FeedState>()(
         comment: 0,
         created_at: new Date(),
         updated_at: new Date(),
+        achievement: 0,
       },
       setFeed: (feed: FeedItem) => set({ feed }),
     }),

@@ -24,8 +24,8 @@ const RecordPage = () => {
   const id = useParams().id;
 
   const [date, setDate] = useState<Date | undefined>(id ? feed.created_at : new Date());
-  const [minute, setMinute] = useState("")
-  const [hour, setHour] = useState("")
+  const [minute, setMinute] = useState(id ? (feed.category_name === "기상" ? feed.achievement % 60 : feed.achievement) : 0)
+  const [hour, setHour] = useState(id ? (feed.category_name === "기상" ? Math.floor(feed.achievement / 60) : 0) : 0)
   const [category, setCategory] = useState(id ? feed.category_name : "");
   const [content, setContent] = useState(id ? feed.content : "");
   const [imgURL, setImgURL] = useState(id ? feed.post_image : "");
@@ -65,10 +65,10 @@ const RecordPage = () => {
       return;
     }
 
-    if (category === "기상" && hour.length === 0) {
+    if (category === "기상" && hour === 0) {
       hourRef.current?.focus()
       return;
-    } else if (minute.length === 0) {
+    } else if (minute === 0) {
       minuteRef.current?.focus()
       return;
     }
@@ -85,7 +85,8 @@ const RecordPage = () => {
         post_image: imgURL,
         like: 0,
         comment: 0,
-        created_at: new Date()
+        created_at: new Date(),
+        achievement: category === "기상" ? hour * 60 + minute : minute
       }
       dummy_sample.push(newFeed);
       navigate(`/feed/${id}`, { replace: true })
@@ -98,10 +99,10 @@ const RecordPage = () => {
       contentRef.current?.focus()
       return;
     }
-    if (category === "기상" && hour.length === 0) {
+    if (category === "기상" && hour === 0) {
       hourRef.current?.focus()
       return;
-    } else if (minute.length === 0) {
+    } else if (minute === 0) {
       minuteRef.current?.focus()
       return;
     }
@@ -117,7 +118,8 @@ const RecordPage = () => {
         post_image: imgURL,
         like: 0,
         comment: 0,
-        created_at: new Date()
+        created_at: new Date(),
+        achievement: category === "기상" ? hour * 60 + minute : minute
       }
       dummy_sample.map((x) => {
         if (x.post_id === parseInt(id!)) {
@@ -171,17 +173,17 @@ const RecordPage = () => {
               <div className="flex items-center">
                 <Input type="number" placeholder="시" className="mr-2 w-20" ref={hourRef} value={hour} onChange={(e) => {
                   if ((e.target.value === "" || (parseInt(e.target.value) >= 0 && parseInt(e.target.value) < 24))) {
-                    setHour(e.target.value)
+                    setHour(parseInt(e.target.value))
                   }
                 }} /> 시
                 <Input type="number" placeholder="분" className="ml-5 mr-2 w-20" ref={minuteRef} value={minute} onChange={(e) => {
                   if ((e.target.value === "" || (parseInt(e.target.value) >= 0 && parseInt(e.target.value) < 60))) {
-                    setMinute(e.target.value)
+                    setMinute(parseInt(e.target.value))
                   }
                 }} /> 분
               </div>
               :
-              <Input type="number" placeholder="성취 시간(분)을 입력하세요." value={minute} onChange={(e) => setMinute(e.target.value)} className='w-[280px] border-2' ref={minuteRef} />
+              <Input type="number" placeholder="성취 시간(분)을 입력하세요." value={minute} onChange={(e) => setMinute(parseInt(e.target.value))} className='w-[280px] border-2' ref={minuteRef} />
             }
           </div>
           <div className='flex flex-row'>
