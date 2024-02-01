@@ -19,12 +19,12 @@ const LoginModal = () => {
 
 
   return (
-    <div className="z-50 absolute">
+    <div className="z-50 absolute font-ibm">
       <div className="fixed inset-3 flex justify-center">
         <div className="w-[50%] max-w-[800px] relative shadow-2xl h-fit flex rounded-xl overflow-hidden duration-[400ms] delay-[2s] ease-in-out transition-all fade-in-40 bg-[#ececec]"
           ref={ref}>
           <div className="w-full flex flex-col items-center p-10">
-            <div className="text-6xl mb-5 whitespace-nowrap h-fit">
+            <div className="text-6xl mb-5 whitespace-nowrap h-fit font-orbit">
               HaruLog
             </div>
             <div className="text-3xl whitespace-nowrap">

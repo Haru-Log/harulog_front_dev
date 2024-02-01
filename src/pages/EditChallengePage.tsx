@@ -3,7 +3,7 @@ import EditInputCard from '../components/EditChallengePage/EditInputCard'
 
 const EditChallengePage = () => {
   return (
-    <div>
+    <div className='font-ibm'>
       <EditInputCard />
     </div>
   )

@@ -3,7 +3,7 @@ import { Button } from "../ui/button"
 import ProfileNumber from "../components/ProfilePage/ProfileNumber"
 import Heatmap from "../components/ProfilePage/Heatmap";
 import { useEffect, useState } from "react";
-import { Archive, Mountain, Pencil, PlusSquare } from "lucide-react";
+import { Archive, Mountain } from "lucide-react";
 import { Jandi } from "../types/HeatmapData.type";
 import FeedCard from "../components/Feed/Cards";
 import ChallengeCard from './../components/ChallengePage/Cards';
@@ -50,7 +50,7 @@ const ProfilePage = () => {
   }, [dummy_jandi])
 
   return (
-    <div className="w-full flex justify-center py-16">
+    <div className="w-full flex justify-center py-16 font-ibm">
       <div className="w-[80%] h-full flex flex-col">
         <section className="flex h-[30%] w-full items-start">
           <div className="maax-w-40 max-h-40">

@@ -3,7 +3,7 @@ import CreateInputCard from '../components/CreateChallengePage/CreateInputCard'
 
 const CreateChallengePage = () => {
   return (
-    <div>
+    <div className='font-ibm'>
       <CreateInputCard />
     </div>
   )

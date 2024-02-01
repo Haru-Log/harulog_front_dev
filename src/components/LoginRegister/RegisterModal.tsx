@@ -19,12 +19,12 @@ const RegisterModal = () => {
   useOnClickOutside(ref, () => { setRegisterModal(false) });
 
   return (
-    <div className="z-50 absolute">
+    <div className="z-50 absolute font-ibm">
       <div className="fixed inset-3 flex justify-center">
         <div className="w-[50%] max-w-[800px] h-[90vh] relative shadow-2xl flex rounded-xl overflow-auto duration-[400ms] delay-[2s] ease-in-out transition-all fade-in-40 bg-[#ececec] scrollbar-hide"
           ref={ref}>
           <div className="w-full flex flex-col items-center p-10">
-            <div className="text-6xl mb-5 whitespace-nowrap">
+            <div className="text-6xl mb-5 whitespace-nowrap font-orbit">
               HaruLog
             </div>
             <div className="text-3xl whitespace-nowrap">

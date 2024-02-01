@@ -43,9 +43,9 @@ const FeedCard: React.FC<FeedCardType> =
     }, [imgRef])
 
     return (
-      <div className="w-96 flex flex-col items-start cursor-pointer" onClick={() => navigate(`/feed/${post_id}`)}>
+      <div className="w-96 flex flex-col items-start cursor-pointer transform transition-transform hover:scale-110" onClick={() => navigate(`/feed/${post_id}`)}>
         <div className="mb-3">
-          <img src={post_image} alt="피드 이미지" className="rounded-xl h-fit w-96" ref={imgRef} />
+          <img src={post_image} alt="피드 이미지" className="rounded-xl h-fit w-96 transform transition-transform hover:scale-110" ref={imgRef} />
         </div>
         <div className="flex flex-row w-full justify-start text-xs h-6">
           <div className={`text-white px-3 py-1 rounded-full h-fit w-fit text-center mr-5 bg-${category_name}`}>
