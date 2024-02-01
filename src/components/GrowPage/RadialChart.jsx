@@ -4,7 +4,7 @@ import Chart from 'react-apexcharts'
 const RadialChart = ({ category, goal, achievement, theme }) => {
 
   const [chartState, setChartState] = useState({
-    series: [achievement / goal * 100],
+    series: [0],
     options: {
       chart: {
         type: 'radialBar',
@@ -16,14 +16,16 @@ const RadialChart = ({ category, goal, achievement, theme }) => {
         radialBar: {
           startAngle: -270,
           endAngle: 90,
+          offsetX: -30,
           hollow: {
             margin: 0,
             size: '70%',
-            background: '#fff',
             image: undefined,
+            background: "transparent",
             imageOffsetX: 0,
             imageOffsetY: 0,
-            position: 'front',
+            position: 'back',
+
           },
           track: {
             background: '#ececec',
@@ -34,18 +36,21 @@ const RadialChart = ({ category, goal, achievement, theme }) => {
           dataLabels: {
             show: true,
             name: {
-              offsetY: -10,
               show: true,
-              color: '#888',
+              color: theme,
               fontSize: '1.5rem',
+              offsetY: -30,
+              fontWeight: 1000,
             },
             value: {
               formatter: function (val) {
-                return parseInt(val * 10) / 10 + '%';
+                return `${achievement}${category === "기상" ? 'd' : 'm'}`;
               },
-              color: '#111',
-              fontSize: '1.5rem',
+              color: theme,
+              fontSize: '3rem',
+              fontWeight: 600,
               show: true,
+              offsetY: 20,
             }
           }
         }
@@ -57,6 +62,14 @@ const RadialChart = ({ category, goal, achievement, theme }) => {
         lineCap: 'round'
       },
       labels: [category],
+      grid: {
+        padding: {
+          top: 0,
+          right: 0,
+          bottom: 0,
+          left: 0
+        },
+      }
     },
   }
   )
@@ -68,13 +81,18 @@ const RadialChart = ({ category, goal, achievement, theme }) => {
 
 
   return (
-    <>
+    <div className="w-full h-full relative">
       <Chart
         options={chartState.options}
         series={chartState.series}
         type="radialBar"
       />
-    </>
+      <div className="absolute right-[54%] top-[40%] text-center flex flex-col items-center">
+        <div className="text font-ibm font-bold">
+          {`${parseInt(goal)}${category === "기상" ? 'd' : 'm'}`}
+        </div>
+      </div>
+    </div>
   )
 }
 
