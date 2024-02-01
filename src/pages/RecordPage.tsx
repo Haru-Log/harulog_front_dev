@@ -16,36 +16,64 @@ import { Switch } from "../ui/switch"
 import { useNavigate, useParams } from "react-router-dom"
 import { SelectLabel } from "@radix-ui/react-select"
 import { FeedItem, dummy_sample } from "../types/FeedItem.type"
+import { useFeedStore } from "../zustand/feedStore"
 
 const RecordPage = () => {
 
-  const [date, setDate] = useState<Date | undefined>(new Date())
+  const { feed, setFeed } = useFeedStore();
+  const id = useParams().id;
+
+  const [date, setDate] = useState<Date | undefined>(id ? feed.created_at : new Date());
   const [minute, setMinute] = useState("")
   const [hour, setHour] = useState("")
-  const [category, setCategory] = useState("");
-  const [content, setContent] = useState("");
-  const [imgURL, setImgURL] = useState("")
+  const [category, setCategory] = useState(id ? feed.category_name : "");
+  const [content, setContent] = useState(id ? feed.content : "");
+  const [imgURL, setImgURL] = useState(id ? feed.post_image : "");
 
+  const categoryRef: RefObject<HTMLButtonElement> = useRef<HTMLButtonElement>(null);
+  const hourRef: RefObject<HTMLInputElement> = useRef<HTMLInputElement>(null);
+  const minuteRef: RefObject<HTMLInputElement> = useRef<HTMLInputElement>(null);
+  const contentRef: RefObject<HTMLTextAreaElement> = useRef<HTMLTextAreaElement>(null);
   const imgRef: RefObject<HTMLImageElement> = useRef<HTMLImageElement>(null);
-  const id = useParams().id;
   const navigate = useNavigate();
 
   useEffect(() => {
     if (id) {
-      const post = dummy_sample.find((it) => it.post_id === parseInt(id));
-      if (post) {
-        setDate(post.created_at);
+      if (feed) {
         if (imgRef.current) {
-          imgRef.current.setAttribute('src', post.post_image);
+          imgRef.current.setAttribute('src', feed.post_image);
         }
-        setContent(post.content);
-        setCategory(post.category_name);
       }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   const handleSubmit = () => {
+
+    if (content.length < 1) {
+      contentRef.current?.focus()
+      return;
+    }
+
+    if (!imgRef.current?.src) {
+      alert('이미지를 업로드 하세요');
+      return;
+    }
+
+    if (category === "") {
+      categoryRef.current?.focus()
+      return;
+    }
+
+    if (category === "기상" && hour.length === 0) {
+      hourRef.current?.focus()
+      return;
+    } else if (minute.length === 0) {
+      minuteRef.current?.focus()
+      return;
+    }
+
+
     if (window.confirm("피드 작성을 완료하시겠습니까?")) {
       //더미코드
       localStorage.setItem((dummy_sample.length + 1).toString(), JSON.stringify(imgURL))
@@ -65,6 +93,19 @@ const RecordPage = () => {
   }
 
   const handleEdit = () => {
+
+    if (content.length < 1) {
+      contentRef.current?.focus()
+      return;
+    }
+    if (category === "기상" && hour.length === 0) {
+      hourRef.current?.focus()
+      return;
+    } else if (minute.length === 0) {
+      minuteRef.current?.focus()
+      return;
+    }
+
     if (window.confirm("피드 수정을 완료하시겠습니까?")) {
       //더미코드
       localStorage.setItem((dummy_sample.length + 1).toString(), JSON.stringify(imgURL))
@@ -98,7 +139,6 @@ const RecordPage = () => {
 
   useEffect(() => {
     if (imgRef.current && imgURL.length) {
-      console.log(imgURL);
       imgRef.current.setAttribute('src', imgURL)
     }
   }, [imgURL])
@@ -112,17 +152,15 @@ const RecordPage = () => {
             <span className="font-bold mr-5 w-16">카테고리</span>
             {(id ? category : true) &&
               <Select onValueChange={(e) => { setCategory(e) }} defaultValue={category}>
-                <SelectTrigger className="w-[180px] border-2 flex-1">
+                <SelectTrigger className="w-[180px] border-2 flex-1" ref={categoryRef}>
                   <SelectValue placeholder="선택" />
                 </SelectTrigger>
                 <SelectContent>
                   <SelectGroup>
                     <SelectLabel>카테고리</SelectLabel>
-                    {
-                      dummy_categories.map((it) => (
-                        <SelectItem value={it.category_name} key={it.category_id}>{it.category_name}</SelectItem>
-                      ))
-                    }
+                    {dummy_categories.map((it) => (
+                      <SelectItem value={it.category_name} key={it.category_id}>{it.category_name}</SelectItem>
+                    ))}
                   </SelectGroup>
                 </SelectContent>
               </Select>}
@@ -131,19 +169,19 @@ const RecordPage = () => {
             <span className="font-bold mr-5 w-16">성취</span>
             {category === "기상" ?
               <div className="flex items-center">
-                <Input type="number" placeholder="시" className="mr-2 w-20" value={hour} onChange={(e) => {
+                <Input type="number" placeholder="시" className="mr-2 w-20" ref={hourRef} value={hour} onChange={(e) => {
                   if ((e.target.value === "" || (parseInt(e.target.value) >= 0 && parseInt(e.target.value) < 24))) {
                     setHour(e.target.value)
                   }
                 }} /> 시
-                <Input type="number" placeholder="분" className="ml-5 mr-2 w-20" value={minute} onChange={(e) => {
+                <Input type="number" placeholder="분" className="ml-5 mr-2 w-20" ref={minuteRef} value={minute} onChange={(e) => {
                   if ((e.target.value === "" || (parseInt(e.target.value) >= 0 && parseInt(e.target.value) < 60))) {
                     setMinute(e.target.value)
                   }
                 }} /> 분
               </div>
               :
-              <Input type="number" placeholder="성취 시간(분)을 입력하세요." value={minute} onChange={(e) => setMinute(e.target.value)} className='w-[280px] border-2' />
+              <Input type="number" placeholder="성취 시간(분)을 입력하세요." value={minute} onChange={(e) => setMinute(e.target.value)} className='w-[280px] border-2' ref={minuteRef} />
             }
           </div>
           <div className='flex flex-row'>
@@ -153,8 +191,10 @@ const RecordPage = () => {
             <Calendar
               mode="single"
               selected={date}
-              onSelect={setDate}
+              onSelect={(e) => { console.log('calendar', e) }}
               className="rounded-md border-2 mt-5"
+              disabled
+              month={date}
             />
           </div>
         </div>
@@ -166,7 +206,7 @@ const RecordPage = () => {
             <Input accept="image/jpeg, image/png" type="file" onChange={handleUploadImage} className='w-full border-2' />
           </div>
           <img ref={imgRef} alt="사진을 업로드하세요." className="object-contain mb-5 h-[265px] rounded-lg max-h-96 border-2 " />
-          <Textarea className="resize-none w-full border-2" placeholder="내용을 입력하세요." value={content} onChange={(e) => setContent(e.target.value)} />
+          <Textarea className="resize-none w-full border-2" placeholder="내용을 입력하세요." value={content} onChange={(e) => setContent(e.target.value)} ref={contentRef} />
           <div className="flex mt-8 justify-end items-center">
             <div className="mr-5 font-bold">자동게시</div>
             <Switch /></div>
