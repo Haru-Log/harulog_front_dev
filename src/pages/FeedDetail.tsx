@@ -1,45 +1,27 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect } from 'react'
 import { useNavigate, useParams } from "react-router-dom"
-import { FeedItem, dummy_sample } from "../types/FeedItem.type"
 import dummyImage1 from '../assets/20231010_084411.jpg' // 임시 이미지
 import { Heart, Pencil } from "lucide-react"
 import { dummy_comment } from "../types/Comment.type"
 import Comment from "../components/Feed/Comment"
+import useFeedFetcher from "../hooks/useFeedFetcher"
 
 
 const FeedDetail = () => {
 
   const post_id = parseInt(useParams().id || "");
+  const selectedPost = useFeedFetcher(post_id);
   const navigate = useNavigate();
-  const [post, setPost] = useState<FeedItem>();
-  const [post_image, setPost_image] = useState("");
-  const [content, setContent] = useState("");
-  const [date, setDate] = useState("");
-  const [category, setcategory] = useState("")
 
   useEffect(() => {
-    // api로 postID 요청해서 없으면 navigate를 통해 피드 페이지로 이동 시키기.
-    if (post_id) {
-      // 나중에는 api로 요청할 것
-      setPost(dummy_sample.find(x => x.post_id === post_id));
-    } else {
+    if (!selectedPost) {
       navigate('/feed', { replace: true });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [post_id])
-
-  useEffect(() => {
-    if (post) {
-      setPost_image(post.post_image);
-      setContent(post.content)
-      setcategory(post.category_name)
-      setDate(post.created_at.toLocaleDateString())
-      //postId에 따라서 comment 불러오는 로직 추가해야함
-    }
-  }, [post])
+  }, [selectedPost])
 
   return (
-    <div className="w-full flex justify-center font-ibm">
+    <div className="w-full flex justify-center font-ibm pt-5">
       <div className="w-[50%] h-full p-12 flex flex-col">
         <section className="w-full flex flex-row items-center h-fit justify-between mb-5">
           <div className="flex flex-row items-center h-fit">
@@ -51,29 +33,29 @@ const FeedDetail = () => {
           </div>
         </section>
         <section className="w-full mb-5">
-          <img src={post_image} alt="post" className="max-h-[100vh] w-full object-cover" />
+          <img src={selectedPost?.post_image} alt="post" className="max-h-[100vh] w-full object-cover" />
         </section>
         <section className="flex items-center justify-between">
           <div className="flex flex-row">
-            <div className={`text-white px-3 py-1 rounded-full h-fit w-fit text-center mr-3 text-2xl bg-${category}`}>
-              {category}
+            <div className={`text-white px-3 py-1 rounded-full h-fit w-fit text-center mr-3 text-2xl bg-${selectedPost?.category_name}`}>
+              {selectedPost?.category_name}
             </div>
-            <div className={`text-white px-3 py-1 rounded-full h-fit w-fit text-center text-2xl bg-${category}`}>
+            <div className={`text-white px-3 py-1 rounded-full h-fit w-fit text-center text-2xl bg-${selectedPost?.category_name}`}>
               60분
             </div>
           </div>
           <div className="text-xl">
-            {date}
+            {selectedPost?.created_at.toLocaleDateString()}
           </div>
         </section>
         <section className="mt-5 flex items-center">
           <Heart size={50} />
           <div className="ml-5 text-4xl font-bold">
-            {post && post.like}
+            {selectedPost?.like}
           </div>
         </section>
         <section className="mt-5 text-4xl">
-          {content}
+          {selectedPost?.content}
         </section>
         <section className="mt-10">
           {dummy_comment.map(it => (
