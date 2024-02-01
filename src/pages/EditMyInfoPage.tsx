@@ -6,7 +6,7 @@ import Modal from '../components/EditMyInfoPage/Modal'
 
 const EditMyInfoPage = () => {
   return (
-    <div className="bg-gray-100 flex justify-center items-center">
+    <div className="bg-gray-100 flex justify-center items-center font-ibm">
       <div className="bg-white rounded-lg w-full">
         {/* Top Section */}
         <div className="flex ">

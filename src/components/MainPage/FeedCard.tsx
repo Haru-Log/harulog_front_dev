@@ -4,9 +4,9 @@ import { Heart, MessageSquareMore } from "lucide-react";
 const FeedCard: React.FC<{ post_image: any; category_name: string; like: number; comment: number; content: string }> = ({ post_image, category_name, like, comment, content }) => {
 
   return (
-    <div className="cursor-pointer drop-shadow-xl mb-5">
-      <div className="w-72 h-72 rounded-xl">
-        <img src={post_image} alt="챌린지 이미지" className="object-cover w-full h-full rounded-xl" />
+    <div className="cursor-pointer drop-shadow-xl mb-5 transform transition-transform hover:scale-110">
+      <div className="w-[100%] aspect-square rounded-xl">
+        <img src={post_image} alt="피드 이미지" className="object-cover w-full h-full rounded-xl" />
       </div>
       <div className="flex flex-row w-full justify-start text-xs h-6 mt-2">
         <div className={`text-white px-3 py-1 rounded-full h-fit w-fit text-center mr-5 bg-${category_name}`}>

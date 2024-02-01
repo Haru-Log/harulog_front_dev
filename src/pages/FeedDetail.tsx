@@ -39,7 +39,7 @@ const FeedDetail = () => {
   }, [post])
 
   return (
-    <div className="w-full flex justify-center">
+    <div className="w-full flex justify-center font-ibm">
       <div className="w-[50%] h-full p-12 flex flex-col">
         <section className="w-full flex flex-row items-center h-fit justify-between mb-5">
           <div className="flex flex-row items-center h-fit">

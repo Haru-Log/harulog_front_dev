@@ -6,7 +6,7 @@ const NavRegister = () => {
 
   return (
     <div onClick={() => { 
-      setRegisterModal(true) }} className='ml-3 cursor-pointer text-sm'>
+      setRegisterModal(true) }} className='ml-3 cursor-pointer text-sm font-ibm'>
       회원가입
     </div>
   )

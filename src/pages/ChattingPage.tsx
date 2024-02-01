@@ -13,7 +13,7 @@ const ChattingPage = () => {
   const selectedMessages: ChatRoom[] = findChatRoomBySelectedId(selectedChatroomId);
 
   return (
-    <div className='mt-12'>
+    <div className='mt-12 font-ibm'>
       <ResizablePanelGroup
         direction="horizontal"
         className="h-fit border-b"

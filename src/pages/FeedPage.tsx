@@ -5,7 +5,7 @@ import FilterGroup from '../components/FilterGroup'
 
 const FeedPage = () => {
   return (
-    <div className='flex flex-col'>
+    <div className='flex flex-col font-ibm'>
       <FilterGroup />
       <Cards data={dummy_sample} />
       <CreateButton />

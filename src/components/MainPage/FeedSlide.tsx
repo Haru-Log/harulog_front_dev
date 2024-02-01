@@ -26,7 +26,7 @@ const FeedSlide: React.FC<{ data: FeedItem[] }> = ({ data }) => {
             invert: false,
           }}
           autoplay={{
-            delay: 5000,
+            delay: 3000,
             stopOnLastSlide: false,
             disableOnInteraction: false,
           }}

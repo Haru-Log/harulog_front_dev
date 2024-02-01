@@ -2,7 +2,7 @@ import React from 'react'
 
 const SocialPage = () => {
   return (
-    <div>
+    <div className='font-ibm'>
       SocialPage
     </div>
   )

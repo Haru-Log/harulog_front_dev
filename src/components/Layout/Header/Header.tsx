@@ -3,7 +3,6 @@ import TopNav from './TopNav';
 import Title from './Title';
 import NavLogin from './NavLogin';
 import NavRegister from './NavRegister';
-
 const Header = () => {
   const [isHeaderVisible, setIsHeaderVisible] = useState(true);
 
