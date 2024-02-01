@@ -19,8 +19,8 @@ const TopNav: React.FC = () => {
   };
 
   return (
-    <>
-      <div onClick={toggleNav} className='cursor-pointer hover:opacity-50'>
+    <div className='font-orbit'>
+      <div onClick={toggleNav} className='cursor-pointer hover:opacity-50 '>
         {isNavOpen ? <CloseIcon /> : <MenuIcon />}
       </div>
       {isNavOpen && (
@@ -36,7 +36,7 @@ const TopNav: React.FC = () => {
           ))}
         </div>
       )}
-    </>
+    </div>
   );
 };
 

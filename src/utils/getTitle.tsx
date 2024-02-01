@@ -9,9 +9,9 @@ const GetTitle = (): string => {
     '/feed/edit/': '활동 기록 수정',
     '/challenge': '모두의 챌린지',
     '/challenge/create': '챌린지 생성',
-    '/social': '소셜',
+    '/social': 'SOCIAL',
     '/grow': 'GROW',
-    '/dashboard': '대시보드',
+    '/dashboard': 'DASHBOARD',
     '/profile/edit': '내 정보 수정',
   };
   

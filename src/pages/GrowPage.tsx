@@ -125,7 +125,7 @@ const GrowPage = () => {
   }
 
   return (
-    <div className="w-full h-full p-10">
+    <div className="w-full h-full p-10 font-ibm">
       <section className="flex">
         <div className="w-full flex items-baseline">
           <div className="text-2xl font-bold mr-1 whitespace-nowrap">사용자이름</div>

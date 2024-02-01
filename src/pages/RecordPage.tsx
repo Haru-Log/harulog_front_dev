@@ -81,7 +81,7 @@ const RecordPage = () => {
 
 
   return (
-    <div className='flex flex-col mx-10 mt-10 border-2 rounded-xl px-10 py-10'>
+    <div className='flex flex-col mx-10 mt-10 border-2 rounded-xl px-10 py-10 font-ibm'>
       <div className='flex flex-row'>
         <div className='flex flex-col mr-10'>
           <div className='flex flex-row items-center'>

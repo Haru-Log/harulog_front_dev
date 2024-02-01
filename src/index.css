@@ -79,3 +79,21 @@
     font-feature-settings: "rlig" 1, "calt" 1;
   }
 }
+
+/* @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@500&family=Orbit&display=swap');
+
+body {
+  font-family: 'Orbit','IBM Plex Sans KR', sans-serif;
+} */
+
+
+@import url('https://fonts.googleapis.com/css2?family=Orbit&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@500&display=swap');
+
+.font-orbit {
+  font-family: 'Orbit', sans-serif;
+}
+
+.font-ibm {
+  font-family: 'IBM Plex Sans KR', sans-serif;
+}

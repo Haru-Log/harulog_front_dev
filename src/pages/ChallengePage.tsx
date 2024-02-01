@@ -5,7 +5,7 @@ import dummyChallengeData from '../types/ChallengeItem.dummy'
 
 const ChallengePage = () => {
   return (
-    <div className='flex flex-col items-center'>
+    <div className='flex flex-col items-center font-ibm'>
       <FilterGroup />
       <CreateButton />
       <Cards data={dummyChallengeData} />
