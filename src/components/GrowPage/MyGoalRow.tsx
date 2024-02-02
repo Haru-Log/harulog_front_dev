@@ -43,7 +43,7 @@ const MyGoalRow: React.FC<{
       <TableCell>{
         category === '기상' ? `${achievement}일째` : `${achievement}분`
       }</TableCell>
-      <TableCell className={`${isLastRow && "rounded-br-2xl"}`}>{updatedAt.toLocaleDateString()}</TableCell>
+      <TableCell className={`${isLastRow && "rounded-br-2xl"} px-8`}>{updatedAt.toLocaleDateString()}</TableCell>
     </TableRow>
   )
 }
