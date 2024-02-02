@@ -190,7 +190,7 @@ const GrowPage = () => {
           <div className="pr-20 h-full flex items-center">
             <Table>
               <TableHeader>
-                <TableRow className="bg-[#92C7CF] text-2xl whitespace-nowrap hover:text-black border-b-4">
+                <TableRow className="bg-[#92C7CF]  hover:bg-[#92C7CF] text-2xl whitespace-nowrap hover:text-black border-b-4">
                   <TableHead className="w-40 rounded-tl-2xl"></TableHead>
                   <TableHead className="w-40 text-white font-bold text-center">나의 목표</TableHead>
                   <TableHead className="font-bold w-40 text-white text-center">오늘 성취</TableHead>
