@@ -10,8 +10,8 @@ export interface ChallengeItem {
   challenge_image: string;
   participants : number;
   submission : string;
-  start_date: Date;
-  end_date: Date;
+  start_date?: Date;
+  end_date?: Date;
   created_at: Date;
   updated_at?: Date;
 }
