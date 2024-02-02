@@ -154,7 +154,7 @@ const GrowPage = () => {
           </Button>
         </div>
         <div className="flex justify-between items-center">
-          <div className="flex flex-col justify-center">
+          <div className="flex flex-col justify-center h-full w-1/3">
             <div className="flex justify-between">
               {
                 achievement.slice(0, 2).map((it, idx) => (
@@ -183,11 +183,11 @@ const GrowPage = () => {
               }
             </div>
           </div>
-          <div>
+          <div className="w-1/3 h-full">
             <TodayChart
               category={"Today"} goals={goal} achievements={achievement} theme={"#92C7CF"} />
           </div>
-          <div className="pr-20 h-full flex items-center">
+          <div className="pr-7 h-full flex items-center w-1/3">
             <Table>
               <TableHeader>
                 <TableRow className="bg-[#92C7CF]  hover:bg-[#92C7CF] text-2xl whitespace-nowrap hover:text-black border-b-4">

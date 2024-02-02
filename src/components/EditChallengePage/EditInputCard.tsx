@@ -21,8 +21,8 @@ const EditInputCard = () => {
   const [challengeImage, setChallengeImage] = useState('');
   const [submission, setSubmission] = useState(challenge.submission);
   const [date, setDate] = useState<DateRange | undefined>({
-    from: new Date(challenge.start_date),
-    to: new Date(challenge.end_date),
+    from: new Date(challenge.start_date!),
+    to: new Date(challenge.end_date!),
   })
 
   const times = getTimes();

@@ -2,8 +2,8 @@ import { useChallengeStore } from 'src/zustand/challengeStore';
 
 const ChallengeInfoLeft = () => {
   const challenge = useChallengeStore((state) => state.challenge);
-  const startDate = new Date(challenge.start_date);
-  const endDate = new Date(challenge.end_date);
+  const startDate = new Date(challenge.start_date!);
+  const endDate = new Date(challenge.end_date!);
   const startDateString = startDate.toISOString().split('T')[0].replace(/-/g, '/');
   const endDateString = endDate.toISOString().split('T')[0].replace(/-/g, '/');
 
