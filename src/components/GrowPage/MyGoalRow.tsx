@@ -17,7 +17,7 @@ const MyGoalRow: React.FC<{
 
 
   return (
-    <TableRow className='text-2xl text-center whitespace-nowrap text-white bg-[#92C7CF88] border-none hover:text-black'>
+    <TableRow className='text-2xl text-center whitespace-nowrap text-white bg-[#92C7CF88] border-none hover:bg-[#92C7CF88]'>
       <TableCell className={`font-bold py-6 text-center ${(isLastRow) && 'rounded-bl-2xl'} `}>{category}</TableCell>
       <TableCell className={`${isEdit && 'px-0 pb-0 pt-3 flex items-center h-full whitespace-nowrap'}`}>
         {isEdit ?
