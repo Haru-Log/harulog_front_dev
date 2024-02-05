@@ -1,4 +1,4 @@
-import { Jandi } from "../types/HeatmapData.type";
+import { Jandi, newJandi } from "../types/HeatmapData.type";
 
 export const mergeCategory = (receieved_jandi: { date: Date, category: string }[]): Jandi[] => {
   const mergedJandi: Jandi[] = [];
@@ -32,16 +32,48 @@ export const shiftDate = (date: Date, numDays: number) => {
   return newDate;
 }
 
-export const mergeJandi = (initialState: Jandi[], receievedData: Jandi[]) => {
+// export const mergeJandi = (initialState: Jandi[], receievedData: Jandi[]) => {
+//   export const mergeJandi = (initialState: Jandi[], receievedData: Jandi[]) => {
+//   const combinedJandi = [...initialState, ...receievedData]
+
+//   combinedJandi.sort((a, b) => a.date.getTime() - b.date.getTime())
+
+//   let mergedJandi = combinedJandi.filter((x, idx) => {
+//     if (x.category[0].length === 0 && idx < combinedJandi.length - 1 && x.date.toISOString().split('T')[0] === combinedJandi[idx + 1].date.toISOString().split('T')[0]) {
+//       // 뒤에 있는 애랑 날짜 같은데 카테고리 비었을 경우
+//       return false
+//     } else if (x.category[0].length === 0 && idx > 0 && x.date.toISOString().split('T')[0] === combinedJandi[idx - 1].date.toISOString().split('T')[0]) {
+//       // 앞에 있는 애랑 날짜 같은데 카테고리 비었을 경우
+//       return false
+//     } else {
+//       // 날짜 겹치는거 없거나 아니면 카테고리 안 비었을 경우
+//       return true
+//     }
+//   })
+//   return mergedJandi;
+// }
+
+export const mergeJandi = (initialState: newJandi[], receievedData: newJandi[]) => {
+  console.log(receievedData);
   const combinedJandi = [...initialState, ...receievedData]
+  // console.log(combinedJandi);
+
 
   combinedJandi.sort((a, b) => a.date.getTime() - b.date.getTime())
 
+  // combinedJandi.forEach((x)=>{
+  //   if(x.categoryPosts){
+  //     console.log(true, x);
+  //   } else{
+  //     console.log(false, x);
+  //   }
+  // })
+
   let mergedJandi = combinedJandi.filter((x, idx) => {
-    if (x.category[0].length === 0 && idx < combinedJandi.length - 1 && x.date.toISOString().split('T')[0] === combinedJandi[idx + 1].date.toISOString().split('T')[0]) {
+    if (Object.values(x.categoryPosts).length === 0 && idx < combinedJandi.length - 1 && x.date.toISOString().split('T')[0] === combinedJandi[idx + 1].date.toISOString().split('T')[0]) {
       // 뒤에 있는 애랑 날짜 같은데 카테고리 비었을 경우
       return false
-    } else if (x.category[0].length === 0 && idx > 0 && x.date.toISOString().split('T')[0] === combinedJandi[idx - 1].date.toISOString().split('T')[0]) {
+    } else if (Object.values(x.categoryPosts).length === 0 && idx > 0 && x.date.toISOString().split('T')[0] === combinedJandi[idx - 1].date.toISOString().split('T')[0]) {
       // 앞에 있는 애랑 날짜 같은데 카테고리 비었을 경우
       return false
     } else {
@@ -54,11 +86,11 @@ export const mergeJandi = (initialState: Jandi[], receievedData: Jandi[]) => {
 
 export const filterJandi = (data: Jandi[], category: string) => {
 
-  let temp = data.map((it)=>{
-    if(it.category.includes(category)){
-      return {...it, category: [category, it.category.filter(x=>x===category).length + ""]}
-    } else{
-      return {...it, category: [""]}
+  let temp = data.map((it) => {
+    if (it.category.includes(category)) {
+      return { ...it, category: [category, it.category.filter(x => x === category).length + ""] }
+    } else {
+      return { ...it, category: [""] }
     }
   })
   return temp;
