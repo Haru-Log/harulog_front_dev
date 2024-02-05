@@ -1,12 +1,9 @@
-import { Pencil } from 'lucide-react';
-import { useNavigate } from 'react-router-dom';
 import getDiffInDays from 'src/utils/getDiffInDays';
 import { useChallengeStore } from 'src/zustand/challengeStore';
 
 const ChallengeDetailHeader = () => {
   const challenge = useChallengeStore((state) => state.challenge);
   const status = challenge ? getDiffInDays(challenge) : '';
-  const navigate = useNavigate();
   return (
     <div>
       {challenge &&
