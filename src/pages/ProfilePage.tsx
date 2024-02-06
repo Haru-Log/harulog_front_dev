@@ -1,4 +1,3 @@
-import dummyImage10 from '../assets/20231020_090539.jpg'
 import { Button } from "../ui/button"
 import ProfileNumber from "../components/ProfilePage/ProfileNumber"
 import Heatmap from "../components/ProfilePage/Heatmap";
@@ -7,8 +6,7 @@ import { Archive, Mountain } from "lucide-react";
 import { newJandi } from "../types/HeatmapData.type";
 import FeedCard from "../components/Feed/Cards";
 import ChallengeCard from './../components/ChallengePage/Cards';
-import { FeedItem, dummy_sample } from "../types/FeedItem.type";
-import dummyChallengeData from "../types/ChallengeItem.dummy";
+import { FeedItem } from "../types/FeedItem.type";
 import { getRange, mergeJandi, shiftDate } from "../utils/rawDatatoJandi";
 import { Link, useParams } from 'react-router-dom';
 import axios from "../api/axios";
@@ -21,8 +19,8 @@ const ProfilePage = () => {
   const id = useParams().id;
   const [userProfile, setUserProfile] = useState<any>();
   const [heatmap, setHeatmap] = useState<any>();
-  const [feed, setFeed] = useState<FeedItem[]>()
-  const [challenge, setChallenge] = useState<ChallengeItem[]>()
+  const [feed, setFeed] = useState<FeedItem[]>([])
+  const [challenge, setChallenge] = useState<ChallengeItem[]>([])
   const [chartData, setChartData] = useState<newJandi[]>(
     getRange(51 * 7 + today.getDay() + 1).map(index => {
       return {
@@ -42,16 +40,12 @@ const ProfilePage = () => {
 
       let heat = response.data.heatmap
 
-      heat = heat.map((x:any) => {
+      heat = heat.map((x: any) => {
         return {
-          ...x, 
+          ...x,
           date: new Date(x.date)
         }
       })
-
-      console.log('heat', heat);
-
-
       setHeatmap(heat)
       setFeed(response.data.feed)
       setChallenge(response.data.challenge)
@@ -62,7 +56,6 @@ const ProfilePage = () => {
 
   useEffect(() => {
     if (heatmap) {
-
       setChartData(mergeJandi(chartData, heatmap))
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -75,12 +68,12 @@ const ProfilePage = () => {
       <div className="w-[80%] h-full flex flex-col">
         <section className="flex h-[30%] w-full items-start">
           <div className="maax-w-40 max-h-40">
-            <img src={dummyImage10} className="w-40 h-40 rounded-full object-fill mr-40 whitespace-nowrap" alt="Profile" />
+            <img src={userProfile && userProfile.image_url} className="w-40 h-40 rounded-full object-fill mr-40 whitespace-nowrap" alt="Profile" />
           </div>
           <div className="flex flex-col w-full">
             <div className="flex w-full items-baseline justify-between">
               <div className="font-bold text-3xl">
-                이강혁
+                {userProfile && userProfile.name}
               </div>
               <Button className="bg-point hover:bg-point-hover active:bg-point-active shadow-xl rounded-full">
                 <Link to={'edit'}>
@@ -89,10 +82,10 @@ const ProfilePage = () => {
               </Button>
             </div>
             <div className="flex p-6 justify-between">
-              <ProfileNumber title={"게시물"} count={6} />
-              <ProfileNumber title={"챌린지"} count={4} />
-              <ProfileNumber title={"팔로워"} count={1} />
-              <ProfileNumber title={"팔로잉"} count={1} />
+              <ProfileNumber title={"게시물"} count={userProfile && userProfile.posts} />
+              <ProfileNumber title={"챌린지"} count={userProfile && userProfile.challenges} />
+              <ProfileNumber title={"팔로워"} count={userProfile && userProfile.followers} />
+              <ProfileNumber title={"팔로잉"} count={userProfile && userProfile.followings} />
             </div>
           </div>
         </section>
@@ -116,9 +109,9 @@ const ProfilePage = () => {
           </div>
           <div className='flex flex-col items-center'>
             {feedToggle ?
-              <ChallengeCard data={dummyChallengeData} />
+              (challenge.length > 0 ? <ChallengeCard data={challenge} /> : <></>)
               :
-              <FeedCard data={dummy_sample} />
+              (feed.length > 0 ? <FeedCard data={feed} /> : <></>)
             }
           </div>
         </section>

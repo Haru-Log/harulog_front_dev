@@ -34,13 +34,8 @@ export const shiftDate = (date: Date, numDays: number) => {
 
 
 export const mergeJandi = (initialState: newJandi[], receievedData: newJandi[]) => {
-  console.log(receievedData);
   const combinedJandi = [...initialState, ...receievedData]
-  // console.log(combinedJandi);
-
-
   combinedJandi.sort((a, b) => a.date.getTime() - b.date.getTime())
-
 
   let mergedJandi = combinedJandi.filter((x, idx) => {
     if (Object.values(x.categoryPosts).length === 0 && idx < combinedJandi.length - 1 && x.date.toISOString().split('T')[0] === combinedJandi[idx + 1].date.toISOString().split('T')[0]) {
