@@ -1,26 +1,27 @@
 import Slogan from "../components/MainPage/Slogan"
 import { useContext, useEffect, useState } from "react"
 import { SetModalContext } from "../App"
-import dummyChallengeData from './../types/ChallengeItem.dummy';
 import { ChallengeItem } from "../types/ChallengeItem.type"
 import ChallengeCard from "../components/ChallengePage/ChallengeCard"
 import FeedSlide from "../components/MainPage/FeedSlide"
 import { dummy_sample } from "../types/FeedItem.type"
 import { useNavigate } from "react-router-dom";
+import axios from "../api/axios";
 
 
 const MainPage = () => {
   const [challenges, setChallenges] = useState<ChallengeItem[]>([]);
   const navi = useNavigate();
+
   useEffect(() => {
-    const challengeItems = [...dummyChallengeData];
-    const showItems = []
-    while (showItems.length < 4) {
-      showItems.push(challengeItems.splice(Math.floor(Math.random() * challengeItems.length), 1)[0])
+    const getRandomChallenges = async () => {
+      const response = await axios.get('/main/challenge');
+      
+      setChallenges(response.data)
     }
-    setChallenges(showItems)
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [dummyChallengeData])
+    getRandomChallenges()
+
+  }, [])
 
   const setRegisterModal = useContext(SetModalContext)?.setRegisterModal;
 
@@ -30,7 +31,7 @@ const MainPage = () => {
       <div className="flex flex-col mb-10 w-full">
         <div className="flex flex-row justify-between items-baseline w-full mb-5">
           <div className="text-xl">진행중인 챌린지</div>
-          <div className="text-sm text-[#92C7CF] cursor-pointer" onClick={()=>navi('/challenge')}>모든 챌린지</div>
+          <div className="text-sm text-[#92C7CF] cursor-pointer" onClick={() => navi('/challenge')}>모든 챌린지</div>
         </div>
         <div className="flex justify-center">
           {
