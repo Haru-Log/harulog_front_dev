@@ -11,7 +11,7 @@ import {
 } from "src/ui/table"
 const ChallengeMemberList = () => {
   return (
-    <div className='flex flex-col mx-10 mt-10 mb-20 border-2 rounded-xl px-10 py-10 '>
+    <div className='flex flex-col mt-10 mb-20 border-2 rounded-xl px-10 py-10 '>
       <span className='text-xl font-bold'>참여하는 사람들</span>
       <Table className='mt-5'>
         <TableHeader>
