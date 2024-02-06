@@ -2,7 +2,6 @@ import React from 'react'
 import CalendarHeatmap from "react-calendar-heatmap"
 import './react-calendar-heatmap.css';
 import { Tooltip } from 'react-tooltip';
-import { Jandi } from "../../types/HeatmapData.type";
 import { shiftDate } from "../../utils/rawDatatoJandi";
 
 const today = new Date();

@@ -1,15 +1,15 @@
 import { useEffect, useState } from 'react'
 import { ToggleGroup, ToggleGroupItem } from "../ui/toggle-group";
 import Heatmap from "../components/ProfilePage/Heatmap";
-import { Jandi } from "../types/HeatmapData.type";
-import { filterJandi, getRange, mergeCategory, mergeJandi, shiftDate } from "../utils/rawDatatoJandi";
-import dummy_jandi from "../types/HeatmapData.dummy";
+import { filterJandi, getRange, mergeJandi, shiftDate } from "../utils/rawDatatoJandi";
 import { Button } from "../ui/button"
 import RadialChart from "../components/GrowPage/RadialChart";
 import TodayChart from "../components/GrowPage/TodayChart";
 import { Table, TableBody, TableHead, TableHeader, TableRow } from "../ui/table";
 import MonthlyChart from "../components/GrowPage/MonthlyChart";
 import MyGoalRow from "../components/GrowPage/MyGoalRow";
+import axios from "../api/axios";
+import { newJandi } from "../types/HeatmapData.type";
 
 const today = new Date(); // dummy data용
 
@@ -52,36 +52,39 @@ const GrowPage = () => {
   const [myGoal, setMyGoal] = useState<{ category: string, goal: number, updatedAt: Date }[]>(initialGoalState)  //목표 리스트 수정용
   const [achievement, setAchievement] = useState<{ category: string, achievement: number }[]>(initialAchievementState)
   const [selectedValue, setSelectedValue] = useState("전체"); //필터 선택
-  const [allChart, setAllChart] = useState<Jandi[]>([])
-  const [chartData, setChartData] = useState<Jandi[]>( //잔디밭 값 초기화
+  const [allChart, setAllChart] = useState<newJandi[]>([])
+  const [chartData, setChartData] = useState<newJandi[]>(
     getRange(51 * 7 + today.getDay() + 1).map(index => {
       return {
         date: shiftDate(new Date(), -index),
-        category: [""]
+        // category: [""]
+        categoryPosts: {}
       };
     })
   );
 
 
-
   useEffect(() => {
-    dummy_jandi.sort((a, b) => a.date.getTime() - b.date.getTime());
-    const mergedJandi = mergeJandi(chartData, mergeCategory(dummy_jandi))
+    const getGrowInfos = async () => {
+      const response = await axios.get('/grow');
 
-    if (mergedJandi.length) {
-      setAllChart(mergedJandi)
-
-      //set으로 하는게 버전이 안 맞아서 일단 이렇게 중복 제거 했습니다.
-      setChartData(mergedJandi.map((it) => {
-        let tmp: string[] = [];
-        for (let i of it.category) {
-          if (!tmp.includes(i)) {
-            tmp.push(i)
-          }
+      let heat = response.data.data
+      heat = heat.map((x: any) => {
+        return {
+          ...x,
+          date: new Date(x.date)
         }
-        return { ...it, category: tmp }
-      }));
+      })
+
+      const mergedJandi = mergeJandi(chartData, heat)
+
+      if (mergedJandi.length) {
+        setAllChart(mergedJandi)
+        setChartData(mergedJandi)
+      }
     }
+
+    getGrowInfos()
 
     // 목표 설정하기
     setGoal([...dummy_goal]);
@@ -94,15 +97,7 @@ const GrowPage = () => {
   // 전체 필터링을 위한 작업
   useEffect(() => {
     if (selectedValue === '전체' && allChart.length) {
-      setChartData(allChart.map((it) => {
-        let tmp: string[] = [];
-        for (let i of it.category) {
-          if (!tmp.includes(i)) {
-            tmp.push(i)
-          }
-        }
-        return { ...it, category: tmp }
-      }));
+      setChartData(allChart);
     }
     else if (allChart.length) {
       setChartData(filterJandi(allChart, selectedValue));

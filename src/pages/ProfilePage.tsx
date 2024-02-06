@@ -4,25 +4,17 @@ import ProfileNumber from "../components/ProfilePage/ProfileNumber"
 import Heatmap from "../components/ProfilePage/Heatmap";
 import { useEffect, useState } from "react";
 import { Archive, Mountain } from "lucide-react";
-import { Jandi, newJandi } from "../types/HeatmapData.type";
+import { newJandi } from "../types/HeatmapData.type";
 import FeedCard from "../components/Feed/Cards";
 import ChallengeCard from './../components/ChallengePage/Cards';
 import { FeedItem, dummy_sample } from "../types/FeedItem.type";
 import dummyChallengeData from "../types/ChallengeItem.dummy";
-import dummy_jandi from "../types/HeatmapData.dummy";
-import { getRange, mergeCategory, mergeJandi, shiftDate } from "../utils/rawDatatoJandi";
+import { getRange, mergeJandi, shiftDate } from "../utils/rawDatatoJandi";
 import { Link, useParams } from 'react-router-dom';
 import axios from "../api/axios";
 import { ChallengeItem } from "../types/ChallengeItem.type";
 
 const today = new Date(); // dummy data용
-
-interface ProfileData {
-  user: any;
-  heatmap: newJandi[];
-  feed: FeedItem[];
-  challenge: ChallengeItem[];
-}
 
 const ProfilePage = () => {
 
@@ -77,25 +69,6 @@ const ProfilePage = () => {
   }, [heatmap])
 
   const [feedToggle, setFeedToggle] = useState(false);
-
-  // // 전체 필터링을 위한 작업
-  // useEffect(() => {
-  //   dummy_jandi.sort((a, b) => a.date.getTime() - b.date.getTime());
-  //   const mergedJandi = mergeJandi(chartData, mergeCategory(dummy_jandi))
-
-  //   if (mergedJandi.length) {
-  //     setChartData(mergedJandi.map((it) => {
-  //       let tmp: string[] = [];
-  //       for (let i of it.category) {
-  //         if (!tmp.includes(i)) {
-  //           tmp.push(i)
-  //         }
-  //       }
-  //       return { ...it, category: tmp }
-  //     }))
-  //   }
-  //   // eslint-disable-next-line react-hooks/exhaustive-deps
-  // }, [dummy_jandi])
 
   return (
     <div className="w-full flex justify-center py-16 font-ibm">
