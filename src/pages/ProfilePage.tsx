@@ -18,7 +18,6 @@ const ProfilePage = () => {
 
   const id = useParams().id;
   const [userProfile, setUserProfile] = useState<any>();
-  const [heatmap, setHeatmap] = useState<any>();
   const [feed, setFeed] = useState<FeedItem[]>([])
   const [challenge, setChallenge] = useState<ChallengeItem[]>([])
   const [chartData, setChartData] = useState<Jandi[]>(
