@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { ToggleGroup, ToggleGroupItem } from "../ui/toggle-group";
 import Heatmap from "../components/ProfilePage/Heatmap";
-import { filterJandi, getRange, mergeJandi, shiftDate } from "../utils/rawDatatoJandi";
+import { filterJandi, getRange, mergeCategory, mergeJandi, shiftDate } from "../utils/rawDatatoJandi";
 import { Button } from "../ui/button"
 import RadialChart from "../components/GrowPage/RadialChart";
 import TodayChart from "../components/GrowPage/TodayChart";
@@ -9,7 +9,8 @@ import { Table, TableBody, TableHead, TableHeader, TableRow } from "../ui/table"
 import MonthlyChart from "../components/GrowPage/MonthlyChart";
 import MyGoalRow from "../components/GrowPage/MyGoalRow";
 import axios from "../api/axios";
-import { newJandi } from "../types/HeatmapData.type";
+import { HeatmapCategory, Jandi } from "../types/HeatmapData.type";
+// import { newJandi } from "../types/HeatmapData.type";
 
 const today = new Date(); // dummy data용
 
@@ -51,18 +52,21 @@ const GrowPage = () => {
   const [goal, setGoal] = useState<{ category: string, goal: number, updatedAt: Date }[]>(initialGoalState)  //목표 리스트 저장
   const [myGoal, setMyGoal] = useState<{ category: string, goal: number, updatedAt: Date }[]>(initialGoalState)  //목표 리스트 수정용
   const [achievement, setAchievement] = useState<{ category: string, achievement: number }[]>(initialAchievementState)
-  const [selectedValue, setSelectedValue] = useState("전체"); //필터 선택
-  const [allChart, setAllChart] = useState<newJandi[]>([])
-  const [chartData, setChartData] = useState<newJandi[]>(
+  const [selectedValue, setSelectedValue] = useState<HeatmapCategory>("전체"); //필터 선택
+  const [allChart, setAllChart] = useState<Jandi[]>([])
+  const [chartData, setChartData] = useState<Jandi[]>(
     getRange(51 * 7 + today.getDay() + 1).map(index => {
       return {
         date: shiftDate(new Date(), -index),
-        // category: [""]
-        categoryPosts: {}
+        category: {},
       };
     })
   );
-
+  const [categoryMax, setCategoryMax] = useState<{
+    "공부"?: number;
+    "운동"?: number;
+    "독서"?: number;
+  }>({})
 
   useEffect(() => {
     const getGrowInfos = async () => {
@@ -75,8 +79,10 @@ const GrowPage = () => {
           date: new Date(x.date)
         }
       })
+      const merge = mergeCategory(heat)
 
-      const mergedJandi = mergeJandi(chartData, heat)
+      const mergedJandi = mergeJandi(chartData, merge.mergedJandi)
+      setCategoryMax(merge.categoryMax)
 
       if (mergedJandi.length) {
         setAllChart(mergedJandi)
@@ -126,7 +132,7 @@ const GrowPage = () => {
           <div className="text-2xl font-bold mr-1 whitespace-nowrap">사용자이름</div>
           <div className="text-xl font-bold whitespace-nowrap">님, 오늘도 힘찬 하루 되세요!👏</div>
         </div>
-        <ToggleGroup type="single" value={selectedValue} onValueChange={setSelectedValue} className='flex'>
+        <ToggleGroup type="single" value={selectedValue} onValueChange={(e) => { setSelectedValue(e as HeatmapCategory) }} className='flex'>
           <ToggleGroupItem value="전체" className="whitespace-nowrap">전체</ToggleGroupItem>
           <ToggleGroupItem value="공부" className="whitespace-nowrap">공부</ToggleGroupItem>
           <ToggleGroupItem value="운동" className="whitespace-nowrap">운동</ToggleGroupItem>
@@ -135,7 +141,7 @@ const GrowPage = () => {
         </ToggleGroup>
       </section>
       <section className="flex flex-col pt-10">
-        <Heatmap data={chartData} />
+        <Heatmap data={chartData} categoryMax={categoryMax} />
       </section>
       <section className="border-2 rounded-xl w-full">
         <div className="flex justify-between">

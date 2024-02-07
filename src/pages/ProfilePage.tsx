@@ -3,14 +3,14 @@ import ProfileNumber from "../components/ProfilePage/ProfileNumber"
 import Heatmap from "../components/ProfilePage/Heatmap";
 import { useEffect, useState } from "react";
 import { Archive, Mountain } from "lucide-react";
-import { newJandi } from "../types/HeatmapData.type";
 import FeedCard from "../components/Feed/Cards";
 import ChallengeCard from './../components/ChallengePage/Cards';
 import { FeedItem } from "../types/FeedItem.type";
-import { getRange, mergeJandi, shiftDate } from "../utils/rawDatatoJandi";
+import { getRange, mergeCategory, mergeJandi, shiftDate } from "../utils/rawDatatoJandi";
 import { Link, useParams } from 'react-router-dom';
 import axios from "../api/axios";
 import { ChallengeItem } from "../types/ChallengeItem.type";
+import { Jandi } from "../types/HeatmapData.type";
 
 const today = new Date(); // dummy data용
 
@@ -21,18 +21,21 @@ const ProfilePage = () => {
   const [heatmap, setHeatmap] = useState<any>();
   const [feed, setFeed] = useState<FeedItem[]>([])
   const [challenge, setChallenge] = useState<ChallengeItem[]>([])
-  const [chartData, setChartData] = useState<newJandi[]>(
+  const [chartData, setChartData] = useState<Jandi[]>(
     getRange(51 * 7 + today.getDay() + 1).map(index => {
       return {
         date: shiftDate(new Date(), -index),
-        // category: [""]
-        categoryPosts: {}
+        category: {},
       };
     })
   );
+  const [categoryMax, setCategoryMax] = useState<{
+    "기상"?: number;
+    "공부"?: number;
+    "운동"?: number;
+    "독서"?: number;
+  }>({})
 
-
-  // Refined from backend version code
   useEffect(() => {
     const getUserProfile = async () => {
       const response = await axios.get(id ? `/profile/${id}` : `/profile`);
@@ -46,20 +49,22 @@ const ProfilePage = () => {
           date: new Date(x.date)
         }
       })
-      setHeatmap(heat)
+
+      const merge = mergeCategory(heat)
+
+      const mergedJandi = mergeJandi(chartData, merge.mergedJandi)
+      setCategoryMax(merge.categoryMax)
+
+      if (mergedJandi.length) {
+        setChartData(mergedJandi)
+      }
+
       setFeed(response.data.feed)
       setChallenge(response.data.challenge)
     }
     getUserProfile();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
-
-  useEffect(() => {
-    if (heatmap) {
-      setChartData(mergeJandi(chartData, heatmap))
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [heatmap])
 
   const [feedToggle, setFeedToggle] = useState(false);
 
@@ -90,7 +95,7 @@ const ProfilePage = () => {
           </div>
         </section>
         <section>
-          <Heatmap data={chartData} />
+        <Heatmap data={chartData} categoryMax={categoryMax} />
         </section>
         <section className="w-full h-full">
           <div className="w-full flex justify-between">

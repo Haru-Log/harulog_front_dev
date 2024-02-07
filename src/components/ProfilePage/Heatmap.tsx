@@ -3,10 +3,11 @@ import CalendarHeatmap from "react-calendar-heatmap"
 import './react-calendar-heatmap.css';
 import { Tooltip } from 'react-tooltip';
 import { shiftDate } from "../../utils/rawDatatoJandi";
+import { Jandi } from './../../types/HeatmapData.type';
 
 const today = new Date();
 
-const Heatmap: React.FC<{ data: any }> = ({ data }) => {
+const Heatmap: React.FC<{ data: Jandi[]; categoryMax: any }> = ({ data, categoryMax }) => {
 
   return (
     <div className="w-full h-fit">
@@ -14,22 +15,30 @@ const Heatmap: React.FC<{ data: any }> = ({ data }) => {
         startDate={shiftDate(today, -(51 * 7 + today.getDay() + 1))}
         endDate={today}
         values={data}
-        classForValue={value => {
-          if (!value || Object.values(value.categoryPosts).length === 0) {
+        classForValue={(value: any) => {
+          if (!value || Object.values(value.category).length === 0) {
             return 'color-empty';
-          } else if (Object.values(value.categoryPosts).length === 1) {
-            if (value.categoryPosts['기상']) {
-              return `color-${Object.keys(value.categoryPosts)[0]}`
+          } else if (Object.values(value.category).length === 1) {
+            if (value.category['기상']) {
+              return 'color-기상'
             }
-            if (parseInt(Object.values<string>(value.categoryPosts)[0]) > 3) {
-              return `color-${Object.keys(value.categoryPosts)[0]}-4`
+            if (Object.values<number>(value.category)[0] > categoryMax[Object.keys(value.category)[0]] / 4 * 3) {
+              return `color-${Object.keys(value.category)[0]}-4`
             }
-            return `color-${Object.keys(value.categoryPosts)[0]}-${Object.values(value.categoryPosts)[0]}`
+            else if (Object.values<number>(value.category)[0] > categoryMax[Object.keys(value.category)[0]] / 2) {
+              return `color-${Object.keys(value.category)[0]}-3`
+            }
+            else if (Object.values<number>(value.category)[0] > categoryMax[Object.keys(value.category)[0]] / 4) {
+              return `color-${Object.keys(value.category)[0]}-2`
+            }
+            else {
+              return `color-${Object.keys(value.category)[0]}-1`
+            }
+
           }
-          else if (Object.values(value.categoryPosts).length > 1) {
+          else {
             return 'color-multiple'
           }
-          return `color-${Object.keys(value.categoryPosts)[0]}`;
         }}
         tooltipDataAttrs={(value: any) => {
           return {
@@ -44,9 +53,10 @@ const Heatmap: React.FC<{ data: any }> = ({ data }) => {
           id={value.date?.getTime() + ""}
           place="top"
           content={`${value.date?.toISOString().slice(0, 10)} 
-          ${(Object.keys(value.categoryPosts).length === 1)
-              ? `${Object.keys(value.categoryPosts)[0]} ${Object.keys(value.categoryPosts)[0] === '기상' ? "" : Object.values(value.categoryPosts)[0]}`
-              : Object.keys(value.categoryPosts).join(', ')
+          ${(Object.keys(value.category).length === 1)
+              ? `${Object.keys(value.category)[0]} ${Object.keys(value.category)[0] === '기상'
+                ? Math.floor(Object.values<number>(value.category)[0] / 60) + "시 " + Math.floor(Object.values<number>(value.category)[0] % 12) : Object.values(value.category)[0]}분`
+              : Object.keys(value.category).join(', ')
             }`}
         />
       )}
