@@ -1,10 +1,10 @@
-import { useChallengeStore } from 'src/zustand/challengeStore';
 import { Textarea } from 'src/ui/textarea';
 import { Send } from 'lucide-react';
 import { Button } from 'src/ui/button';
+import { useChallengeDetailStore } from 'src/zustand/challengeDetailStore';
 
 const ChallengeInfoRight = () => {
-  const challenge = useChallengeStore((state) => state.challenge);
+  const challenge = useChallengeDetailStore((state) => state.challenge);
 
   return (
     <div className='flex flex-col w-full min-w-72'>
@@ -22,7 +22,7 @@ const ChallengeInfoRight = () => {
       </div>
       <div className='mt-5'>
         <span className='font-bold text-lg mr-10 whitespace-nowrap'>챌린지 설명</span>
-        <Textarea value={challenge.challenge_content} disabled className='resize-none min-h-32 mt-3' />
+        <Textarea value={challenge.challengeContent} disabled className='resize-none min-h-32 mt-3' />
       </div>
       <div className='mt-5'>
         <span className='font-bold text-lg mr-10 whitespace-nowrap'>인증 방법</span>
