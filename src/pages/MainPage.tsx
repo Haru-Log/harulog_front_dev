@@ -35,7 +35,7 @@ const MainPage = () => {
         <div className="flex justify-center">
           {
             challenges.map((item) =>
-              <ChallengeCard key={item.challenge_id} {...item} />
+              <ChallengeCard challengeId={0} challengeTitle={""} categoryName={""} challengeUserCount={0} imageUrl={""} key={item.challenge_id} {...item} />
             )
           }
         </div>

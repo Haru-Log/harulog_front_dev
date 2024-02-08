@@ -4,103 +4,47 @@ import { Input } from 'src/ui/input'
 import { DatePickerWithRangeEdit } from 'src/ui/date-range-picker'
 import { Textarea } from 'src/ui/textarea'
 import { Button } from 'src/ui/button'
-import { useEffect, useState } from 'react'
-import { useNewChallengeStore } from 'src/zustand/newChallengeStore'
-import { DateRange } from 'react-day-picker'
-import { useChallengeStore } from 'src/zustand/challengeStore'
 import { getTimes } from 'src/utils/getTimes'
 import { getFormattedTime } from 'src/utils/getFormattedTime'
+import { useChallengeDetailStore } from 'src/zustand/challengeDetailStore'
+import { useState } from 'react'
+import { DateRange } from 'react-day-picker'
 
 const EditInputCard = () => {
-  const { newChallenge, setNewChallenge } = useNewChallengeStore();
-  const challenge = useChallengeStore((state) => state.challenge);
-  const [challengeCategory, setChallengeCategory] = useState(challenge.category_name);
-  const [challengeTitle, setChallengeTitle] = useState(challenge.challenge_title);
-  const [challengeContent, setChallengeContent] = useState(challenge.challenge_content);
-  const [challengeGoal, setChallengeGoal] = useState(challenge.challenge_goal);
-  const [challengeImage, setChallengeImage] = useState('');
-  const [submission, setSubmission] = useState(challenge.submission);
+  const challenge = useChallengeDetailStore((state) => state.challenge);
+  const setChallenge = useChallengeDetailStore(state => state.setChallenge);
+  const times = getTimes();
+  const defaultTime = challenge.challengeGoal ? getFormattedTime(challenge.challengeGoal) : '';
+
   const [date, setDate] = useState<DateRange | undefined>({
-    from: new Date(challenge.start_date!),
-    to: new Date(challenge.end_date!),
+    from: new Date(challenge.startDate!),
+    to: new Date(challenge.endDate!),
   })
 
-  const times = getTimes();
-  const defaultTime = challenge.challenge_goal ? getFormattedTime(challenge.challenge_goal) : '';
+  const saveButtonOnClick = () => {
+    alert(challenge.categoryName + " " + challenge.challengeTitle + " " + challenge.challengeContent + " " + challenge.challengeGoal + " " + challenge.imageUrl + " " + challenge.submission + " " + challenge.startDate + " " + challenge.endDate);
+  }
 
-  useEffect(() => {
-    updateNewChallenge();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [challengeCategory, challengeTitle, challengeContent, challengeGoal, challengeImage, submission, date]);
+  const saveButtonDisabled = (): boolean => {
+    return (
+      !challenge.categoryName ||
+      !challenge.challengeTitle ||
+      !challenge.challengeContent ||
+      !challenge.challengeGoal ||
+      !challenge.imageUrl ||
+      !challenge.submission ||
+      !challenge.startDate ||
+      !challenge.endDate
+    );
+  };
 
   const handleTimeChange = (selectedTime: string) => {
     const [hourStr, minuteStr] = selectedTime.split(":");
     const hour = parseInt(hourStr, 10);
     const minute = parseInt(minuteStr, 10);
     const totalMinutes = hour * 60 + minute;
-    setChallengeGoal(totalMinutes);
+    setChallenge({ ...challenge, challengeGoal: totalMinutes });
   };
-
-  const updateNewChallenge = () => {
-    setNewChallenge({
-      ...newChallenge,
-      category_name: challengeCategory,
-      challenge_title: challengeTitle,
-      challenge_content: challengeContent,
-      challenge_goal: challengeGoal,
-      challenge_image: challengeImage,
-      submission: submission,
-      start_date: new Date(String(date?.from)),
-      end_date: new Date(String(date?.to)),
-    });
-  };
-
-  const isFieldEmpty = (value: string | number): boolean => {
-    return String(value).trim() === "" || parseInt(String(value)) <= 0 || !value;
-  };
-
-  const saveButtonDisabled = (): boolean => {
-    return (
-      isFieldEmpty(challengeCategory) ||
-      isFieldEmpty(challengeTitle) ||
-      isFieldEmpty(challengeContent) ||
-      isFieldEmpty(challengeGoal) ||
-      isFieldEmpty(challengeImage) ||
-      isFieldEmpty(submission) ||
-      (date?.from === undefined || date?.to === undefined)
-    );
-  };
-
-  const saveButtonOnClick = () => {
-    updateNewChallenge();
-    const {
-      category_name,
-      challenge_title,
-      challenge_content,
-      challenge_goal,
-      challenge_image,
-      submission,
-      start_date,
-      end_date,
-    } = newChallenge;
-
-    const formattedNewChallenge = JSON.stringify(
-      {
-        category_name,
-        challenge_title,
-        challenge_content,
-        challenge_goal,
-        challenge_image,
-        submission,
-        start_date,
-        end_date,
-      },
-      null,
-      2
-    );
-    alert(formattedNewChallenge);
-  }
-
 
   return (
     <div className='flex flex-col mx-10 mt-10 border-2 rounded-xl px-10 py-10'>
@@ -108,7 +52,7 @@ const EditInputCard = () => {
         <div className='flex flex-col mr-10'>
           <div className='flex flex-row items-start'>
             <span className="font-bold mr-5 w-16">카테고리</span>
-            <Select defaultValue={challenge.category_name} onValueChange={(e) => { setChallengeCategory(e) }}>
+            <Select defaultValue={challenge.categoryName}>
               <SelectTrigger className={`w-[280px] border-2 `}>
                 <SelectValue placeholder="선택" />
               </SelectTrigger>
@@ -122,16 +66,14 @@ const EditInputCard = () => {
           </div>
           <div className='flex flex-row items-start'>
             <span className="font-bold mr-5 mt-5 w-16">목표</span>
-            {challengeCategory !== '기상' ?
+            {challenge.categoryName !== '기상' ?
               <div className='flex items-baseline'>
                 <Input
                   type="number"
                   placeholder={'목표 시간(분)을 입력하세요'}
                   className={`mt-5 w-[250px] border-2`}
-                  defaultValue={challenge.challenge_goal}
-                  onChange={(e) => {
-                    setChallengeGoal(parseInt(e.target.value));
-                  }} /> <span className='pl-3'> 분</span>
+                  defaultValue={challenge.challengeGoal}
+                /> <span className='pl-3'> 분</span>
               </div> :
               <div className='mt-5'>
                 <Select defaultValue={defaultTime} onValueChange={handleTimeChange}>
@@ -150,7 +92,7 @@ const EditInputCard = () => {
                   </SelectContent>
                 </Select>
               </div>
-              }
+            }
           </div>
           <div className='flex flex-row items-start'>
             <span className="font-bold mr-5 mt-5 w-16">기간</span>
@@ -159,6 +101,7 @@ const EditInputCard = () => {
               date={date}
               setDate={(newDate) => {
                 setDate(newDate);
+                setChallenge({ ...challenge, startDate: String(newDate?.from), endDate: String(newDate?.to) });
               }}
             />
           </div>
@@ -167,9 +110,8 @@ const EditInputCard = () => {
             <Input
               type="file"
               className={`mt-5 w-[280px] border-2 `}
-              value={challengeImage}
               onChange={(e) => {
-                setChallengeImage(e.target.value);
+                setChallenge({ ...challenge, imageUrl: e.target.value });
               }}
             />
           </div>
@@ -178,22 +120,20 @@ const EditInputCard = () => {
           <div>
             <span className="font-bold mr-5">챌린지 제목</span>
             <Textarea
-              value={challengeTitle}
               placeholder="제목을 입력해주세요."
               className={`resize-none min-h-28 min-w-32 mt-1 border-2 `}
-              defaultValue={challenge.challenge_title}
+              defaultValue={challenge.challengeTitle}
               onChange={(e) => {
-                setChallengeTitle(e.target.value);
+                setChallenge({ ...challenge, challengeTitle: e.target.value });
               }}
             />
           </div>
           <div className='mt-3'>
             <span className="font-bold mr-5">챌린지 설명</span>
             <Textarea
-              defaultValue={challenge.challenge_content}
-              value={challengeContent}
+              defaultValue={challenge.challengeContent}
               onChange={(e) => {
-                setChallengeContent(e.target.value);
+                setChallenge({ ...challenge, challengeContent: e.target.value });
               }}
               placeholder="세부 사항을 입력해주세요."
               className={`resize-none min-h-32 min-w-32 mt-1 border-2 `}
@@ -203,9 +143,8 @@ const EditInputCard = () => {
             <span className="font-bold mr-5">인증 방법</span>
             <Textarea
               defaultValue={challenge.submission}
-              value={submission}
               onChange={(e) => {
-                setSubmission(e.target.value);
+                setChallenge({ ...challenge, submission: e.target.value });
               }}
               placeholder="세부 사항을 입력해주세요."
               className={`resize-none min-h-32 min-w-32 mt-1 border-2`}

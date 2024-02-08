@@ -1,16 +1,31 @@
 import { useParams } from 'react-router-dom';
-import useChallengeFetcher from '../hooks/useChallengeFetcher';
 import ChallengeDetailHeader from '../components/ChallengeDetailPage/ChallengeDetailHeader'
 import ChallengeInfo from '../components/ChallengeDetailPage/ChallengeInfo';
 import ChallengeMemberList from '../components/ChallengeDetailPage/ChallengeMemberList';
+import { useChallengeDetailStore } from '../zustand/challengeDetailStore';
+import { useEffect } from 'react';
+import { fetchChallengeADetail } from '../api/challenge/FetchChallengeDetail';
 
 const ChallengeDetailPage = () => {
   const { id } = useParams();
-  const selectedChallenge = useChallengeFetcher(Number(id));
+  const setChallenge = useChallengeDetailStore(state => state.setChallenge);
+  const challenge = useChallengeDetailStore((state) => state.challenge);
+
+  useEffect(() => {
+    const fetchChallengeDetails = async () => {
+      try {
+        const challengeDetails = await fetchChallengeADetail(id);
+        setChallenge(challengeDetails.data);
+      } catch (error) {
+        console.error('Error fetching challenge details:', error);
+      }
+    };
+    fetchChallengeDetails();
+  }, [id, setChallenge]);
 
   return (
     <div className='mx-10 font-ibm'>
-      {selectedChallenge ?
+      {challenge ?
         <div>
           <ChallengeDetailHeader />
           <ChallengeInfo />

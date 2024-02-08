@@ -1,4 +1,3 @@
-import dummyChallengeMemberData from 'src/types/ChallengeMember.dummy'
 import { UserPlus } from 'lucide-react'
 import { Button } from 'src/ui/button'
 import {
@@ -9,7 +8,10 @@ import {
   TableHeader,
   TableRow,
 } from "src/ui/table"
+import { useChallengeDetailStore } from 'src/zustand/challengeDetailStore'
 const ChallengeMemberList = () => {
+  const challenge = useChallengeDetailStore((state) => state.challenge);
+
   return (
     <div className='flex flex-col mt-10 mb-20 border-2 rounded-xl px-10 py-10 '>
       <span className='text-xl font-bold'>참여하는 사람들</span>
@@ -24,16 +26,16 @@ const ChallengeMemberList = () => {
           </TableRow>
         </TableHeader>
         <TableBody>
-        {dummyChallengeMemberData.map((member, index) => (
+        {challenge.challengeUserList?.map((member, index) => (
           <TableRow key={index}>
             <TableCell className="w-[100px]">
-              <img src={member.profileImage} alt={`profile-img-${index}`} className='rounded-full w-12'></img>
+              <img src={member.imageUrl} alt={`profile-img-${index}`} className='rounded-full w-12'></img>
             </TableCell>
-            <TableCell className='w-[80px]'>{member.name}</TableCell>
-            <TableCell>({member.status})</TableCell>
+            <TableCell className='w-[80px]'>{member.nickname}</TableCell>
+            <TableCell>{member.status}</TableCell>
             <TableCell className="text-right w-[90px]">
-              <div className={`text-white text-xs text-center font-bold w-fit h-fit px-3 py-3 rounded-lg shadow-sm ${member.dailyAchievement === '달성 완료' ? 'bg-green-300' : 'bg-yellow-300'} whitespace-nowrap`}>
-                {member.dailyAchievement}
+              <div className={`text-white text-xs text-center font-bold w-fit h-fit px-3 py-3 rounded-lg shadow-sm ${member.dailyAchievement === true ? 'bg-green-300' : 'bg-yellow-300'} whitespace-nowrap`}>
+                {member.dailyAchievement ? '달성 완료' : '미달성'}
               </div>
             </TableCell>
             <TableCell className="text-right w-[90px]">
