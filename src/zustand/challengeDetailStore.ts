@@ -2,15 +2,15 @@ import { create } from 'zustand';
 import { devtools } from 'zustand/middleware';
 import { ChallengeDetail } from '../types/ChallengeDetail.type';
 
-interface newChallengeState {
-  newChallenge: ChallengeDetail;
-  setNewChallenge: (newChallenge: ChallengeDetail) => void;
+interface ChallengeState {
+  challenge: ChallengeDetail;
+  setChallenge: (challenge: ChallengeDetail) => void;
 }
 
-export const useNewChallengeStore = create<newChallengeState>()(
+export const useChallengeDetailStore = create<ChallengeState>()(
   devtools(
     (set) => ({
-      newChallenge: {
+      challenge: {
         challengeId: 0,
         challengeTitle: '',
         challengeContent: '',
@@ -32,8 +32,9 @@ export const useNewChallengeStore = create<newChallengeState>()(
           },
         ],
       },
-      setNewChallenge: (newChallenge: ChallengeDetail) => set({ newChallenge }),
+      setChallenge: (challenge: ChallengeDetail) => set({ challenge }),
+
     }),
-    { name: 'newChallengeStore' }
+    { name: 'challengeDetailStore' }
   ),
 );

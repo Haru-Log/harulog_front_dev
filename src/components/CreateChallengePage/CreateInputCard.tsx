@@ -16,7 +16,7 @@ const CreateInputCard = () => {
     to: new Date(""),
   })
 
-  const isGoalInputEnabled = !!newChallenge.category_name;
+  const isGoalInputEnabled = !!newChallenge.categoryName;
   const times = getTimes();
 
   const handleTimeChange = (selectedTime: string) => {
@@ -24,19 +24,19 @@ const CreateInputCard = () => {
     const hour = parseInt(hourStr, 10);
     const minute = parseInt(minuteStr, 10);
     const totalMinutes = hour * 60 + minute;
-    setNewChallenge({ ...newChallenge, challenge_goal: totalMinutes });
+    setNewChallenge({ ...newChallenge, challengeGoal: totalMinutes });
   };
 
   const saveButtonDisabled = (): boolean => {
     return (
-      !newChallenge.category_name ||
-      !newChallenge.challenge_title ||
-      !newChallenge.challenge_content ||
-      !newChallenge.challenge_goal ||
-      !newChallenge.challenge_image ||
+      !newChallenge.categoryName ||
+      !newChallenge.challengeTitle ||
+      !newChallenge.challengeContent ||
+      !newChallenge.challengeGoal ||
+      !newChallenge.imageUrl ||
       !newChallenge.submission ||
-      !newChallenge.start_date ||
-      !newChallenge.end_date
+      !newChallenge.startDate ||
+      !newChallenge.endDate
     );
   };
 
@@ -51,7 +51,7 @@ const CreateInputCard = () => {
         <div className='flex flex-col mr-10'>
           <div className='flex flex-row items-start'>
             <span className="font-bold mr-5 w-16">카테고리</span>
-            <Select onValueChange={(e) => { setNewChallenge({ ...newChallenge, category_name: e }) }}>
+            <Select onValueChange={(e) => { setNewChallenge({ ...newChallenge, categoryName: e }) }}>
               <SelectTrigger className={`w-[280px] border-2 `}>
                 <SelectValue placeholder="선택" />
               </SelectTrigger>
@@ -65,15 +65,15 @@ const CreateInputCard = () => {
           </div>
           <div className='flex flex-row items-start'>
             <span className="font-bold mr-5 mt-5 w-16">목표</span>
-            {isGoalInputEnabled ? newChallenge.category_name !== '기상' ?
+            {isGoalInputEnabled ? newChallenge.categoryName !== '기상' ?
               <div className='flex items-baseline'>
                 <Input
                   type="number"
                   placeholder={'목표 시간(분)을 입력하세요'}
                   className={`mt-5 w-[250px] border-2`}
-                  value={newChallenge.challenge_goal.toString()}
+                  value={newChallenge.challengeGoal.toString()}
                   onChange={(e) => {
-                    setNewChallenge({ ...newChallenge, challenge_goal: parseInt(e.target.value) });
+                    setNewChallenge({ ...newChallenge, challengeGoal: parseInt(e.target.value) });
                   }} /> <span className='pl-3'> 분</span>
               </div> :
               <div className='mt-5'>
@@ -102,7 +102,7 @@ const CreateInputCard = () => {
               date={date}
               setDate={(newDate) => {
                 setDate(newDate);
-                setNewChallenge({ ...newChallenge, start_date: newDate?.from, end_date: newDate?.to });
+                setNewChallenge({ ...newChallenge, startDate: String(newDate?.from), endDate: String(newDate?.to) });
               }}
             />
           </div>
@@ -111,9 +111,8 @@ const CreateInputCard = () => {
             <Input
               type="file"
               className={`mt-5 w-[280px] border-2 `}
-              value={newChallenge.challenge_image}
               onChange={(e) => {
-                setNewChallenge({ ...newChallenge, challenge_image: e.target.value });
+                setNewChallenge({ ...newChallenge, imageUrl: e.target.value });
               }}
             />
           </div>
@@ -122,20 +121,20 @@ const CreateInputCard = () => {
           <div>
             <span className="font-bold mr-5">챌린지 제목</span>
             <Textarea
-              value={newChallenge.challenge_title}
+              value={newChallenge.challengeTitle}
               placeholder="제목을 입력해주세요."
               className={`resize-none min-h-28 min-w-32 mt-1 border-2 `}
               onChange={(e) => {
-                setNewChallenge({ ...newChallenge, challenge_title: e.target.value });
+                setNewChallenge({ ...newChallenge, challengeTitle: e.target.value });
               }}
             />
           </div>
           <div className='mt-3'>
             <span className="font-bold mr-5">챌린지 설명</span>
             <Textarea
-              value={newChallenge.challenge_content}
+              value={newChallenge.challengeContent}
               onChange={(e) => {
-                setNewChallenge({ ...newChallenge, challenge_content: e.target.value });
+                setNewChallenge({ ...newChallenge, challengeContent: e.target.value });
               }}
               placeholder="세부 사항을 입력해주세요."
               className={`resize-none min-h-32 min-w-32 mt-1 border-2 `}

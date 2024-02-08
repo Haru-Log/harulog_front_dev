@@ -1,15 +1,15 @@
+import { useChallengeDetailStore } from 'src/zustand/challengeDetailStore';
 import getDiffInDays from 'src/utils/getDiffInDays';
-import { useChallengeStore } from 'src/zustand/challengeStore';
 
 const ChallengeDetailHeader = () => {
-  const challenge = useChallengeStore((state) => state.challenge);
+  const challenge = useChallengeDetailStore((state) => state.challenge);
   const status = challenge ? getDiffInDays(challenge) : '';
   return (
     <div>
       {challenge &&
         <div className='flex justify-between items-end mt-[85px]'>
           <div>
-            <span className='text-4xl font-black mr-3 whitespace-nowrap'>{challenge.challenge_title}</span>
+            <span className='text-4xl font-black mr-3 whitespace-nowrap'>{challenge.challengeTitle}</span>
             <span className='font-black whitespace-nowrap'>{status}</span>
           </div>
           <div className='flex'>
