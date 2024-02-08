@@ -6,12 +6,11 @@ import { useEffect, useState } from "react";
 import { Archive, Mountain } from "lucide-react";
 import { Jandi } from "../types/HeatmapData.type";
 import FeedCard from "../components/Feed/Cards";
-import ChallengeCard from './../components/ChallengePage/Cards';
 import { dummy_sample } from "../types/FeedItem.type";
-import dummyChallengeData from "../types/ChallengeItem.dummy";
 import dummy_jandi from "../types/HeatmapData.dummy";
 import { getRange, mergeCategory, mergeJandi, shiftDate } from "../utils/rawDatatoJandi";
 import { Link } from 'react-router-dom';
+import ProfileChallengeCard from '../components/ProfilePage/ProfileChallengeCard';
 
 const today = new Date(); // dummy data용
 
@@ -95,7 +94,7 @@ const ProfilePage = () => {
           </div>
           <div className='flex flex-col items-center'>
             {feedToggle ?
-              <ChallengeCard data={dummyChallengeData} />
+              <ProfileChallengeCard />
               :
               <FeedCard data={dummy_sample} />
             }
