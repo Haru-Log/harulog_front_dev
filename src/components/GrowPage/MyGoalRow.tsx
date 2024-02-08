@@ -7,12 +7,11 @@ const MyGoalRow: React.FC<{
   category: string;
   goal: number;
   updatedAt: Date
-  idx: number;
   achievement: number;
   isLastRow: boolean;
   setMyGoal: any;
   myGoal: any
-}> = ({ isEdit, category, goal, updatedAt, idx, achievement, isLastRow, setMyGoal, myGoal }) => {
+}> = ({ isEdit, category, goal, updatedAt, achievement, isLastRow, setMyGoal, myGoal }) => {
 
 
 
@@ -25,13 +24,13 @@ const MyGoalRow: React.FC<{
             <Input value={goal} className="border-none shadow-none text-2xl bg-white text-black h-full"
               onChange={(e) => {
                 setMyGoal(
-                  myGoal.map((x: any, i: number) => {
-                    if (i === idx) {
-                      return { ...x, goal: parseInt(e.target.value) }
-                    } else {
-                      return x
+                  {
+                    ...myGoal,
+                    [category]:{
+                      ...myGoal[category],
+                      goal: parseInt(e.target.value)
                     }
-                  })
+                  }
                 )
               }}
             />

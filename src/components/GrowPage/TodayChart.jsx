@@ -1,7 +1,7 @@
 import React, { memo, useEffect, useState } from 'react'
 import Chart from 'react-apexcharts'
 
-const RadialChart = ({ category, goals, achievements, theme }) => {
+const RadialChart = ({ category, goals, theme }) => {
 
   const [goal, setGoal] = useState(1)
   const [achievement, setAchievement] = useState(0)
@@ -74,12 +74,17 @@ const RadialChart = ({ category, goals, achievements, theme }) => {
   )
 
   useEffect(() => {
-    const g = goals.reduce((prev, curr) => prev + (curr.category !== "기상" ? curr.goal : 0), 0)
-    const a = achievements.reduce((prev, curr) => prev + (curr.category !== "기상" ? curr.achievement : 0), 0)
+    const [g, a] = Object.entries(goals).reduce((prev, curr) => {
+      if (curr[0] !== "기상") {
+        return [prev[0] + curr[1].goal, prev[1] + curr[1].achievement]
+      } else {
+        return prev
+      }
+    }, [0, 0])
     setGoal(g)
     setAchievement(a)
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [achievements, goals])
+  }, [goals])
 
   useEffect(() => {
     setChartState({ ...chartState, series: [achievement / (goal ? goal : 1) * 100] })

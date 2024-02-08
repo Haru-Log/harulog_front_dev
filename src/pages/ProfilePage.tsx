@@ -40,9 +40,7 @@ const ProfilePage = () => {
       const response = await axios.get(id ? `/profile/${id}` : `/profile`);
       setUserProfile(response.data.user)
 
-      let heat = response.data.heatmap
-
-      heat = heat.map((x: any) => {
+      const heat = response.data.heatmap.map((x: any) => {
         return {
           ...x,
           date: new Date(x.date)
@@ -94,7 +92,7 @@ const ProfilePage = () => {
           </div>
         </section>
         <section>
-        <Heatmap data={chartData} categoryMax={categoryMax} />
+          <Heatmap data={chartData} categoryMax={categoryMax} />
         </section>
         <section className="w-full h-full">
           <div className="w-full flex justify-between">

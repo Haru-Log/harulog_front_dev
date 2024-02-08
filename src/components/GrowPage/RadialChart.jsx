@@ -3,6 +3,10 @@ import Chart from 'react-apexcharts'
 
 const RadialChart = ({ category, goal, achievement, theme }) => {
 
+  if(category==="기상"){
+    console.log(goal, achievement);
+  }
+
   const [chartState, setChartState] = useState({
     series: [0],
     options: {

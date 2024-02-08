@@ -8,50 +8,37 @@ import TodayChart from "../components/GrowPage/TodayChart";
 import { Table, TableBody, TableHead, TableHeader, TableRow } from "../ui/table";
 import MonthlyChart from "../components/GrowPage/MonthlyChart";
 import MyGoalRow from "../components/GrowPage/MyGoalRow";
-import axios from "../api/axios";
-import { HeatmapCategory, Jandi } from "../types/HeatmapData.type";
-// import { newJandi } from "../types/HeatmapData.type";
+// import axios from "../api/axios";
+import { GrowCategory, HeatmapCategory, Jandi } from "../types/HeatmapData.type";
+import axios from "axios";
 
-const today = new Date(); // dummy data용
+const today = new Date();
 
-const initialGoalState = [
-  { category: "기상", goal: 0, updatedAt: new Date() },
-  { category: "공부", goal: 0, updatedAt: new Date() },
-  { category: "운동", goal: 0, updatedAt: new Date() },
-  { category: "독서", goal: 0, updatedAt: new Date() }
-]
+interface goalAchievementType {
+  goal: number;
+  updatedAt: Date;
+  achievement: number
+}
 
-const dummy_goal = [
-  { category: "기상", goal: 390, updatedAt: new Date('2024-01-01') },
-  { category: "공부", goal: 180, updatedAt: new Date('2024-01-01') },
-  { category: "운동", goal: 60, updatedAt: new Date('2024-01-01') },
-  { category: "독서", goal: 100, updatedAt: new Date('2024-01-01') }
-]
+interface GrowType {
+  기상: goalAchievementType;
+  공부: goalAchievementType;
+  운동: goalAchievementType;
+  독서: goalAchievementType;
+}
 
-const initialAchievementState = [
-  { category: "기상", achievement: 0 },
-  { category: "공부", achievement: 0 },
-  { category: "운동", achievement: 0 },
-  { category: "독서", achievement: 0 }
-]
-
-const dummy_achievement = [
-  { category: "기상", achievement: 10 },
-  { category: "공부", achievement: 95 },
-  { category: "운동", achievement: 60 },
-  { category: "독서", achievement: 100 }
-]
-
-const chartTheme = [
-  "#F0E57F", "#87b7ff", "#b1d9aa", "#fd8446"
-]
+const initialGoalState = {
+  기상: { goal: 0, updatedAt: new Date(), achievement: 0 },
+  공부: { goal: 0, updatedAt: new Date(), achievement: 0 },
+  운동: { goal: 0, updatedAt: new Date(), achievement: 0 },
+  독서: { goal: 0, updatedAt: new Date(), achievement: 0 },
+}
 
 const GrowPage = () => {
 
   const [isEdit, setIsEdit] = useState(false); //목표 편집
-  const [goal, setGoal] = useState<{ category: string, goal: number, updatedAt: Date }[]>(initialGoalState)  //목표 리스트 저장
-  const [myGoal, setMyGoal] = useState<{ category: string, goal: number, updatedAt: Date }[]>(initialGoalState)  //목표 리스트 수정용
-  const [achievement, setAchievement] = useState<{ category: string, achievement: number }[]>(initialAchievementState)
+  const [goal, setGoal] = useState<GrowType>(initialGoalState)  //목표 리스트 저장
+  const [myGoal, setMyGoal] = useState<GrowType>(initialGoalState)  //목표 리스트 수정용
   const [selectedValue, setSelectedValue] = useState<HeatmapCategory>("전체"); //필터 선택
   const [allChart, setAllChart] = useState<Jandi[]>([])
   const [chartData, setChartData] = useState<Jandi[]>(
@@ -62,6 +49,7 @@ const GrowPage = () => {
       };
     })
   );
+
   const [categoryMax, setCategoryMax] = useState<{
     "공부"?: number;
     "운동"?: number;
@@ -70,10 +58,10 @@ const GrowPage = () => {
 
   useEffect(() => {
     const getGrowInfos = async () => {
-      const response = await axios.get('/grow');
+      const response = await axios.all([axios.get('http://localhost:3003/grow'), axios.get('http://localhost:3003/grow/daily'), axios.get('http://localhost:3003/user-goal')]);
+      console.log('response', response);
 
-      let heat = response.data.data
-      heat = heat.map((x: any) => {
+      const heat = response[0].data.map((x: any) => {
         return {
           ...x,
           date: new Date(x.date)
@@ -88,15 +76,32 @@ const GrowPage = () => {
         setAllChart(mergedJandi)
         setChartData(mergedJandi)
       }
+
+      const initialGoalAchi: GrowType = { ...initialGoalState }
+
+      const wakeUptime = response[2].data.find((x: { categoryName: string; goal: number }) => x.categoryName === "기상").goal
+
+      response[1].data.forEach((it: { categoryName: string; userGoal: number; archievement: number; updatedAt: string }) => {
+        if (it.categoryName === "기상") {
+          initialGoalAchi.기상 = {
+            goal: wakeUptime,
+            achievement: it.archievement,
+            updatedAt: new Date(it.updatedAt)
+          }
+        } else {
+          initialGoalAchi[it.categoryName as GrowCategory] = {
+            goal: it.userGoal,
+            achievement: it.archievement,
+            updatedAt: new Date(it.updatedAt)
+          }
+        }
+      })
+
+      setGoal(initialGoalAchi)
+      setMyGoal(initialGoalAchi)
+
     }
-
     getGrowInfos()
-
-    // 목표 설정하기
-    setGoal([...dummy_goal]);
-    // 성취 설정하기
-    setAchievement([...dummy_achievement])
-
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
@@ -115,14 +120,21 @@ const GrowPage = () => {
     setMyGoal(goal)
   }, [goal])
 
+  const sendEditedGoal = async () => {
+    const response = await axios.put('http://localhost:3003', {});
+    if (response.data.message === "OK") {
+      alert('수정 완료')
+    } else {
+      alert('수정 실패')
+    }
+  }
+
   const handleSubmit = () => {
+    if (isEdit) {
+      sendEditedGoal();
+    }
     setIsEdit(!isEdit)
-    setGoal(myGoal.map((x, idx) => {
-      if (goal[idx].goal !== x.goal) {
-        x.updatedAt = new Date()
-      }
-      return x
-    }))
+    // 새로고침? 해서 다시 요청 받기
   }
 
   return (
@@ -157,36 +169,17 @@ const GrowPage = () => {
         <div className="flex justify-between items-center">
           <div className="flex flex-col justify-center h-full w-1/3">
             <div className="flex justify-between">
-              {
-                achievement.slice(0, 2).map((it, idx) => (
-                  <RadialChart
-                    key={idx}
-                    category={it.category}
-                    goal={it.category === '기상' ?
-                      (new Date().getTime() - goal[idx].updatedAt.getTime()) / (1000 * 60 * 60 * 24) : goal[idx].goal}
-                    achievement={it.achievement}
-                    theme={chartTheme[idx]}
-                  />
-                ))
-              }
+              <RadialChart key="Radial기상" category="기상" goal={(new Date().getTime() - goal.기상!.updatedAt.getTime()) / (1000 * 60 * 60 * 24)} achievement={goal.기상?.achievement} theme={"#F0E57F"} />
+              <RadialChart key={"Radial공부"} category={"공부"} goal={goal.공부?.goal} achievement={goal.공부?.achievement} theme={"#87b7ff"} />
             </div>
             <div className="flex justify-between">
-              {
-                achievement.slice(2, 4).map((it, idx) => (
-                  <RadialChart
-                    key={idx + 2}
-                    category={it.category}
-                    goal={goal[idx + 2].goal}
-                    achievement={it.achievement}
-                    theme={chartTheme[idx + 2]}
-                  />
-                ))
-              }
+              <RadialChart key={"Radial운동"} category={"운동"} goal={goal.운동?.goal} achievement={goal.운동?.achievement} theme={"#b1d9aa"} />
+              <RadialChart key={"Radial독서"} category={"독서"} goal={goal.독서?.goal} achievement={goal.독서?.achievement} theme={"#fd8446"} />
             </div>
           </div>
           <div className="w-1/3 h-full">
             <TodayChart
-              category={"Today"} goals={goal} achievements={achievement} theme={"#92C7CF"} />
+              category={"Today"} goals={goal} theme={"#92C7CF"} />
           </div>
           <div className="pr-7 h-full flex items-center w-1/3">
             <Table>
@@ -199,24 +192,21 @@ const GrowPage = () => {
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {
-                  myGoal.map((x, idx) =>
-                    <MyGoalRow key={idx} isEdit={isEdit} {...x} idx={idx} setMyGoal={setMyGoal} myGoal={myGoal}
-                      achievement={achievement[idx].achievement} isLastRow={idx === goal.length - 1}
-                    />
-                  )
-                }
+                <MyGoalRow key="Row기상" isEdit={isEdit} {...goal.기상} setMyGoal={setMyGoal} myGoal={myGoal} isLastRow={false} category="기상" />
+                <MyGoalRow key="Row공부" isEdit={isEdit} {...goal.공부} setMyGoal={setMyGoal} myGoal={myGoal} isLastRow={false} category="공부" />
+                <MyGoalRow key="Row운동" isEdit={isEdit} {...goal.운동} setMyGoal={setMyGoal} myGoal={myGoal} isLastRow={false} category="운동" />
+                <MyGoalRow key="Row독서" isEdit={isEdit} {...goal.독서} setMyGoal={setMyGoal} myGoal={myGoal} isLastRow={true} category="독서" />
               </TableBody>
             </Table>
           </div>
         </div>
       </section>
-      <section className="border-2 rounded-xl w-full mt-5">
+      {/* <section className="border-2 rounded-xl w-full mt-5">
         <div className="text-3xl font-bold m-5">
           MONTHLY
         </div>
         <MonthlyChart />
-      </section>
+      </section> */}
     </div>
   )
 }
