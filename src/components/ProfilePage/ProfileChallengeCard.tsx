@@ -1,18 +1,31 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useNavigate } from "react-router-dom";
 import { Flame } from 'lucide-react';
 import { useChallengeAllStore } from 'src/zustand/challengeAllStore';
-import { useFilterStore } from 'src/zustand/filterStore';
+import { fetchChallengeAll } from 'src/api/challenge/FetchChallengeAll';
 
-const ChallengeCard = () => {
+const ProfileChallengeCard = () => {
+  const fetchChallenges = useChallengeAllStore(state => state.setChallenge);
+
+  useEffect(() => {
+    const fetchChallengesData = async () => {
+      try {
+        const response = await fetchChallengeAll();
+        //내가 참여중인 챌린지만 가져오는 api로 변경해야함
+        fetchChallenges(response.data);
+      } catch (error) {
+        console.error(error);
+      }
+    }
+    fetchChallengesData();
+  }, [fetchChallenges]);
+
   const challenge = useChallengeAllStore(state => state.challenge); 
   const navigate = useNavigate();
-  const selectedValue = useFilterStore(state => state.selectedValue); 
-  const filteredCards = selectedValue === '전체' ? challenge : challenge.filter(item => item.categoryName === selectedValue);
 
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-0 mt-20 ml-10">
-      {filteredCards.map(challenge => (
+    <div className="grid grid-cols-2 gap-0 mt-10 ml-10">
+      {challenge.map(challenge => (
         <div key={challenge.challengeId} className="cursor-pointer transform transition-transform hover:scale-110 drop-shadow-xl" onClick={() => navigate(`/challenge/${challenge.challengeId}`)}>
           <div className="w-[90%] h-[90%] aspect-square rounded-xl">
             <img src={challenge.imageUrl} alt="챌린지 이미지" className="object-cover w-full h-full rounded-xl" />
@@ -33,4 +46,4 @@ const ChallengeCard = () => {
   )
 }
 
-export default ChallengeCard;
+export default ProfileChallengeCard;

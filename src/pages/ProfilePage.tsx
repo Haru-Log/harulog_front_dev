@@ -4,13 +4,12 @@ import Heatmap from "../components/ProfilePage/Heatmap";
 import { useEffect, useState } from "react";
 import { Archive, Mountain } from "lucide-react";
 import FeedCard from "../components/Feed/Cards";
-import ChallengeCard from './../components/ChallengePage/Cards';
 import { FeedItem } from "../types/FeedItem.type";
 import { getRange, mergeCategory, mergeJandi, shiftDate } from "../utils/rawDatatoJandi";
 import { Link, useParams } from 'react-router-dom';
-import axios from "../api/axios";
-import { ChallengeItem } from "../types/ChallengeItem.type";
+import ProfileChallengeCard from '../components/ProfilePage/ProfileChallengeCard';
 import { Jandi } from "../types/HeatmapData.type";
+import axios from "../api/axios";
 
 const today = new Date(); // dummy data용
 
@@ -19,7 +18,6 @@ const ProfilePage = () => {
   const id = useParams().id;
   const [userProfile, setUserProfile] = useState<any>();
   const [feed, setFeed] = useState<FeedItem[]>([])
-  const [challenge, setChallenge] = useState<ChallengeItem[]>([])
   const [chartData, setChartData] = useState<Jandi[]>(
     getRange(51 * 7 + today.getDay() + 1).map(index => {
       return {
@@ -57,7 +55,6 @@ const ProfilePage = () => {
       }
 
       setFeed(response.data.feed)
-      setChallenge(response.data.challenge)
     }
     getUserProfile();
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -111,7 +108,7 @@ const ProfilePage = () => {
           </div>
           <div className='flex flex-col items-center'>
             {feedToggle ?
-              (challenge.length > 0 ? <ChallengeCard data={challenge} /> : <></>)
+              <ProfileChallengeCard />
               :
               (feed.length > 0 ? <FeedCard data={feed} /> : <></>)
             }
