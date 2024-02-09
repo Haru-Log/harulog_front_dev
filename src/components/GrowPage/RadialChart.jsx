@@ -2,11 +2,6 @@ import React, { memo, useEffect, useState } from 'react'
 import Chart from 'react-apexcharts'
 
 const RadialChart = ({ category, goal, achievement, theme }) => {
-
-  if(category==="기상"){
-    console.log(goal, achievement);
-  }
-
   const [chartState, setChartState] = useState({
     series: [0],
     options: {
@@ -36,25 +31,24 @@ const RadialChart = ({ category, goal, achievement, theme }) => {
             strokeWidth: '100%',
             margin: 0, // margin is in pixels
           },
-
           dataLabels: {
             show: true,
             name: {
               show: true,
               color: theme,
               fontSize: '1.5rem',
-              offsetY: -30,
+              offsetY: -36,
               fontWeight: 1000,
             },
             value: {
               formatter: function (val) {
-                return `${achievement}${category === "기상" ? 'd' : 'm'}`;
+                return `${Math.floor(val * 10)/10}%`;
               },
               color: theme,
               fontSize: '3rem',
               fontWeight: 600,
               show: true,
-              offsetY: 20,
+              offsetY: 25,
             }
           }
         }
@@ -91,9 +85,9 @@ const RadialChart = ({ category, goal, achievement, theme }) => {
         series={chartState.series}
         type="radialBar"
       />
-      <div className="absolute right-[54%] top-[40%] text-center flex flex-col items-center">
+      <div className="absolute left-[41%] top-[38%] translate-x-[-50%] text-center flex flex-col items-center">
         <div className="text font-ibm font-bold">
-          {`${parseInt(goal)}${category === "기상" ? 'd' : 'm'}`}
+          {`${parseInt(achievement)}${category === "기상" ? 'd' : 'm'} `}/{` ${parseInt(goal)}${category === "기상" ? 'd' : 'm'}`}
         </div>
       </div>
     </div>

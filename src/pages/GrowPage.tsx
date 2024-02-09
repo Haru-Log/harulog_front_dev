@@ -6,7 +6,6 @@ import { Button } from "../ui/button"
 import RadialChart from "../components/GrowPage/RadialChart";
 import TodayChart from "../components/GrowPage/TodayChart";
 import { Table, TableBody, TableHead, TableHeader, TableRow } from "../ui/table";
-import MonthlyChart from "../components/GrowPage/MonthlyChart";
 import MyGoalRow from "../components/GrowPage/MyGoalRow";
 // import axios from "../api/axios";
 import { GrowCategory, HeatmapCategory, Jandi } from "../types/HeatmapData.type";

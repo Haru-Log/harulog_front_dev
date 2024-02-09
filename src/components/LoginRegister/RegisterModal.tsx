@@ -11,6 +11,7 @@ const RegisterModal = () => {
   const setLoginModal = useContext(SetModalContext)?.setLoginModal;
 
   const [name, setName] = useState("")
+  const [nickname, setNickname] = useState("")
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [passchk, setPasschk] = useState("");
@@ -44,6 +45,10 @@ const RegisterModal = () => {
                 <input type="text" className="border-2 border-[#92C7CF] rounded-xl w-full text-xl p-3" value={name} onChange={(e) => setName(e.target.value)} />
               </div>
               <div className="w-full mb-5">
+                <div className="mb-3 whitespace-nowrap">닉네임</div>
+                <input type="text" className="border-2 border-[#92C7CF] rounded-xl w-full text-xl p-3" value={nickname} onChange={(e) => setNickname(e.target.value)} />
+              </div>
+              <div className="w-full mb-5">
                 <div className="mb-3 whitespace-nowrap">이메일</div>
                 <input type="email" className="border-2 border-[#92C7CF] rounded-xl w-full text-xl p-3" value={email} onChange={(e) => setEmail(e.target.value)} />
               </div>
@@ -63,7 +68,6 @@ const RegisterModal = () => {
                 <div className="flex flex-row"><input type="checkbox" className="mr-3" /><div>이용약관에 동의합니다.</div></div>
                 <div className="flex flex-row mt-3 mb-5"><input type="checkbox" className="mr-3" /><div>개인정보 수집 및 이용에 동의합니다.</div></div>
               </div>
-
               <button className="w-full bg-[#92C7CF] text-white text-3xl p-5 rounded-xl shadow-xl whitespace-nowrap">
                 회원가입
               </button>
