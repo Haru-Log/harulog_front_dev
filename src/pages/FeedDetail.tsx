@@ -1,24 +1,34 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useNavigate, useParams } from "react-router-dom"
 import dummyImage1 from '../assets/20231010_084411.jpg' // 임시 이미지
 import { Heart, Pencil } from "lucide-react"
 import { dummy_comment } from "../types/Comment.type"
 import Comment from "../components/Feed/Comment"
-import useFeedFetcher from "../hooks/useFeedFetcher"
+// import useFeedFetcher from "../hooks/useFeedFetcher"
+import { FeedItem } from "../types/FeedItem.type"
+import { fetchFeedDetail } from "../api/feed/FetchFeedDetail"
 
 
 const FeedDetail = () => {
 
   const post_id = parseInt(useParams().id || "");
-  const selectedPost = useFeedFetcher(post_id);
+  // const selectedPost = useFeedFetcher(post_id);
   const navigate = useNavigate();
+  const [selectedPost, setSelectedPost] = useState<FeedItem>()
 
   useEffect(() => {
-    if (!selectedPost) {
-      navigate('/feed', { replace: true });
+    const fetchFeedDetails = async () => {
+      try {
+        const feedDetails = await fetchFeedDetail(post_id);
+        setSelectedPost({...feedDetails.data, created_at: new Date(feedDetails.data.created_at), updated_at: new Date(feedDetails.data.updated_at)})
+
+      } catch (error) {
+        console.log(error);
+      }
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [selectedPost])
+    fetchFeedDetails();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   return (
     <div className="w-full flex justify-center font-ibm pt-5">
@@ -47,7 +57,7 @@ const FeedDetail = () => {
             </div>
           </div>
           <div className="text-xl">
-            {selectedPost?.created_at.toLocaleDateString()}
+            {selectedPost?.created_at.toDateString()}
           </div>
         </section>
         <section className="mt-5 flex items-center">
