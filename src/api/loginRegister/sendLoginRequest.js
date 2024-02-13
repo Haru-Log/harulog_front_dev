@@ -12,7 +12,7 @@ export const sendLoginRequest = async (userInfo) => {
     const AccessToken = response.headers.getAuthorization()
     localStorage.setItem('AccessToken', AccessToken);
 
-    return response;
+    return response.data;
   } catch (error) {
     console.error('Error login:', error);
     throw error;

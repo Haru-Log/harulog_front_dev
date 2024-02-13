@@ -3,7 +3,8 @@ import { Link } from "react-router-dom"
 import KakaoIcon from '../../assets/kakao_icon.png'
 import { SetModalContext } from '../../App'
 import useOnClickOutside from "../../hooks/useOnClickOutside"
-import { sendLoginRequest } from "../../api/loginRegister/sendLoginRequest"
+import { sendLoginRequest } from './../../api/loginRegister/sendLoginRequest';
+
 
 const LoginModal = () => {
 
@@ -25,13 +26,19 @@ const LoginModal = () => {
       password: password
     }
     const response = await sendLoginRequest(userInfo)
+    if (response.data.code === "COM-000") {
+      setLoginModal(false);
+    } else {
+      alert('로그인 실패')
+    }
   }
 
+  const isEmailValid: boolean = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
 
   return (
     <div className="z-50 absolute font-ibm">
       <div className="fixed inset-3 flex justify-center">
-        <div className="w-[50%] max-w-[800px] relative shadow-2xl h-fit flex rounded-xl overflow-hidden duration-[400ms] delay-[2s] ease-in-out transition-all fade-in-40 bg-[#ececec]"
+        <div className="w-[50%] max-w-[800px] relative shadow-2xl h-fit flex rounded-xl overflow-hidden bg-[#ececec]"
           ref={ref}>
           <div className="w-full flex flex-col items-center p-10">
             <div className="text-6xl mb-5 whitespace-nowrap h-fit font-orbit">
@@ -55,18 +62,19 @@ const LoginModal = () => {
                   className="border-2 border-[#92C7CF] rounded-xl w-full text-xl p-3"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)} />
+                {!isEmailValid && email && <p className=" text-rose-500">유효하지 않은 이메일입니다.</p>}
               </div>
               <div className="w-full mb-5">
                 <div className="flex flex-row justify-between">
                   <div className="mb-3 whitespace-nowrap">비밀번호</div>
-                  <div className="text-[#92C7CF] cursor-pointer hover:underline whitespace-nowrap">비밀번호 분실</div>
+                  {/* <div className="text-[#92C7CF] cursor-pointer hover:underline whitespace-nowrap">비밀번호 분실</div> */}
                 </div>
                 <input type="password"
                   className="border-2 border-[#92C7CF] rounded-xl w-full text-xl p-3"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)} />
               </div>
-              <button className="w-full bg-[#92C7CF] text-white text-3xl p-5 rounded-xl shadow-xl whitespace-nowrap" onClick={handleLogin}>
+              <button disabled={!isEmailValid} className="w-full bg-[#92C7CF] text-white text-3xl p-5 rounded-xl shadow-xl whitespace-nowrap" onClick={handleLogin}>
                 로그인
               </button>
             </div>
