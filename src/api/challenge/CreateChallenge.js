@@ -3,7 +3,7 @@ import axios from 'axios';
 
 export const createChallenge = async (challenge) => {
   try {
-    const response = await axios.post('http://localhost:3003/challenge/regist', {
+    const response = await axios.post('https://k43884eb26cf9a.user-app.krampoline.com/api/challenge/regist', {
       challengeTitle : challenge.challengeTitle,
       challengeContent : challenge.challengeContent,
       challengeGoal : challenge.challengeGoal,

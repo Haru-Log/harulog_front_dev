@@ -14,7 +14,7 @@ const ChallengePage = () => {
         const response = await fetchChallengeAll();
         fetchChallenges(response.data);
       } catch (error) {
-        console.error(error);
+        // console.error(error);
       }
     }
     fetchChallengesData();
