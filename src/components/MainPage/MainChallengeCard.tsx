@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { useNavigate } from "react-router-dom";
 import { Flame } from 'lucide-react';
 import { useChallengeAllStore } from 'src/zustand/challengeAllStore';
-import { fetchChallengeAll } from 'src/api/challenge/FetchChallengeAll';
+import { fetchChallengeMain } from 'src/api/challenge/FetchChallengeMain';
 
 const MainChallengeCard = () => {
   const fetchChallenges = useChallengeAllStore(state => state.setChallenge);
@@ -10,7 +10,7 @@ const MainChallengeCard = () => {
   useEffect(() => {
     const fetchChallengesData = async () => {
       try {
-        const response = await fetchChallengeAll();
+        const response = await fetchChallengeMain();
         const allChallenges = response.data;
 
         let selectedChallenges = [];

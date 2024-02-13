@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { useNavigate } from "react-router-dom";
 import { Flame } from 'lucide-react';
 import { useChallengeAllStore } from 'src/zustand/challengeAllStore';
-import { fetchChallengeAll } from 'src/api/challenge/FetchChallengeAll';
+import { fetchChallengeProfile } from 'src/api/challenge/FetchChallengeProfile';
 
 const ProfileChallengeCard = () => {
   const fetchChallenges = useChallengeAllStore(state => state.setChallenge);
@@ -10,7 +10,7 @@ const ProfileChallengeCard = () => {
   useEffect(() => {
     const fetchChallengesData = async () => {
       try {
-        const response = await fetchChallengeAll();
+        const response = await fetchChallengeProfile();
         //내가 참여중인 챌린지만 가져오는 api로 변경해야함
         fetchChallenges(response.data);
       } catch (error) {
