@@ -11,22 +11,8 @@ const MainChallengeCard = () => {
     const fetchChallengesData = async () => {
       try {
         const response = await fetchChallengeMain();
-        const allChallenges = response.data;
-
-        let selectedChallenges = [];
-        const selectedIndices = new Set();
-
-        while (selectedIndices.size < 4) {
-          const randomIndex = Math.floor(Math.random() * allChallenges.length);
-          if (!selectedIndices.has(randomIndex)) {
-            selectedIndices.add(randomIndex);
-            selectedChallenges.push(allChallenges[randomIndex]);
-          }
-        }
-
-        fetchChallenges(selectedChallenges);
+        fetchChallenges(response.data);
       } catch (error) {
-        console.error(error);
       }
     }
     fetchChallengesData();
