@@ -11,10 +11,8 @@ const MainChallengeCard = () => {
     const fetchChallengesData = async () => {
       try {
         const response = await fetchChallengeMain();
-        const mainChallenges = response.data;
-        fetchChallenges(mainChallenges);
+        fetchChallenges(response.data);
       } catch (error) {
-        console.error(error);
       }
     }
     fetchChallengesData();
