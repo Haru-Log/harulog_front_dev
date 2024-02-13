@@ -28,6 +28,7 @@ const LoginModal = () => {
     const response = await sendLoginRequest(userInfo)
     if (response.code === "COM-000") {
       setLoginModal(false);
+      // window.location.reload()
     } else {
       alert('로그인 실패')
     }
