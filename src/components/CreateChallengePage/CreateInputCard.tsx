@@ -16,6 +16,8 @@ const CreateInputCard = () => {
     to: new Date(""),
   })
 
+
+
   const isGoalInputEnabled = !!newChallenge.categoryName;
   const times = getTimes();
 
@@ -42,6 +44,7 @@ const CreateInputCard = () => {
 
   const saveButtonOnClick = () => {
     const formattedNewChallenge = JSON.stringify(newChallenge, null, 2);
+    console.log(formattedNewChallenge);
     alert(formattedNewChallenge);
   }
 
@@ -103,6 +106,7 @@ const CreateInputCard = () => {
               setDate={(newDate) => {
                 setDate(newDate);
                 setNewChallenge({ ...newChallenge, startDate: String(newDate?.from), endDate: String(newDate?.to) });
+                // console.log("convertDateFormat: ", convertDateFormat(String(newDate?.from)));
               }}
             />
           </div>
