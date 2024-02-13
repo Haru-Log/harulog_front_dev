@@ -3,7 +3,7 @@ import axios from 'axios';
 export const fetchChallengeMain = async () => {
   const accessToken = localStorage.getItem('AccessToken');
   try {
-    const response = await axios.get('https://k43884eb26cf9a.user-app.krampoline.com/api/main/challenge', {
+    const response = await axios.get(`${process.env.REACT_APP_BACKEND_DEPLOY}api/main/challenge`, {
       headers: {
         'Authorization': `Bearer ${accessToken}`,
       },
