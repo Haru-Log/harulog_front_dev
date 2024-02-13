@@ -26,7 +26,7 @@ const LoginModal = () => {
       password: password
     }
     const response = await sendLoginRequest(userInfo)
-    if (response.data.code === "COM-000") {
+    if (response.code === "COM-000") {
       setLoginModal(false);
     } else {
       alert('로그인 실패')
