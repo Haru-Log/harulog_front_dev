@@ -1,5 +1,6 @@
 function convertDateFormat(dateString: string): string {
-  const date = new Date(dateString);
+  let date = new Date(dateString);
+  date.setDate(date.getDate() + 1);
   const isoString = date.toISOString();
   return String(isoString);
 }
