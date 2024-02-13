@@ -140,10 +140,28 @@ const GrowPage = () => {
       ]
     });
 
-    console.log(response);
+    console.log(response.data.data);
 
     if (response.data.message === "OK") {
       alert('수정 완료')
+      const tempGoal = {...goal}
+      response.data.data.forEach((it: { categoryName: string; userGoal: number; updatedAt: string }) => {
+        if (it.categoryName === "기상") {
+          tempGoal.기상 = {
+            ...tempGoal.기상,
+            goal: it.userGoal,
+            updatedAt: new Date(it.updatedAt),
+          }
+        } else {
+          tempGoal[it.categoryName as GrowCategory] = {
+            ...tempGoal[it.categoryName as GrowCategory],
+            goal: it.userGoal,
+            updatedAt: new Date(it.updatedAt)
+          }
+        }
+      })
+      setGoal({...tempGoal})
+      setMyGoal({...tempGoal})
     } else {
       alert('수정 실패')
     }

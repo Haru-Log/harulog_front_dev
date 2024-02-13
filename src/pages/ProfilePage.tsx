@@ -110,7 +110,7 @@ const ProfilePage = () => {
             {feedToggle ?
               <ProfileChallengeCard />
               :
-              (feed.length > 0 ? <FeedCard data={feed} /> : <></>)
+              (feed?.length > 0 ? <FeedCard data={feed} /> : <></>)
             }
           </div>
         </section>
