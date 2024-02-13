@@ -3,7 +3,7 @@ import { FeedItem } from "../types/FeedItem.type"
 import CreateButton from '../components/CreateButton'
 import FilterGroup from '../components/FilterGroup'
 import { useEffect, useState } from "react"
-import axios from "../api/axios"
+import { fetchFeedAll } from './../api/feed/FetchFeedAll';
 
 
 const FeedPage = () => {
@@ -13,8 +13,12 @@ const FeedPage = () => {
   useEffect(() => {
 
     const fetchFeedItems = async () => {
-      const response = await axios.get('/feed')
-      setFeedItems(response.data.data);
+      try{
+        const response = await fetchFeedAll();
+        setFeedItems(response.data)
+      } catch(error){
+        console.log(error);
+      }
     }
     fetchFeedItems()
 

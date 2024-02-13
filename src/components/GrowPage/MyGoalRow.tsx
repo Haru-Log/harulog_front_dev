@@ -21,7 +21,7 @@ const MyGoalRow: React.FC<{
       <TableCell className={`${isEdit && 'px-0 pb-0 pt-3 flex items-center h-full whitespace-nowrap'}`}>
         {isEdit ?
           <>
-            <Input value={goal} className="border-none shadow-none text-2xl bg-white text-black h-full"
+            <Input type="number" value={goal} className="border-none shadow-none text-2xl bg-white text-black h-full"
               onChange={(e) => {
                 setMyGoal(
                   {

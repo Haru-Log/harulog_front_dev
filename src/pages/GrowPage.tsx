@@ -58,7 +58,6 @@ const GrowPage = () => {
   useEffect(() => {
     const getGrowInfos = async () => {
       const response = await axios.all([axios.get('http://localhost:3003/grow'), axios.get('http://localhost:3003/grow/daily'), axios.get('http://localhost:3003/user-goal')]);
-      console.log('response', response);
 
       const heat = response[0].data.map((x: any) => {
         return {
@@ -120,7 +119,29 @@ const GrowPage = () => {
   }, [goal])
 
   const sendEditedGoal = async () => {
-    const response = await axios.put('http://localhost:3003', {});
+    const response = await axios.put('http://localhost:3003/user-goal/update', {
+      'updateGoalsList':[
+        {
+          "categoryName": "운동",
+          goal: myGoal.운동.goal
+        },
+        {
+          "categoryName": "기상",
+          goal: myGoal.기상.goal
+        },
+        {
+          "categoryName": "공부",
+          goal: myGoal.공부.goal
+        },
+        {
+          "categoryName": "독서",
+          goal: myGoal.독서.goal
+        }
+      ]
+    });
+
+    console.log(response);
+
     if (response.data.message === "OK") {
       alert('수정 완료')
     } else {
@@ -191,10 +212,10 @@ const GrowPage = () => {
                 </TableRow>
               </TableHeader>
               <TableBody>
-                <MyGoalRow key="Row기상" isEdit={isEdit} {...goal.기상} setMyGoal={setMyGoal} myGoal={myGoal} isLastRow={false} category="기상" />
-                <MyGoalRow key="Row공부" isEdit={isEdit} {...goal.공부} setMyGoal={setMyGoal} myGoal={myGoal} isLastRow={false} category="공부" />
-                <MyGoalRow key="Row운동" isEdit={isEdit} {...goal.운동} setMyGoal={setMyGoal} myGoal={myGoal} isLastRow={false} category="운동" />
-                <MyGoalRow key="Row독서" isEdit={isEdit} {...goal.독서} setMyGoal={setMyGoal} myGoal={myGoal} isLastRow={true} category="독서" />
+                <MyGoalRow key="Row기상" isEdit={isEdit} {...myGoal.기상} setMyGoal={setMyGoal} myGoal={myGoal} isLastRow={false} category="기상" />
+                <MyGoalRow key="Row공부" isEdit={isEdit} {...myGoal.공부} setMyGoal={setMyGoal} myGoal={myGoal} isLastRow={false} category="공부" />
+                <MyGoalRow key="Row운동" isEdit={isEdit} {...myGoal.운동} setMyGoal={setMyGoal} myGoal={myGoal} isLastRow={false} category="운동" />
+                <MyGoalRow key="Row독서" isEdit={isEdit} {...myGoal.독서} setMyGoal={setMyGoal} myGoal={myGoal} isLastRow={true} category="독서" />
               </TableBody>
             </Table>
           </div>

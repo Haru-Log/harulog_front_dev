@@ -98,10 +98,10 @@ const RadialChart = ({ category, goals, theme }) => {
         series={chartState.series}
         type="radialBar"
       />
-      <div className="absolute right-[40.5%] top-32 text-center flex flex-col items-center">
+      <div className="absolute right-[54%] translate-x-[50%] top-32 text-center flex flex-col items-center">
         <div className="text-6xl font-ibm font-extrabold ">Today</div>
         <div className="text-xl font-ibm mt-5 font-bold">
-          어제보다 15% 증가
+          오늘도 화이팅!
         </div>
       </div>
     </div>
