@@ -2,7 +2,7 @@ import axios from 'axios';
 
 export const sendRegisterInfo = async (userInfo) => {
   try {
-    const response = await axios.post('https://k43884eb26cf9a.user-app.krampoline.com/api/sign-up',
+    const response = await axios.post(`${process.env.REACT_APP_BACKEND_DEPLOY}api/sign-up`,
       {
         "email": userInfo.email,
         "userName": userInfo.userName,
