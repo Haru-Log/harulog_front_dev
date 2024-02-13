@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import KakaoIcon from '../../assets/kakao_icon.png'
 import { SetModalContext } from "../../App";
 import useOnClickOutside from "../../hooks/useOnClickOutside";
+import { sendRegisterInfo } from "../../api/loginRegister/sendRegisterInfo";
 
 
 const RegisterModal = () => {
@@ -18,6 +19,30 @@ const RegisterModal = () => {
 
   const ref: any = useRef();
   useOnClickOutside(ref, () => { setRegisterModal(false) });
+
+  const handleRegister = async () => {
+
+    const userInfo = {
+      email: email,
+      userName: name,
+      password: password,
+      nickname: nickname
+    }
+
+    const res = await sendRegisterInfo(userInfo);
+
+    if (res.code === "COM-000") {
+      alert('회원 가입 완료')
+      setRegisterModal(false)
+      setLoginModal(true)
+    } else if (res.code === "USR-004") {
+      alert('이미 사용중인 닉네임입니다.')
+    } else if (res.code === "USR-005") {
+      alert('이미 가입된 이메일입니다.')
+    } else if (res.code === "USR-006") {
+      alert('닉네임과 이메일을 변경하세요.')
+    }
+  }
 
   return (
     <div className="z-50 absolute font-ibm">
@@ -55,7 +80,7 @@ const RegisterModal = () => {
               <div className="w-full mb-5">
                 <div className="flex flex-row justify-between">
                   <div className="mb-3 whitespace-nowrap">비밀번호</div>
-                  <div className="text-[#92C7CF] cursor-pointer hover:underline whitespace-nowrap">비밀번호 분실</div>
+                  {/* <div className="text-[#92C7CF] cursor-pointer hover:underline whitespace-nowrap">비밀번호 분실</div> */}
                 </div>
                 <input type="password" className="border-2 border-[#92C7CF] rounded-xl w-full text-xl p-3" value={password} onChange={(e) => setPassword(e.target.value)} />
               </div>
@@ -63,12 +88,12 @@ const RegisterModal = () => {
                 <div className="mb-3 whitespace-nowrap">비밀번호 확인</div>
                 <input type="password" className="border-2 border-[#92C7CF] rounded-xl w-full text-xl p-3" value={passchk} onChange={(e) => setPasschk(e.target.value)} />
               </div>
-              <div className="flex justify-start flex-col">
+              {/* <div className="flex justify-start flex-col">
                 <div className="mb-3">데이터 사용 동의</div>
                 <div className="flex flex-row"><input type="checkbox" className="mr-3" /><div>이용약관에 동의합니다.</div></div>
                 <div className="flex flex-row mt-3 mb-5"><input type="checkbox" className="mr-3" /><div>개인정보 수집 및 이용에 동의합니다.</div></div>
-              </div>
-              <button className="w-full bg-[#92C7CF] text-white text-3xl p-5 rounded-xl shadow-xl whitespace-nowrap">
+              </div> */}
+              <button className="w-full bg-[#92C7CF] text-white text-3xl p-5 rounded-xl shadow-xl whitespace-nowrap" onClick={handleRegister}>
                 회원가입
               </button>
             </div>

@@ -1,8 +1,9 @@
 import React, { useContext, useRef, useState } from 'react'
 import { Link } from "react-router-dom"
 import KakaoIcon from '../../assets/kakao_icon.png'
-import { SetModalContext } from'../../App'
+import { SetModalContext } from '../../App'
 import useOnClickOutside from "../../hooks/useOnClickOutside"
+import { sendLoginRequest } from "../../api/loginRegister/sendLoginRequest"
 
 const LoginModal = () => {
 
@@ -13,9 +14,18 @@ const LoginModal = () => {
   const [password, setPassword] = useState("");
 
   const ref: any = useRef();
-  useOnClickOutside(ref, () => { 
+  useOnClickOutside(ref, () => {
     console.log('setmodalcon', setLoginModal);
-    setLoginModal(false) });
+    setLoginModal(false)
+  });
+
+  const handleLogin = async () => {
+    const userInfo = {
+      email: email,
+      password: password
+    }
+    const response = await sendLoginRequest(userInfo)
+  }
 
 
   return (
@@ -56,7 +66,7 @@ const LoginModal = () => {
                   value={password}
                   onChange={(e) => setPassword(e.target.value)} />
               </div>
-              <button className="w-full bg-[#92C7CF] text-white text-3xl p-5 rounded-xl shadow-xl whitespace-nowrap">
+              <button className="w-full bg-[#92C7CF] text-white text-3xl p-5 rounded-xl shadow-xl whitespace-nowrap" onClick={handleLogin}>
                 로그인
               </button>
             </div>
