@@ -10,6 +10,7 @@ import MyGoalRow from "../components/GrowPage/MyGoalRow";
 // import axios from "../api/axios";
 import { GrowCategory, HeatmapCategory, Jandi } from "../types/HeatmapData.type";
 import axios from "axios";
+import { fetchHeatmap } from "../api/grow/FetchHeatmap";
 
 const today = new Date();
 
@@ -57,7 +58,14 @@ const GrowPage = () => {
 
   useEffect(() => {
     const getGrowInfos = async () => {
-      const response = await axios.all([axios.get('http://localhost:3003/grow'), axios.get('http://localhost:3003/grow/daily'), axios.get('http://localhost:3003/user-goal')]);
+      const response = await axios.all([
+        axios.get('http://localhost:3003/grow'),
+        axios.get('http://localhost:3003/grow/daily'),
+        axios.get('http://localhost:3003/user-goal')
+      ]);
+
+      // const heatmapRes = await fetchHeatmap();
+      // console.log(heatmapRes);
 
       const heat = response[0].data.map((x: any) => {
         return {
@@ -120,7 +128,7 @@ const GrowPage = () => {
 
   const sendEditedGoal = async () => {
     const response = await axios.put('http://localhost:3003/user-goal/update', {
-      'updateGoalsList':[
+      'updateGoalsList': [
         {
           "categoryName": "운동",
           goal: myGoal.운동.goal
@@ -144,7 +152,7 @@ const GrowPage = () => {
 
     if (response.data.message === "OK") {
       alert('수정 완료')
-      const tempGoal = {...goal}
+      const tempGoal = { ...goal }
       response.data.data.forEach((it: { categoryName: string; userGoal: number; updatedAt: string }) => {
         if (it.categoryName === "기상") {
           tempGoal.기상 = {
@@ -160,8 +168,8 @@ const GrowPage = () => {
           }
         }
       })
-      setGoal({...tempGoal})
-      setMyGoal({...tempGoal})
+      setGoal({ ...tempGoal })
+      setMyGoal({ ...tempGoal })
     } else {
       alert('수정 실패')
     }

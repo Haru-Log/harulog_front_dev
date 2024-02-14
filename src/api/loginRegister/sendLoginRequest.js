@@ -9,7 +9,7 @@ export const sendLoginRequest = async (userInfo) => {
       });
     console.log('Request login: ', response.data.message);
 
-    const AccessToken = response.headers.getAuthorization()
+    const AccessToken = response.headers.getAuthorization().split(' ')[1]
     localStorage.setItem('AccessToken', AccessToken);
 
     return response.data;
