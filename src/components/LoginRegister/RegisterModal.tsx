@@ -22,7 +22,7 @@ const RegisterModal = () => {
   const isConfirmPasswordValid: boolean = password === passchk;
   const isNicknameValid: boolean = !!nickname && nickname.length <= 20;
   const isNameValid: boolean = !!name && name.length <= 10;
-  const isButtonDisabled: boolean = !isEmailValid || !isPasswordValid || !isConfirmPasswordValid || isNameValid || isNicknameValid;
+  const isButtonDisabled: boolean = !isEmailValid || !isPasswordValid || !isConfirmPasswordValid || !isNameValid || !isNicknameValid;
 
   const ref: any = useRef();
   useOnClickOutside(ref, () => { setRegisterModal(false) });

@@ -8,7 +8,6 @@ export const fetchHeatmap = async () => {
         'Authorization': `Bearer ${accessToken}`,
       },
     });
-    console.log('data: ', response.data);
     console.log('fetching heatmap data: ', response.data.message);
     return response.data;
   } catch (error) {

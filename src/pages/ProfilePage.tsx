@@ -9,7 +9,8 @@ import { getRange, mergeCategory, mergeJandi, shiftDate } from "../utils/rawData
 import { Link, useParams } from 'react-router-dom';
 import ProfileChallengeCard from '../components/ProfilePage/ProfileChallengeCard';
 import { Jandi } from "../types/HeatmapData.type";
-import axios from "../api/axios";
+import { fetchProfile } from "../api/profile/fetchProfile";
+import { fetchHeatmap } from "../api/grow/FetchHeatmap";
 
 const today = new Date(); // dummy data용
 
@@ -35,10 +36,12 @@ const ProfilePage = () => {
 
   useEffect(() => {
     const getUserProfile = async () => {
-      const response = await axios.get(id ? `/profile/${id}` : `/profile`);
-      setUserProfile(response.data.user)
+      const userInfo = await fetchProfile(id);
+      setUserProfile(userInfo.data)
 
-      const heat = response.data.heatmap.map((x: any) => {
+      //Heatmap
+      const heatmap = await fetchHeatmap();
+      const heat = heatmap.data.map((x: any) => {
         return {
           ...x,
           date: new Date(x.date)
@@ -54,7 +57,7 @@ const ProfilePage = () => {
         setChartData(mergedJandi)
       }
 
-      setFeed(response.data.feed)
+      // setFeed(response.data.feed)
     }
     getUserProfile();
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -67,12 +70,12 @@ const ProfilePage = () => {
       <div className="w-[80%] h-full flex flex-col">
         <section className="flex h-[30%] w-full items-start">
           <div className="maax-w-40 max-h-40">
-            <img src={userProfile && userProfile.image_url} className="w-40 h-40 rounded-full object-fill mr-40 whitespace-nowrap" alt="Profile" />
+            <img src={userProfile && userProfile.imageUrl} className="w-40 h-40 rounded-full object-fill mr-40 whitespace-nowrap" alt="Profile" />
           </div>
           <div className="flex flex-col w-full">
             <div className="flex w-full items-baseline justify-between">
               <div className="font-bold text-3xl">
-                {userProfile && userProfile.name}
+                {userProfile && userProfile.userName}
               </div>
               <Button className="bg-point hover:bg-point-hover active:bg-point-active shadow-xl rounded-full">
                 <Link to={'edit'}>
@@ -83,8 +86,8 @@ const ProfilePage = () => {
             <div className="flex p-6 justify-between">
               <ProfileNumber title={"게시물"} count={userProfile && userProfile.posts} />
               <ProfileNumber title={"챌린지"} count={userProfile && userProfile.challenges} />
-              <ProfileNumber title={"팔로워"} count={userProfile && userProfile.followers} />
-              <ProfileNumber title={"팔로잉"} count={userProfile && userProfile.followings} />
+              <ProfileNumber title={"팔로워"} count={userProfile && userProfile.followerCount} />
+              <ProfileNumber title={"팔로잉"} count={userProfile && userProfile.followingCount} />
             </div>
           </div>
         </section>
@@ -108,7 +111,7 @@ const ProfilePage = () => {
           </div>
           <div className='flex flex-col items-center'>
             {feedToggle ?
-              <ProfileChallengeCard />
+              <ProfileChallengeCard id={id} />
               :
               (feed?.length > 0 ? <FeedCard data={feed} /> : <></>)
             }

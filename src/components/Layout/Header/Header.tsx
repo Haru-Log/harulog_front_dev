@@ -3,6 +3,8 @@ import TopNav from './TopNav';
 import Title from './Title';
 import NavLogin from './NavLogin';
 import NavRegister from './NavRegister';
+import NavLogout from "./NavLogout";
+import NavMyPage from "./NavMyPage";
 const Header = () => {
   const [isHeaderVisible, setIsHeaderVisible] = useState(true);
 
@@ -27,8 +29,17 @@ const Header = () => {
       <TopNav />
       <Title />
       <div className='flex'>
-        <NavLogin />
-        <NavRegister />
+        {localStorage.getItem('AccessToken') ?
+          <>
+          <NavLogout />
+          <NavMyPage />
+          </>
+          :
+          <>
+            <NavLogin />
+            <NavRegister />
+          </>
+        }
       </div>
     </div>
   );

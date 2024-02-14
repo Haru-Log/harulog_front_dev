@@ -2,7 +2,6 @@ import React, { memo, useEffect, useState } from 'react'
 import Chart from 'react-apexcharts'
 
 const RadialChart = ({ category, goals, theme }) => {
-
   const [goal, setGoal] = useState(1)
   const [achievement, setAchievement] = useState(0)
 
@@ -76,7 +75,7 @@ const RadialChart = ({ category, goals, theme }) => {
   useEffect(() => {
     const [g, a] = Object.entries(goals).reduce((prev, curr) => {
       if (curr[0] !== "기상") {
-        return [prev[0] + curr[1].goal, prev[1] + curr[1].achievement]
+        return [prev[0] + curr[1].userGoal, prev[1] + curr[1].achievement]
       } else {
         return prev
       }

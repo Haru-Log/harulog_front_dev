@@ -42,7 +42,7 @@ const RadialChart = ({ category, goal, achievement, theme }) => {
             },
             value: {
               formatter: function (val) {
-                return `${Math.floor(val * 10)/10}%`;
+                return `${Math.floor(val * 10) / 10}%`;
               },
               color: theme,
               fontSize: '3rem',
@@ -73,10 +73,9 @@ const RadialChart = ({ category, goal, achievement, theme }) => {
   )
 
   useEffect(() => {
-    setChartState({ ...chartState, series: [achievement / goal * 100] })
+    setChartState({ ...chartState, series: [achievement / (goal ? goal : 1) * 100] })
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [goal, achievement])
-
 
   return (
     <div className="w-full h-full relative">
