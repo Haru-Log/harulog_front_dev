@@ -25,7 +25,7 @@ const MainChallengeCard = () => {
     <div className="grid grid-cols-4 gap-0">
       {challenge.map(challenge => (
         <div key={challenge.challengeId} className="cursor-pointer transform transition-transform hover:scale-110 drop-shadow-xl" onClick={() => navigate(`/challenge/${challenge.challengeId}`)}>
-          <div className="w-[90%] h-[90%] aspect-square rounded-xl">
+          <div className="min-w-72 min-h-72 w-[90%] h-[90%] aspect-square rounded-xl">
             <img src={challenge.imageUrl} alt="챌린지 이미지" className="object-cover w-full h-full rounded-xl" />
             <div className={`absolute top-0 right-[10%] text-white text-xs font-bold px-3 py-1 mr-2 mt-2 rounded-lg bg-${challenge.categoryName}`}>
               {challenge.categoryName}

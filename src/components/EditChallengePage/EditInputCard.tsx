@@ -9,6 +9,7 @@ import { getFormattedTime } from 'src/utils/getFormattedTime'
 import { useChallengeDetailStore } from 'src/zustand/challengeDetailStore'
 import { useState } from 'react'
 import { DateRange } from 'react-day-picker'
+import { editChallenge } from 'src/api/challenge/EditChallenge'
 
 const EditInputCard = () => {
   const challenge = useChallengeDetailStore((state) => state.challenge);
@@ -21,8 +22,14 @@ const EditInputCard = () => {
     to: new Date(challenge.endDate!),
   })
 
-  const saveButtonOnClick = () => {
-    alert(challenge.categoryName + " " + challenge.challengeTitle + " " + challenge.challengeContent + " " + challenge.challengeGoal + " " + challenge.imageUrl + " " + challenge.submission + " " + challenge.startDate + " " + challenge.endDate);
+  const saveButtonOnClick = async() => {
+    try {
+      await editChallenge(challenge, challenge.challengeId);
+      alert('Challenge edited successfully!');
+    } catch (error) {
+      console.error('Error editing challenge:', error);
+      alert('Failed to edit challenge. Please try again.');
+    }
   }
 
   const saveButtonDisabled = (): boolean => {
