@@ -1,4 +1,4 @@
-export const shareKakao = (challenge_id, challenge_title, challenge_img, challenge_category) => { 
+export const shareKakao = (challenge_id, challenge_title, challenge_img, challenge_category, challenge_leader) => { 
   if (window.Kakao) {
     const Kakao = window.Kakao;
     if (!Kakao.isInitialized()) {
@@ -10,9 +10,10 @@ export const shareKakao = (challenge_id, challenge_title, challenge_img, challen
       templateId: 103968,
       templateArgs: {
         title: `${challenge_title}`,
-        description: '000님이 하루로그 챌린지 초대를 보냈습니다!',
+        description: '하루로그 챌린지 초대장',
         path: `challenge/${challenge_id}`,
         category : `${challenge_category}`,
+        leader : `${challenge_leader}`,
         THU: `${challenge_img}`,
       },
     });
