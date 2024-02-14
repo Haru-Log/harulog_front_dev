@@ -1,9 +1,9 @@
 import axios from 'axios';
 
-export const fetchChallengeProfile = async () => {
+export const fetchChallengeProfile = async (id) => {
   const accessToken = localStorage.getItem('AccessToken');
   try {
-    const response = await axios.get(`${process.env.REACT_APP_BACKEND_DEPLOY}api/profile/challenge`, {
+    const response = await axios.get(`${process.env.REACT_APP_BACKEND_DEPLOY}api/profile/challenge${id ? `/${id}` : ""}`, {
       headers: {
         'Authorization': `Bearer ${accessToken}`,
       },
