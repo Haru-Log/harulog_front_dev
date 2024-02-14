@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useContext, useEffect, useState } from 'react'
 import { ToggleGroup, ToggleGroupItem } from "../ui/toggle-group";
 import Heatmap from "../components/ProfilePage/Heatmap";
 import { filterJandi, getRange, mergeCategory, mergeJandi, shiftDate } from "../utils/rawDatatoJandi";
@@ -7,15 +7,19 @@ import RadialChart from "../components/GrowPage/RadialChart";
 import TodayChart from "../components/GrowPage/TodayChart";
 import { Table, TableBody, TableHead, TableHeader, TableRow } from "../ui/table";
 import MyGoalRow from "../components/GrowPage/MyGoalRow";
-// import axios from "../api/axios";
 import { GrowCategory, HeatmapCategory, Jandi } from "../types/HeatmapData.type";
-import axios from "axios";
 import { fetchHeatmap } from "../api/grow/FetchHeatmap";
+import { SetModalContext } from "../App";
+import { useNavigate } from "react-router-dom";
+import { fetchDaily } from "../api/grow/FetchDaily";
+import { fetchGoal } from "../api/grow/FetchGoal";
+import { editGoal } from "../api/grow/EditGoal";
+import { fetchProfile } from "../api/profile/fetchProfile";
 
 const today = new Date();
 
 interface goalAchievementType {
-  goal: number;
+  userGoal: number;
   updatedAt: Date;
   achievement: number
 }
@@ -28,14 +32,18 @@ interface GrowType {
 }
 
 const initialGoalState = {
-  기상: { goal: 0, updatedAt: new Date(), achievement: 0 },
-  공부: { goal: 0, updatedAt: new Date(), achievement: 0 },
-  운동: { goal: 0, updatedAt: new Date(), achievement: 0 },
-  독서: { goal: 0, updatedAt: new Date(), achievement: 0 },
+  기상: { userGoal: 0, updatedAt: new Date(), achievement: 0 },
+  공부: { userGoal: 0, updatedAt: new Date(), achievement: 0 },
+  운동: { userGoal: 0, updatedAt: new Date(), achievement: 0 },
+  독서: { userGoal: 0, updatedAt: new Date(), achievement: 0 },
 }
 
 const GrowPage = () => {
 
+  const setLoginModal = useContext(SetModalContext)?.setLoginModal;
+  const navigate = useNavigate()
+
+  const [userName, setUserName] = useState("");
   const [isEdit, setIsEdit] = useState(false); //목표 편집
   const [goal, setGoal] = useState<GrowType>(initialGoalState)  //목표 리스트 저장
   const [myGoal, setMyGoal] = useState<GrowType>(initialGoalState)  //목표 리스트 수정용
@@ -57,17 +65,23 @@ const GrowPage = () => {
   }>({})
 
   useEffect(() => {
+
+    const accessToken = localStorage.getItem('AccessToken');
+
+    if (!accessToken) {
+      setLoginModal(true)
+      navigate('/', { replace: true })
+    }
+
     const getGrowInfos = async () => {
-      const response = await axios.all([
-        axios.get('http://localhost:3003/grow'),
-        axios.get('http://localhost:3003/grow/daily'),
-        axios.get('http://localhost:3003/user-goal')
-      ]);
 
-      // const heatmapRes = await fetchHeatmap();
-      // console.log(heatmapRes);
+      //UserInfo
+      const userInfo = await fetchProfile();
+      setUserName(userInfo.data.nickname)
 
-      const heat = response[0].data.map((x: any) => {
+      //Heatmap
+      const heatmapRes = await fetchHeatmap();
+      const heat = heatmapRes.data.map((x: any) => {
         return {
           ...x,
           date: new Date(x.date)
@@ -83,22 +97,29 @@ const GrowPage = () => {
         setChartData(mergedJandi)
       }
 
+      // User Goal
+      const daily = await fetchDaily();
+      console.log('daily', daily.data);
+
+      const userGoal = await fetchGoal();
+      console.log('userGoal', userGoal.data);
+
       const initialGoalAchi: GrowType = { ...initialGoalState }
 
-      const wakeUptime = response[2].data.find((x: { categoryName: string; goal: number }) => x.categoryName === "기상").goal
+      const wakeUptime = userGoal.data.find((x: { categoryName: string; goal: number }) => x.categoryName === "기상").userGoal
 
-      response[1].data.forEach((it: { categoryName: string; userGoal: number; archievement: number; updatedAt: string }) => {
+      daily.data.forEach((it: { categoryName: string; userGoal: number; achievement: number; goalUpdatedAt: string }) => {
         if (it.categoryName === "기상") {
           initialGoalAchi.기상 = {
-            goal: wakeUptime,
-            achievement: it.archievement,
-            updatedAt: new Date(it.updatedAt)
+            userGoal: wakeUptime,
+            achievement: it.achievement,
+            updatedAt: new Date(it.goalUpdatedAt)
           }
         } else {
           initialGoalAchi[it.categoryName as GrowCategory] = {
-            goal: it.userGoal,
-            achievement: it.archievement,
-            updatedAt: new Date(it.updatedAt)
+            userGoal: it.userGoal,
+            achievement: it.achievement,
+            updatedAt: new Date(it.goalUpdatedAt)
           }
         }
       })
@@ -127,28 +148,28 @@ const GrowPage = () => {
   }, [goal])
 
   const sendEditedGoal = async () => {
-    const response = await axios.put('http://localhost:3003/user-goal/update', {
+    const response = await editGoal({
       'updateGoalsList': [
         {
           "categoryName": "운동",
-          goal: myGoal.운동.goal
+          userGoal: myGoal.운동.userGoal
         },
         {
           "categoryName": "기상",
-          goal: myGoal.기상.goal
+          userGoal: myGoal.기상.userGoal
         },
         {
           "categoryName": "공부",
-          goal: myGoal.공부.goal
+          userGoal: myGoal.공부.userGoal
         },
         {
           "categoryName": "독서",
-          goal: myGoal.독서.goal
+          userGoal: myGoal.독서.userGoal
         }
       ]
     });
 
-    console.log(response.data.data);
+    console.log(response.data);
 
     if (response.data.message === "OK") {
       alert('수정 완료')
@@ -157,13 +178,13 @@ const GrowPage = () => {
         if (it.categoryName === "기상") {
           tempGoal.기상 = {
             ...tempGoal.기상,
-            goal: it.userGoal,
+            userGoal: it.userGoal,
             updatedAt: new Date(it.updatedAt),
           }
         } else {
           tempGoal[it.categoryName as GrowCategory] = {
             ...tempGoal[it.categoryName as GrowCategory],
-            goal: it.userGoal,
+            userGoal: it.userGoal,
             updatedAt: new Date(it.updatedAt)
           }
         }
@@ -187,7 +208,7 @@ const GrowPage = () => {
     <div className="w-full h-full p-10 font-ibm">
       <section className="flex">
         <div className="w-full flex items-baseline">
-          <div className="text-2xl font-bold mr-1 whitespace-nowrap">사용자이름</div>
+          <div className="text-2xl font-bold mr-1 whitespace-nowrap">{userName}</div>
           <div className="text-xl font-bold whitespace-nowrap">님, 오늘도 힘찬 하루 되세요!👏</div>
         </div>
         <ToggleGroup type="single" value={selectedValue} onValueChange={(e) => { setSelectedValue(e as HeatmapCategory) }} className='flex'>
@@ -216,11 +237,11 @@ const GrowPage = () => {
           <div className="flex flex-col justify-center h-full w-1/3">
             <div className="flex justify-between">
               <RadialChart key="Radial기상" category="기상" goal={(new Date().getTime() - goal.기상!.updatedAt.getTime()) / (1000 * 60 * 60 * 24)} achievement={goal.기상?.achievement} theme={"#F0E57F"} />
-              <RadialChart key={"Radial공부"} category={"공부"} goal={goal.공부?.goal} achievement={goal.공부?.achievement} theme={"#87b7ff"} />
+              <RadialChart key={"Radial공부"} category={"공부"} goal={goal.공부?.userGoal} achievement={goal.공부?.achievement} theme={"#87b7ff"} />
             </div>
             <div className="flex justify-between">
-              <RadialChart key={"Radial운동"} category={"운동"} goal={goal.운동?.goal} achievement={goal.운동?.achievement} theme={"#b1d9aa"} />
-              <RadialChart key={"Radial독서"} category={"독서"} goal={goal.독서?.goal} achievement={goal.독서?.achievement} theme={"#fd8446"} />
+              <RadialChart key={"Radial운동"} category={"운동"} goal={goal.운동?.userGoal} achievement={goal.운동?.achievement} theme={"#b1d9aa"} />
+              <RadialChart key={"Radial독서"} category={"독서"} goal={goal.독서?.userGoal} achievement={goal.독서?.achievement} theme={"#fd8446"} />
             </div>
           </div>
           <div className="w-1/3 h-full">
