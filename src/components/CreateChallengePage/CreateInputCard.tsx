@@ -8,6 +8,7 @@ import { useNewChallengeStore } from 'src/zustand/newChallengeStore'
 import { getTimes } from 'src/utils/getTimes'
 import { useState } from 'react'
 import { DateRange } from 'react-day-picker'
+import { createChallenge } from 'src/api/challenge/CreateChallenge'
 
 const CreateInputCard = () => {
   const { newChallenge, setNewChallenge } = useNewChallengeStore();
@@ -15,8 +16,6 @@ const CreateInputCard = () => {
     from: new Date(""),
     to: new Date(""),
   })
-
-
 
   const isGoalInputEnabled = !!newChallenge.categoryName;
   const times = getTimes();
@@ -42,10 +41,14 @@ const CreateInputCard = () => {
     );
   };
 
-  const saveButtonOnClick = () => {
-    const formattedNewChallenge = JSON.stringify(newChallenge, null, 2);
-    console.log(formattedNewChallenge);
-    alert(formattedNewChallenge);
+  const saveButtonOnClick = async () => {
+    try {
+      await createChallenge(newChallenge);
+      alert('Challenge created successfully!');
+    } catch (error) {
+      console.error('Error creating challenge:', error);
+      alert('Failed to create challenge. Please try again.');
+    }
   }
 
   return (

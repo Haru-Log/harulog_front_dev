@@ -10,7 +10,7 @@ const getDiffInDays = (challenge: ChallengeDetail): string => {
     return `${daysRemaining}일 뒤 시작 🌤️`;
   } else if (currentDate >= startDate && currentDate <= endDate) {
     const daysPassed = Math.floor((currentDate.getTime() - startDate.getTime()) / (1000 * 3600 * 24));
-    return `${daysPassed}일차 🚀`;
+    return `${daysPassed+1}일차 🚀`;
   } else {
     return '종료 😌';
   }

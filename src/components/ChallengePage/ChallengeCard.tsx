@@ -14,7 +14,7 @@ const ChallengeCard = () => {
     <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-0 mt-20 ml-10">
       {filteredCards.map(challenge => (
         <div key={challenge.challengeId} className="cursor-pointer transform transition-transform hover:scale-110 drop-shadow-xl" onClick={() => navigate(`/challenge/${challenge.challengeId}`)}>
-          <div className="w-[90%] h-[90%] aspect-square rounded-xl">
+          <div className="min-w-96 min-h-96 w-[90%] h-[90%] aspect-square rounded-xl">
             <img src={challenge.imageUrl} alt="챌린지 이미지" className="object-cover w-full h-full rounded-xl" />
             <div className={`absolute top-0 right-[10%] text-white text-xs font-bold px-3 py-1 mr-2 mt-2 rounded-lg bg-${challenge.categoryName}`}>
               {challenge.categoryName}
