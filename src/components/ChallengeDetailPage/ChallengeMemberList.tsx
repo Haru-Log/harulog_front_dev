@@ -10,9 +10,12 @@ import {
   TableRow,
 } from "src/ui/table"
 import { useChallengeDetailStore } from 'src/zustand/challengeDetailStore'
+import { useState } from 'react'
+import ConfirmationModal from '../ConfirmationModal'
 const ChallengeMemberList = () => {
   const challenge = useChallengeDetailStore((state) => state.challenge);
-  const amIJoined = false;
+  const participate = false;
+  const [showConfirmation, setShowConfirmation] = useState(false);
 
   const handleJoinChallenge = async() => {
     try {
@@ -22,20 +25,22 @@ const ChallengeMemberList = () => {
       console.error('Error joining challenge:', error);
       alert('Failed to join challenge. Please try again.');
     }
+    setShowConfirmation(false);
+    window.location.reload();
   }
 
   return (
     <div className='relative flex flex-col mt-10 mb-20 border-2 rounded-xl px-10 py-10'>
-      {!amIJoined && (
+      {!participate && (
         <div className="absolute inset-10 flex items-center justify-center z-50 blur-none">
-          <Button className="bg-point text-white py-2 px-4 rounded-lg font-semibold shadow-lg hover:bg-point-hover active:bg-point-active" onClick={handleJoinChallenge}>
-            챌린지 참여하기
+          <Button className="bg-point text-white py-2 px-4 rounded-lg font-semibold shadow-lg hover:bg-point-hover active:bg-point-active" onClick={() => setShowConfirmation(true)}>
+            챌린지에 참여해보세요!
           </Button>
         </div>
       )}
       <span className='text-xl font-bold'>참여하는 사람들</span>
 
-      <div className={` ${amIJoined ? '' : 'blur-sm'}`}>
+      <div className={` ${participate ? '' : 'blur-sm'}`}>
         <Table className='mt-5'>
           <TableHeader>
             <TableRow>
@@ -52,7 +57,7 @@ const ChallengeMemberList = () => {
                 <TableCell className="w-[100px]">
                   <img src={member.imageUrl} alt={`profile-img-${index}`} className='rounded-full w-12'></img>
                 </TableCell>
-                <TableCell className='w-[80px]'>{member.nickname}</TableCell>
+                <TableCell className='w-[80px] font-semibold'>{member.nickname}</TableCell>
                 <TableCell>{member.status}</TableCell>
                 <TableCell className="text-right w-[90px]">
                   <div className={`text-white text-xs text-center font-bold w-fit h-fit px-3 py-3 rounded-lg shadow-sm ${member.dailyAchievement === true ? 'bg-green-300' : 'bg-yellow-300'} whitespace-nowrap`}>
@@ -70,7 +75,13 @@ const ChallengeMemberList = () => {
         </Table>
 
       </div>
-
+      {showConfirmation && (
+        <ConfirmationModal
+          message="챌린지에 참가하시겠습니까?"
+          onConfirm={handleJoinChallenge}
+          onCancel={() => setShowConfirmation(false)}
+        />
+      )}
     </div>
   )
 }
