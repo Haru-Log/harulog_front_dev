@@ -14,9 +14,8 @@ import { useState } from 'react'
 import ConfirmationModal from '../ConfirmationModal'
 const ChallengeMemberList = () => {
   const challenge = useChallengeDetailStore((state) => state.challenge);
-  const participate = false;
   const [showConfirmation, setShowConfirmation] = useState(false);
-
+console.log()
   const handleJoinChallenge = async() => {
     try {
       await joinChallenge(challenge.challengeId);
@@ -31,7 +30,7 @@ const ChallengeMemberList = () => {
 
   return (
     <div className='relative flex flex-col mt-10 mb-20 border-2 rounded-xl px-10 py-10'>
-      {!participate && (
+      {!challenge.participate && (
         <div className="absolute inset-10 flex items-center justify-center z-50 blur-none">
           <Button className="bg-point text-white py-2 px-4 rounded-lg font-semibold shadow-lg hover:bg-point-hover active:bg-point-active" onClick={() => setShowConfirmation(true)}>
             챌린지에 참여해보세요!
@@ -40,7 +39,7 @@ const ChallengeMemberList = () => {
       )}
       <span className='text-xl font-bold'>참여하는 사람들</span>
 
-      <div className={` ${participate ? '' : 'blur-sm'}`}>
+      <div className={` ${challenge.participate ? '' : 'blur-sm'}`}>
         <Table className='mt-5'>
           <TableHeader>
             <TableRow>
@@ -77,7 +76,7 @@ const ChallengeMemberList = () => {
       </div>
       {showConfirmation && (
         <ConfirmationModal
-          message="챌린지에 참가하시겠습니까?"
+          message="챌린지에 참여하시겠습니까?"
           onConfirm={handleJoinChallenge}
           onCancel={() => setShowConfirmation(false)}
         />

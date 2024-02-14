@@ -9,7 +9,7 @@ const ChallengeDetailHeader = () => {
   const challenge = useChallengeDetailStore((state) => state.challenge);
   const status = challenge ? getDiffInDays(challenge) : '';
   const [showConfirmation, setShowConfirmation] = useState(false);
-  
+
   const handleLeaveChallenge = async () => {
     try {
       await leaveChallenge(challenge.challengeId);
@@ -31,9 +31,9 @@ const ChallengeDetailHeader = () => {
             <span className='font-black whitespace-nowrap'>{status}</span>
           </div>
           <div className='flex'>
-            <Button className="bg-[#FFCCCC] px-3 text-[#FF0000] rounded-md text-xs font-bold hover:bg-[#FFdddd] focus:outline-none focus:ring-4 focus:ring-[#FFdddd] whitespace-nowrap" onClick={() => setShowConfirmation(true)}>
+            {challenge.participate && <Button className="bg-[#FFCCCC] px-3 text-[#FF0000] rounded-md text-xs font-bold hover:bg-[#FFdddd] focus:outline-none focus:ring-4 focus:ring-[#FFdddd] whitespace-nowrap" onClick={() => setShowConfirmation(true)}>
               챌린지 나가기
-            </Button>
+            </Button>}
           </div>
         </div>}
       {showConfirmation && (
