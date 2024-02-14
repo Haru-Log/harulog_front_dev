@@ -10,10 +10,14 @@ import { useChallengeDetailStore } from 'src/zustand/challengeDetailStore'
 import { useState } from 'react'
 import { DateRange } from 'react-day-picker'
 import { editChallenge } from 'src/api/challenge/EditChallenge'
+import ConfirmationModal from '../ConfirmationModal'
+import { useNavigate } from 'react-router-dom'
 
 const EditInputCard = () => {
   const challenge = useChallengeDetailStore((state) => state.challenge);
   const setChallenge = useChallengeDetailStore(state => state.setChallenge);
+  const [showConfirmation, setShowConfirmation] = useState(false);
+  const navi = useNavigate();
   const times = getTimes();
   const defaultTime = challenge.challengeGoal ? getFormattedTime(challenge.challengeGoal) : '';
 
@@ -30,6 +34,8 @@ const EditInputCard = () => {
       console.error('Error editing challenge:', error);
       alert('Failed to edit challenge. Please try again.');
     }
+    setShowConfirmation(false);
+    navi(`/challenge/${challenge.challengeId}`)
   }
 
   const saveButtonDisabled = (): boolean => {
@@ -161,8 +167,15 @@ const EditInputCard = () => {
       </div>
       <div className='flex justify-between mt-10'>
         <Button className='bg-main rounded-lg text-sm text-black w-28 py-2 hover:bg-main-hover hover:ring-2 hover:ring-main active:bg-main-active drop-shadow-md'>취소</Button>
-        <Button className='bg-point rounded-lgtext-sm w-28 py-2 hover:ring-2 hover:ring-point hover:bg-point-hover active:bg-point-active drop-shadow-md disabled:bg-slate-400' disabled={saveButtonDisabled()} onClick={saveButtonOnClick}>저장</Button>
+        <Button className='bg-point rounded-lgtext-sm w-28 py-2 hover:ring-2 hover:ring-point hover:bg-point-hover active:bg-point-active drop-shadow-md disabled:bg-slate-400' disabled={saveButtonDisabled()} onClick={() => setShowConfirmation(true)}>저장</Button>
       </div>
+      {showConfirmation && (
+        <ConfirmationModal
+          message="챌린지를 수정하시겠습니까?"
+          onConfirm={saveButtonOnClick}
+          onCancel={() => setShowConfirmation(false)}
+        />
+      )}
     </div>
   )
 }

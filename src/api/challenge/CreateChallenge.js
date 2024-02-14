@@ -18,9 +18,10 @@ export const createChallenge = async (challenge) => {
       },
     });
     console.log(response.data);
+    console.log('Creating all challenges: ', response.data.message);
     return response.data;
   } catch (error) {
-    console.error('Error creating challenge:', error);
+    console.error('Error creating challenge:', error.response.data.message);
     throw error;
   }
 }

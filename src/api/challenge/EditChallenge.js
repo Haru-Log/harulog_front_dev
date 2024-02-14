@@ -18,6 +18,7 @@ export const editChallenge = async (challenge, id) => {
       },
     });
     console.log(response.data);
+    console.log('Editing all challenges: ', response.data.message);
     return response.data;
   } catch (error) {
     console.error('Error editing challenge:', error.response.data.message);

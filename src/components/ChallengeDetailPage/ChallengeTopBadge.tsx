@@ -1,17 +1,33 @@
 import kakao_share from 'src/assets/kakaotalk_sharing_btn_small.png';
 import { Button } from 'src/ui/button';
 import { shareKakao } from 'src/utils/shareKakaoLink';
-import { Pencil } from 'lucide-react';
+import { Pencil, Trash2 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { useChallengeDetailStore } from 'src/zustand/challengeDetailStore';
+import { useState } from 'react';
+import { deleteChallenge } from 'src/api/challenge/DeleteChallenge';
+import ConfirmationModal from '../ConfirmationModal';
 
 const ChallengeTopBadge = () => {
+  const [showConfirmation, setShowConfirmation] = useState(false);
   const navigate = useNavigate();
   const challenge = useChallengeDetailStore((state) => state.challenge);
   const challengeId = challenge.challengeId;
   const challengeTitle = challenge.challengeTitle;
   const challengeImage = challenge.imageUrl;
   const challengeCategory = challenge.categoryName;
+
+  const deleteButtonOnClick = async () => {
+    try {
+      await deleteChallenge(challengeId);
+      alert('Challenge deleted successfully!');
+    } catch (error) {
+      console.error('Error deleting challenge:', error);
+      alert('Failed to delete challenge. Please try again.');
+    }
+    setShowConfirmation(false);
+    navigate(`/challenge`)
+  }
 
   return (
     <div className='flex flex-row justify-between'>
@@ -21,10 +37,20 @@ const ChallengeTopBadge = () => {
       </div>
       <div className='flex flex-row items-center'>
         <Button className='hover:opacity-70' onClick={() => shareKakao(challengeId, challengeTitle, challengeImage, challengeCategory)}><img src={kakao_share} alt='kakao logo'></img></Button>
-        <div className="hover:opacity-70 cursor-pointer" onClick={() => navigate(`/challenge/edit/${challengeId}`)}>
-          <Pencil size={30} color='black' />
+        <div className="hover:opacity-70 cursor-pointer mr-3" onClick={() => navigate(`/challenge/edit/${challengeId}`)}>
+          <Pencil size={30}  />
+        </div>
+        <div className="hover:opacity-70 cursor-pointer" onClick={() => setShowConfirmation(true)}>
+        <Trash2 size={30} />
         </div>
       </div>
+      {showConfirmation && (
+        <ConfirmationModal
+          message="정말로 챌린지를 삭제하시겠습니까?"
+          onConfirm={deleteButtonOnClick}
+          onCancel={() => setShowConfirmation(false)}
+        />
+      )}
     </div>
   )
 }
