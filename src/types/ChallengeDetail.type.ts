@@ -19,4 +19,6 @@ export interface ChallengeDetail {
       dailyAchievement: boolean,
     },
   ],
+  challengeLeader: boolean,
+  participate: boolean,
 }

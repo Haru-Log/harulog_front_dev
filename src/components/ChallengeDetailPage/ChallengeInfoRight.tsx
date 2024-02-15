@@ -15,7 +15,7 @@ const ChallengeInfoRight = () => {
         <div className='flex flex-row items-center justify-between w-full py-1 mt-3  border rounded-lg'>
           <div className='flex items-center ml-4'>
             <img src={getLeaderProfile(challenge)} alt="챌린지 마스터 이미지" className="object-cover w-12 h-12 rounded-full" />
-            <span className='ml-5'>{getLeaderName(challenge)}</span>
+            <span className='ml-5 font-semibold'>{getLeaderName(challenge)}</span>
           </div>
           <div className='flex flex-row items-center mr-2'>
             <Button className='bg-point rounded-lg font-bold hover:bg-point-hover active:bg-point-active'><Send color="#ffffff" className='mr-2 h-4 w-4' />메세지 보내기</Button>

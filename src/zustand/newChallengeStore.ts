@@ -31,6 +31,8 @@ export const useNewChallengeStore = create<newChallengeState>()(
             dailyAchievement: false,
           },
         ],
+        challengeLeader: false,
+        participate: false,
       },
       setNewChallenge: (newChallenge: ChallengeDetail) => set({ newChallenge }),
     }),

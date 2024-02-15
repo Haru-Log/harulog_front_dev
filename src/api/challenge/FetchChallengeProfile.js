@@ -8,10 +8,10 @@ export const fetchChallengeProfile = async (id) => {
         'Authorization': `Bearer ${accessToken}`,
       },
     });
-    console.log('fetching all challenges: ', response.data.message);
+    console.log('fetching all challenges at profile: ', response.data.message);
     return response.data;
   } catch (error) {
-    console.error('Error fetching all challenges:', error);
+    console.error('Error fetching all challenges:', error.response.data.message);
     throw error;
   }
 }

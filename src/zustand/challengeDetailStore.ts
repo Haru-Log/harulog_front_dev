@@ -31,6 +31,8 @@ export const useChallengeDetailStore = create<ChallengeState>()(
             dailyAchievement: false,
           },
         ],
+        challengeLeader: false,
+        participate: false,
       },
       setChallenge: (challenge: ChallengeDetail) => set({ challenge }),
 

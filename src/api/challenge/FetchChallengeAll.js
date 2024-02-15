@@ -12,7 +12,7 @@ export const fetchChallengeAll = async () => {
     console.log('fetching all challenges: ', response.data.message);
     return response.data;
   } catch (error) {
-    console.error('Error fetching all challenges:', error);
+    console.error('Error fetching all challenges:', error.response.data.message);
     throw error; 
   }
 }

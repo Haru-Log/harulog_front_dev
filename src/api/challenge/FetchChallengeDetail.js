@@ -13,7 +13,7 @@ export const fetchChallengeADetail = async (challengeId) => {
     console.log(response.data.message);
     return response.data;
   } catch (error) {
-    console.error('Error fetching challenge detail:', error);
+    console.error('Error fetching challenge detail:', error.response.data.message);
     throw error; 
   }
 }

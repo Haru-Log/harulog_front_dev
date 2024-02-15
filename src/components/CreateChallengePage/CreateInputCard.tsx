@@ -9,9 +9,13 @@ import { getTimes } from 'src/utils/getTimes'
 import { useState } from 'react'
 import { DateRange } from 'react-day-picker'
 import { createChallenge } from 'src/api/challenge/CreateChallenge'
+import { useNavigate } from 'react-router-dom'
+import ConfirmationModal from '../ConfirmationModal'
 
 const CreateInputCard = () => {
   const { newChallenge, setNewChallenge } = useNewChallengeStore();
+  const [showConfirmation, setShowConfirmation] = useState(false);
+  const navi = useNavigate();
   const [date, setDate] = useState<DateRange | undefined>({
     from: new Date(""),
     to: new Date(""),
@@ -49,6 +53,8 @@ const CreateInputCard = () => {
       console.error('Error creating challenge:', error);
       alert('Failed to create challenge. Please try again.');
     }
+    setShowConfirmation(false);
+    navi('/challenge');
   }
 
   return (
@@ -161,9 +167,16 @@ const CreateInputCard = () => {
         </div>
       </div>
       <div className='flex justify-between mt-10'>
-        <Button className='bg-main rounded-lg text-sm text-black w-28 py-2 hover:bg-main-hover hover:ring-2 hover:ring-main active:bg-main-active drop-shadow-md'>취소</Button>
-        <Button className='bg-point rounded-lgtext-sm w-28 py-2 hover:ring-2 hover:ring-point hover:bg-point-hover active:bg-point-active drop-shadow-md disabled:bg-slate-400' disabled={saveButtonDisabled()} onClick={saveButtonOnClick}>저장</Button>
+        <Button className='bg-main rounded-lg text-sm text-black w-28 py-2 hover:bg-main-hover hover:ring-2 hover:ring-main active:bg-main-active drop-shadow-md' onClick={() => navi('/challenge')}>취소</Button>
+        <Button className='bg-point rounded-lgtext-sm w-28 py-2 hover:ring-2 hover:ring-point hover:bg-point-hover active:bg-point-active drop-shadow-md disabled:bg-slate-400' disabled={saveButtonDisabled()} onClick={() => setShowConfirmation(true)}>저장</Button>
       </div>
+      {showConfirmation && (
+        <ConfirmationModal
+          message="챌린지를 생성하시겠습니까?"
+          onConfirm={saveButtonOnClick}
+          onCancel={() => setShowConfirmation(false)}
+        />
+      )}
     </div>
   )
 }
