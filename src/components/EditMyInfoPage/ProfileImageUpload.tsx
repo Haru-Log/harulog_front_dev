@@ -1,7 +1,9 @@
 import React, { useState, useRef } from 'react';
 
-const ProfileImageUpload: React.FC = () => {
-  const [image, setImage] = useState<string | null>(null);
+const ProfileImageUpload: React.FC<{
+  userName: string; email: string; createdAt: string; imageUrl: string
+}> = ({ userName, email, createdAt, imageUrl }) => {
+  const [image, setImage] = useState<string | null>(imageUrl);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -76,9 +78,9 @@ const ProfileImageUpload: React.FC = () => {
       </button>
 
       <p className="text-xs px-2">
-        이강혁 <br />
-        email@gmail.com <br />
-        01/01/2024 가입
+        {userName} <br />
+        {email} <br />
+        {createdAt} 가입
       </p>
     </div>
   );
