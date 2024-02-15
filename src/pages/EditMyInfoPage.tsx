@@ -24,7 +24,9 @@ const EditMyInfoPage = () => {
   useEffect(() => {
     const getUserInfo = async () => {
       const response = await fetchProfile();
-      setUserInfo(response.data);
+      if (response.message === "OK") {
+        setUserInfo(response.data);
+      }
     }
     getUserInfo();
   }, [])
@@ -41,14 +43,12 @@ const EditMyInfoPage = () => {
             <MyForm userNickname={userInfo.nickname} contactNumber={userInfo.contactNumber ? userInfo.contactNumber : ""} userIntroduction={userInfo.introduction ? userInfo.introduction : ""} />
           </div>
         </div>
-
         {/* Bottom Section */}
         <div className="w-full ml-2 gap-4 p-4" style={{}}>
           <div>
             <PasswordChangeForm />
           </div>
           <br />
-
           <div className="w-full ">
             <Modal />
           </div>
