@@ -5,14 +5,13 @@ import React from 'react'
 const MyGoalRow: React.FC<{
   isEdit: boolean;
   category: string;
-  goal: number;
+  userGoal: number;
   updatedAt: Date
-  idx: number;
   achievement: number;
   isLastRow: boolean;
   setMyGoal: any;
   myGoal: any
-}> = ({ isEdit, category, goal, updatedAt, idx, achievement, isLastRow, setMyGoal, myGoal }) => {
+}> = ({ isEdit, category, userGoal, updatedAt, achievement, isLastRow, setMyGoal, myGoal }) => {
 
 
 
@@ -22,22 +21,22 @@ const MyGoalRow: React.FC<{
       <TableCell className={`${isEdit && 'px-0 pb-0 pt-3 flex items-center h-full whitespace-nowrap'}`}>
         {isEdit ?
           <>
-            <Input value={goal} className="border-none shadow-none text-2xl bg-white text-black h-full"
+            <Input type="number" value={userGoal} className="border-none shadow-none text-2xl bg-white text-black h-full"
               onChange={(e) => {
                 setMyGoal(
-                  myGoal.map((x: any, i: number) => {
-                    if (i === idx) {
-                      return { ...x, goal: parseInt(e.target.value) }
-                    } else {
-                      return x
+                  {
+                    ...myGoal,
+                    [category]:{
+                      ...myGoal[category],
+                      goal: parseInt(e.target.value)
                     }
-                  })
+                  }
                 )
               }}
             />
             <div className="ml-3 h-full">분</div>
           </>
-          : category === '기상' ? `${Math.floor(goal / 60).toString()}시 ${goal % 60}분` : `${goal}분`
+          : category === '기상' ? `${Math.floor(userGoal / 60).toString()}시 ${userGoal % 60}분` : `${userGoal}분`
         }
       </TableCell>
       <TableCell>{

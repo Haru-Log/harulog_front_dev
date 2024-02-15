@@ -1,32 +1,40 @@
 import { create } from 'zustand';
 import { devtools } from 'zustand/middleware';
-import { ChallengeItem } from '../types/ChallengeItem.type';
+import { ChallengeDetail } from '../types/ChallengeDetail.type';
 
 interface newChallengeState {
-  newChallenge: ChallengeItem;
-  setNewChallenge: (newChallenge: ChallengeItem) => void;
+  newChallenge: ChallengeDetail;
+  setNewChallenge: (newChallenge: ChallengeDetail) => void;
 }
 
 export const useNewChallengeStore = create<newChallengeState>()(
   devtools(
     (set) => ({
       newChallenge: {
-        challenge_id: 0,
-        category_id: 0,
-        category_name: '',
-        chatroom_id: 0,
-        challenge_title: '',
-        challenge_content: '',
-        challenge_goal: 0,
-        challenge_image: '',
-        participants: 0,
+        challengeId: 0,
+        challengeTitle: '',
+        challengeContent: '',
+        challengeGoal: 0,
         submission: '',
-        start_date: new Date(),
-        end_date: new Date(),
-        created_at: new Date(),
-        updated_at: undefined,
+        imageUrl: '',
+        startDate: '',
+        endDate: '',
+        categoryName: '',
+        chatRoomId: '',
+        challengeUserList: [
+          {
+            userId: 0,
+            nickname: '',
+            imageUrl: '',
+            role: '',
+            status: '',
+            dailyAchievement: false,
+          },
+        ],
+        challengeLeader: false,
+        participate: false,
       },
-      setNewChallenge: (newChallenge: ChallengeItem) => set({ newChallenge }),
+      setNewChallenge: (newChallenge: ChallengeDetail) => set({ newChallenge }),
     }),
     { name: 'newChallengeStore' }
   ),

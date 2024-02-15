@@ -27,6 +27,7 @@
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.0",
     "date-fns": "^3.2.0",
+    "dotenv": "^16.4.1",
     "lucide-react": "^0.311.0",
     "react": "^18.2.0",
     "react-apexcharts": "^1.4.1",
@@ -43,6 +44,7 @@
     "tailwind-scrollbar-hide": "^1.1.7",
     "tailwindcss-animate": "^1.0.7",
     "typescript": "^4.9.5",
+    "universal-cookie": "^7.0.2",
     "web-vitals": "^2.1.4",
     "zustand": "^4.4.7"
   },

@@ -1,9 +1,9 @@
-import { Jandi } from "../types/HeatmapData.type";
+import { HeatmapCategory, Jandi } from "../types/HeatmapData.type";
 
-export const mergeCategory = (receieved_jandi: { date: Date, category: string }[]): Jandi[] => {
+export const mergeCategory = (receieved_jandi: { date: Date, category: "기상" | "공부" | "운동" | "독서", activityTime: number }[]) => {
   const mergedJandi: Jandi[] = [];
-  let currentGroup: { date: Date; category: string[] } = { date: new Date('1900-01-01'), category: [] };
-
+  const categoryMax = {"공부": 0, "운동": 0, "독서": 0 }
+  let currentGroup: Jandi = { date: new Date('1900-01-01'), category: {} };
   receieved_jandi.forEach((item) => {
     if (currentGroup.date.toISOString().split('T')[0] === new Date('1900-01-01').toISOString().split('T')[0]
       || currentGroup.date.toISOString().split('T')[0] !== item.date.toISOString().split('T')[0]) {
@@ -11,19 +11,31 @@ export const mergeCategory = (receieved_jandi: { date: Date, category: string }[
       if (currentGroup.date.toISOString().split('T')[0] !== new Date('1900-01-01').toISOString().split('T')[0]) {
         mergedJandi.push(currentGroup);
       }
-      currentGroup = { date: item.date, category: [item.category] };
+      currentGroup = { date: item.date, category: { [item.category]: item.activityTime } };
     } else {
       // 같은 날짜의 그룹에 추가
-      currentGroup.category.push(item.category);
-    }
+      if (currentGroup.category[item.category]) {
+        currentGroup.category[item.category]! += item.activityTime
+      } else {
+        currentGroup.category[item.category] = item.activityTime
+      }
+    }    
   });
-
   // 마지막 그룹 추가
   if (currentGroup.date.toISOString().split('T')[0] !== new Date('1900-01-01').toISOString().split('T')[0]) {
     mergedJandi.push(currentGroup);
   }
 
-  return mergedJandi;
+  mergedJandi.forEach(item=>{
+    categoryMax.공부 = Math.max(categoryMax.공부, item.category.공부?item.category.공부:0)
+    categoryMax.운동 = Math.max(categoryMax.운동, item.category.운동?item.category.운동:0)
+    categoryMax.독서 = Math.max(categoryMax.독서, item.category.독서?item.category.독서:0)
+  })
+
+  return {
+    mergedJandi: mergedJandi,
+    categoryMax: categoryMax
+  };
 }
 
 export const shiftDate = (date: Date, numDays: number) => {
@@ -32,16 +44,17 @@ export const shiftDate = (date: Date, numDays: number) => {
   return newDate;
 }
 
+
 export const mergeJandi = (initialState: Jandi[], receievedData: Jandi[]) => {
   const combinedJandi = [...initialState, ...receievedData]
 
   combinedJandi.sort((a, b) => a.date.getTime() - b.date.getTime())
 
   let mergedJandi = combinedJandi.filter((x, idx) => {
-    if (x.category[0].length === 0 && idx < combinedJandi.length - 1 && x.date.toISOString().split('T')[0] === combinedJandi[idx + 1].date.toISOString().split('T')[0]) {
+    if (Object.values(x.category).length === 0 && idx < combinedJandi.length - 1 && x.date.toISOString().split('T')[0] === combinedJandi[idx + 1].date.toISOString().split('T')[0]) {
       // 뒤에 있는 애랑 날짜 같은데 카테고리 비었을 경우
       return false
-    } else if (x.category[0].length === 0 && idx > 0 && x.date.toISOString().split('T')[0] === combinedJandi[idx - 1].date.toISOString().split('T')[0]) {
+    } else if (Object.values(x.category).length === 0 && idx > 0 && x.date.toISOString().split('T')[0] === combinedJandi[idx - 1].date.toISOString().split('T')[0]) {
       // 앞에 있는 애랑 날짜 같은데 카테고리 비었을 경우
       return false
     } else {
@@ -52,15 +65,16 @@ export const mergeJandi = (initialState: Jandi[], receievedData: Jandi[]) => {
   return mergedJandi;
 }
 
-export const filterJandi = (data: Jandi[], category: string) => {
+export const filterJandi = (data: Jandi[], category: HeatmapCategory) => {
 
-  let temp = data.map((it)=>{
-    if(it.category.includes(category)){
-      return {...it, category: [category, it.category.filter(x=>x===category).length + ""]}
-    } else{
-      return {...it, category: [""]}
+  let temp = data.map((it) => {
+    if (it.category[category]) {
+      return { ...it, category: { [category]: it.category[category] } }
+    } else {
+      return { ...it, category: {} }
     }
   })
+
   return temp;
 }
 

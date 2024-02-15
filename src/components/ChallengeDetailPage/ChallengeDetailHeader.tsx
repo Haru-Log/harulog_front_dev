@@ -1,29 +1,48 @@
-import { Pencil } from 'lucide-react';
-import { useNavigate } from 'react-router-dom';
+import React, { useState } from 'react';
+import { useChallengeDetailStore } from 'src/zustand/challengeDetailStore';
 import getDiffInDays from 'src/utils/getDiffInDays';
-import { useChallengeStore } from 'src/zustand/challengeStore';
+import { Button } from 'src/ui/button';
+import { leaveChallenge } from 'src/api/challenge/LeaveChallenge';
+import ConfirmationModal from '../ConfirmationModal';
 
 const ChallengeDetailHeader = () => {
-  const challenge = useChallengeStore((state) => state.challenge);
+  const challenge = useChallengeDetailStore((state) => state.challenge);
   const status = challenge ? getDiffInDays(challenge) : '';
-  const navigate = useNavigate();
+  const [showConfirmation, setShowConfirmation] = useState(false);
+
+  const handleLeaveChallenge = async () => {
+    try {
+      await leaveChallenge(challenge.challengeId);
+      alert('Challenge left successfully!');
+    } catch (error) {
+      console.error('Error leaving challenge:', error);
+      alert('Failed to leave challenge. Please try again.');
+    }
+    setShowConfirmation(false);
+    window.location.reload();
+  }
+
   return (
     <div>
       {challenge &&
         <div className='flex justify-between items-end mt-[85px]'>
           <div>
-            <span className='text-4xl font-black mr-3 whitespace-nowrap'>{challenge.challenge_title}</span>
+            <span className='text-4xl font-black mr-3 whitespace-nowrap'>{challenge.challengeTitle}</span>
             <span className='font-black whitespace-nowrap'>{status}</span>
           </div>
           <div className='flex'>
-            <button className="bg-[#FFCCCC] px-3 py-2 text-[#FF0000] rounded-md text-xs font-bold hover:bg-[#FFdddd] focus:outline-none focus:ring-4 focus:ring-[#FFdddd] whitespace-nowrap">
-              챌린지 탈퇴하기
-            </button>
-            <div className="cursor-pointer" onClick={() => navigate(`/challenge/edit/${challenge.challenge_id}`)}>
-            <Pencil size={30} />
-          </div>
+            {challenge.participate && <Button className="bg-[#FFCCCC] px-3 text-[#FF0000] rounded-md text-xs font-bold hover:bg-[#FFdddd] focus:outline-none focus:ring-4 focus:ring-[#FFdddd] whitespace-nowrap" onClick={() => setShowConfirmation(true)}>
+              챌린지 나가기
+            </Button>}
           </div>
         </div>}
+      {showConfirmation && (
+        <ConfirmationModal
+          message="정말 챌린지를 나가시겠습니까?"
+          onConfirm={handleLeaveChallenge}
+          onCancel={() => setShowConfirmation(false)}
+        />
+      )}
     </div>
   );
 };

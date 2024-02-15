@@ -114,6 +114,14 @@ export const dummyChatRoom: ChatRoomData = {
     },
     {
       chatroom_id: 2,
+      message_id: 7,
+      sender_name: "사용자",
+      sender_profile: "https://source.unsplash.com/featured/?avatar",
+      message: "좋아요. 그 주제로 진행하도록 하겠습니다.",
+      send_time: "2024-01-25 19:25"
+    },
+    {
+      chatroom_id: 2,
       message_id: 4,
       sender_name: "이서영",
       sender_profile: "https://source.unsplash.com/featured/?avatar",
@@ -127,6 +135,14 @@ export const dummyChatRoom: ChatRoomData = {
       sender_profile: "https://source.unsplash.com/featured/?avatar",
       message: "프로젝트 관리 방법에 대해서 얘기해볼까요?",
       send_time: "2024-01-25 19:20"
+    },
+    {
+      chatroom_id: 2,
+      message_id: 6,
+      sender_name: "사용자",
+      sender_profile: "https://source.unsplash.com/featured/?avatar",
+      message: "좋아요. 그 주제로 진행하도록 하겠습니다. ",
+      send_time: "2024-01-25 19:25"
     }
   ],
   3: [
