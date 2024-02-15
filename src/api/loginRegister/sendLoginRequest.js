@@ -8,15 +8,11 @@ export const sendLoginRequest = async (userInfo) => {
         "email": userInfo.email,
         "password": userInfo.password,
       });
-    console.log(response);
-    console.log('Request login: ', response.data.message);
-
     const AccessToken = response.headers.getAuthorization().split(' ')[1]
     localStorage.setItem('AccessToken', AccessToken);
-
     return response.data;
   } catch (error) {
-    console.error('Error login:', error);
-    throw error;
+    alert(error.response.data.message)
+    return error.response.data
   }
 }

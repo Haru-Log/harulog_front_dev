@@ -15,6 +15,7 @@ import { fetchDaily } from "../api/grow/FetchDaily";
 import { fetchGoal } from "../api/grow/FetchGoal";
 import { editGoal } from "../api/grow/EditGoal";
 import { fetchProfile } from "../api/profile/fetchProfile";
+import GetUpRow from "../components/GrowPage/GetUpRow";
 
 const today = new Date();
 
@@ -148,33 +149,35 @@ const GrowPage = () => {
   }, [goal])
 
   const sendEditedGoal = async () => {
-    const response = await editGoal({
+    const editData = {
       'updateGoalsList': [
         {
           "categoryName": "운동",
-          userGoal: myGoal.운동.userGoal
+          goal: myGoal.운동.userGoal
         },
         {
           "categoryName": "기상",
-          userGoal: myGoal.기상.userGoal
+          goal: myGoal.기상.userGoal
         },
         {
           "categoryName": "공부",
-          userGoal: myGoal.공부.userGoal
+          goal: myGoal.공부.userGoal
         },
         {
           "categoryName": "독서",
-          userGoal: myGoal.독서.userGoal
+          goal: myGoal.독서.userGoal
         }
       ]
-    });
+    }
+
+    const response = await editGoal(editData);
 
     console.log(response.data);
 
-    if (response.data.message === "OK") {
+    if (response.message === "OK") {
       alert('수정 완료')
       const tempGoal = { ...goal }
-      response.data.data.forEach((it: { categoryName: string; userGoal: number; updatedAt: string }) => {
+      response.data.forEach((it: { categoryName: string; userGoal: number; updatedAt: string }) => {
         if (it.categoryName === "기상") {
           tempGoal.기상 = {
             ...tempGoal.기상,
@@ -248,18 +251,18 @@ const GrowPage = () => {
             <TodayChart
               category={"Today"} goals={goal} theme={"#92C7CF"} />
           </div>
-          <div className="pr-7 h-full flex items-center w-1/3">
+          <div className="pr-7 h-full flex items-center w-2/5">
             <Table>
               <TableHeader>
                 <TableRow className="bg-[#92C7CF]  hover:bg-[#92C7CF] text-2xl whitespace-nowrap hover:text-black border-b-4">
                   <TableHead className="w-40 rounded-tl-2xl"></TableHead>
-                  <TableHead className="w-40 text-white font-bold text-center">나의 목표</TableHead>
+                  <TableHead className="w-96 text-white font-bold text-center">나의 목표</TableHead>
                   <TableHead className="font-bold w-40 text-white text-center">오늘 성취</TableHead>
                   <TableHead className="rounded-tr-2xl font-bold w-40 text-white text-center">시작일</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
-                <MyGoalRow key="Row기상" isEdit={isEdit} {...myGoal.기상} setMyGoal={setMyGoal} myGoal={myGoal} isLastRow={false} category="기상" />
+                <GetUpRow key="Row기상" isEdit={isEdit} {...myGoal.기상} setMyGoal={setMyGoal} myGoal={myGoal} isLastRow={false} category="기상" />
                 <MyGoalRow key="Row공부" isEdit={isEdit} {...myGoal.공부} setMyGoal={setMyGoal} myGoal={myGoal} isLastRow={false} category="공부" />
                 <MyGoalRow key="Row운동" isEdit={isEdit} {...myGoal.운동} setMyGoal={setMyGoal} myGoal={myGoal} isLastRow={false} category="운동" />
                 <MyGoalRow key="Row독서" isEdit={isEdit} {...myGoal.독서} setMyGoal={setMyGoal} myGoal={myGoal} isLastRow={true} category="독서" />

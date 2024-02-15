@@ -29,8 +29,9 @@ const LoginModal = () => {
     if (response.code === "COM-000") {
       setLoginModal(false);
       // window.location.reload()
-    } else {
-      alert('로그인 실패')
+    } else{
+      setEmail("")
+      setPassword("")
     }
   }
 
