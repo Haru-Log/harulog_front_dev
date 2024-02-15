@@ -38,7 +38,7 @@ const EditMyInfoPage = () => {
             <ProfileImageUpload userName={userInfo.userName} email={userInfo.email} createdAt={userInfo.createdAt} imageUrl={userInfo.imageUrl} />
           </div>
           <div className="w-3/4 p-4">
-            <MyForm />
+            <MyForm userNickname={userInfo.nickname} contactNumber={userInfo.contactNumber ? userInfo.contactNumber : ""} userIntroduction={userInfo.introduction ? userInfo.introduction : ""} />
           </div>
         </div>
 
