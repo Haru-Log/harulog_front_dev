@@ -2,7 +2,6 @@ import Slogan from "../components/MainPage/Slogan"
 import { useContext } from "react"
 import { SetModalContext } from "../App"
 import FeedSlide from "../components/MainPage/FeedSlide"
-import { dummy_sample } from "../types/FeedItem.type"
 import { useNavigate } from "react-router-dom";
 import MainChallengeCard from "../components/MainPage/MainChallengeCard"
 
@@ -28,7 +27,7 @@ const MainPage = () => {
           <div className="text-sm text-[#92C7CF] cursor-pointer" onClick={() => { setRegisterModal(true) }}>가입하기</div>
         </div>
         <div className="flex justify-center">
-          <FeedSlide data={dummy_sample} />
+          <FeedSlide />
         </div>
       </div>
     </div>

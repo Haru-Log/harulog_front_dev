@@ -1,5 +1,5 @@
 import { FeedItem } from "@/src/types/FeedItem.type"
-import React from 'react'
+import  { useEffect, useState } from 'react'
 
 import { Scrollbar, Mousewheel, Autoplay } from 'swiper/modules';
 import { Swiper, SwiperSlide } from 'swiper/react';
@@ -10,8 +10,23 @@ import 'swiper/css/autoplay';
 
 
 import FeedCard from "./FeedCard";
+import { fetchFeedAll } from "../../api/feed/FetchFeedAll";
 
-const FeedSlide: React.FC<{ data: FeedItem[] }> = ({ data }) => {
+const FeedSlide = () => {
+
+  const [data, setData] = useState<FeedItem[]>([])
+
+  useEffect(() => {
+    const fetchRandomFeed = async () => {
+      const response = await fetchFeedAll();
+
+      if (response.message === "OK") {
+        setData(response.data.filter((_: FeedItem, idx: number) => idx < 10))
+      }
+    }
+    fetchRandomFeed()
+  }, [])
+
   return (
     <section className="pb-[2rem] w-full">
       <div className="w-full">
