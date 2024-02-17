@@ -1,9 +1,33 @@
-import { Archive, User } from 'lucide-react'
-import React from 'react'
+import { Archive, Trash2, User, UserPlus } from 'lucide-react'
+import React, { useEffect } from 'react'
 import { useAdminStore } from '../zustand/adminStore'
+import { Table, TableBody, TableCell, TableRow } from '../ui/table';
+import { Button } from '../ui/button';
+import { fetchAll } from '../api/admin/FetchAll';
 
 const AdminPage = () => {
   const { toggle, userList, feedList, currentFeedPage, totalFeedPage, currentUserPage, totalUserPage, setToggle, setUserList, setFeedList, setCurrentFeedPage, setTotalFeedPage, setCurrentUserPage, setTotalUserPage } = useAdminStore();
+
+  useEffect(() => {
+    const fetchUsers = async () => {
+      try {
+        if (toggle === 'users') {
+          const response = await fetchAll(toggle, currentUserPage);
+          setUserList(response.data.content);
+          setTotalUserPage(response.data.pageInfo.totalPages)
+        } else {
+          const response = await fetchAll(toggle, currentFeedPage);
+          setFeedList(response.data.content);
+          setTotalFeedPage(response.data.pageInfo.totalPages)
+        }
+        
+      } catch (error) {
+        console.error('Error fetching all for admin:', error);
+      }
+    };
+    fetchUsers();
+  }, [setUserList, setFeedList, setCurrentFeedPage, setTotalFeedPage, setCurrentUserPage, setTotalUserPage, toggle, currentUserPage, currentFeedPage])
+
   return (
     <div className="w-full flex justify-center mt-10 font-ibm">
       <div className="w-full h-full flex flex-col mx-10 items-center">
@@ -21,6 +45,37 @@ const AdminPage = () => {
             <User className="mr-2" strokeWidth={2.5} size={32} />사용자
           </div>
         </div>
+        <Table>
+          <TableBody>
+            {toggle === 'users' ? userList.map((user, index) => (
+              <TableRow key={index}>
+                <TableCell className='w-[100px]'>
+                  <img src={user.imageUrl} alt={`profile-img-${index}`} className='rounded-full w-12'></img>
+                </TableCell>
+                <TableCell>{user.nickname}</TableCell>
+                <TableCell className="text-right w-[90px]">
+                  <Button className='bg-point rounded-lg font-bold shadow-sm hover:bg-point-hover active:bg-point-active'>
+                    <Trash2 color="#ffffff" className='mr-2 h-5 w-5' />삭제
+                  </Button>
+                </TableCell>
+              </TableRow>
+            )) :
+            feedList.map((feed, index) => (
+              <TableRow key={index}>
+                <TableCell className='w-[100px]'>
+                  {feed.categoryName}
+                </TableCell>
+                <TableCell>{feed.nickname}</TableCell>
+                <TableCell>{feed.content}</TableCell>
+                <TableCell className="text-right w-[90px]">
+                <Button className='bg-point rounded-lg font-bold shadow-sm hover:bg-point-hover active:bg-point-active'>
+                    <Trash2 color="#ffffff" className='mr-2 h-5 w-5' />삭제
+                  </Button>
+                </TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
       </div>
     </div>
   )
