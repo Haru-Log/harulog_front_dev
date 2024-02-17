@@ -38,14 +38,17 @@ const RegisterModal = () => {
 
     const res = await sendRegisterInfo(userInfo);
 
-    if (res.code === "COM-000") {
+    if(!res){
+      alert('사용중인 닉네임과 메일입니다.')
+    }
+    else if (res.code === "COM-000") {
       alert('회원 가입 완료')
       setRegisterModal(false)
       setLoginModal(true)
     } else if (res.code === "USR-004") {
       alert('이미 사용중인 닉네임입니다.')
     } else if (res.code === "USR-005") {
-      alert('이미 가입된 이메일입니다.')
+      alert(res.message)
     } else if (res.code === "USR-006") {
       alert('닉네임과 이메일을 변경하세요.')
     }
