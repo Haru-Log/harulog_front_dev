@@ -18,6 +18,7 @@ import { SelectLabel } from "@radix-ui/react-select"
 import { useFeedStore } from "../zustand/feedStore"
 import axios from "axios"
 import { createPost } from "../api/feed/CreatePost"
+import { editPost } from "../api/feed/EditPost"
 
 const REST_API_KEY = '60f504ceb850cf533b3d9d172bfb8d4c'
 
@@ -84,7 +85,7 @@ const RecordPage = () => {
         content: content
       })
 
-      if(response.message === "OK"){
+      if (response.message === "OK") {
         setFeed({
           ...feed,
           categoryName: category,
@@ -94,11 +95,11 @@ const RecordPage = () => {
         })
         navigate(`/feed/${id}`, { replace: true })
       }
-      
+
     }
   }
 
-  const handleEdit = () => {
+  const handleEdit = async () => {
 
     if (content.length < 1) {
       contentRef.current?.focus()
@@ -113,17 +114,24 @@ const RecordPage = () => {
     }
 
     if (window.confirm("피드 수정을 완료하시겠습니까?")) {
-      //더미코드
-      // localStorage.setItem((dummy_sample.length + 1).toString(), JSON.stringify(imgURL))
-      setFeed({
-        ...feed,
+
+      const response = await editPost({
         categoryName: category,
-        content: content,
+        activityTime: minute,
         imgUrl: imgURL,
-        activityTime: category === "기상" ? hour * 60 + minute : minute
+        content: content
       })
 
-      navigate(`/feed/${id}`, { replace: true })
+      if (response.message === "OK") {
+        setFeed({
+          ...feed,
+          categoryName: category,
+          content: content,
+          imgUrl: imgURL,
+          activityTime: category === "기상" ? hour * 60 + minute : minute
+        })
+        navigate(`/feed/${id}`, { replace: true })
+      }
     }
   }
 
