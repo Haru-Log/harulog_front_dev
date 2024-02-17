@@ -12,7 +12,6 @@ export const sendRegisterInfo = async (userInfo) => {
     console.log('Request register: ', response.data.message);
     return response.data;
   } catch (error) {
-    console.error('Error register:', error);
-    throw error;
+    // alert('이미 가입된 이메일입니다.')
   }
 }
