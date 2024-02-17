@@ -13,6 +13,7 @@ const GetTitle = (): string => {
     '/grow': 'GROW',
     '/dashboard': 'DASHBOARD',
     '/profile/edit': '내 정보 수정',
+    '/admin': '관리자 페이지',
   };
   
   if (location.pathname.includes('/feed/edit/')) {
