@@ -43,27 +43,27 @@ const FeedDetail = () => {
           </div>
         </section>
         <section className="w-full mb-5">
-          <img src={selectedPost?.post_image} alt="post" className="max-h-[100vh] w-full object-cover" />
+          <img src={selectedPost?.imgUrl} alt="post" className="max-h-[100vh] w-full object-cover" />
         </section>
         <section className="flex items-center justify-between">
           <div className="flex flex-row">
-            <div className={`text-white px-3 py-1 rounded-full h-fit w-fit text-center mr-3 text-2xl bg-${selectedPost?.category_name}`}>
-              {selectedPost?.category_name}
+            <div className={`text-white px-3 py-1 rounded-full h-fit w-fit text-center mr-3 text-2xl bg-${selectedPost?.categoryName}`}>
+              {selectedPost?.categoryName}
             </div>
-            <div className={`text-white px-3 py-1 rounded-full h-fit w-fit text-center text-2xl bg-${selectedPost?.category_name}`}>
-              {selectedPost?.category_name === "기상"
-                ? `${Math.floor(selectedPost.achievement / 60)}시 ${selectedPost.achievement % 60}분`
-                : `${selectedPost?.achievement}분`}
+            <div className={`text-white px-3 py-1 rounded-full h-fit w-fit text-center text-2xl bg-${selectedPost?.categoryName}`}>
+              {selectedPost?.categoryName === "기상"
+                ? `${Math.floor(selectedPost.activityTime / 60)}시 ${selectedPost.activityTime % 60}분`
+                : `${selectedPost?.activityTime}분`}
             </div>
           </div>
           <div className="text-xl">
-            {selectedPost?.created_at.toDateString()}
+            {selectedPost?.createdAt.toDateString()}
           </div>
         </section>
         <section className="mt-5 flex items-center">
           <Heart size={50} />
           <div className="ml-5 text-4xl font-bold">
-            {selectedPost?.like}
+            {selectedPost?.likeCount}
           </div>
         </section>
         <section className="mt-5 text-4xl">

@@ -5,20 +5,18 @@ import { CommentType } from "@/src/types/CommentType";
 const FeedCard: React.FC<{
   id: number;
   nickname: string;
-  category_name: string;
+  categoryName: string;
   content: string;
   imgUrl: string;
-  like: number;
-  comment: number;
   createdAt: Date;
   updateAt?: Date;
   activityTime: number;
   goal: number;
   commentList?: CommentType[]
   likeCount: number;
-  commentCount: 6;
+  commentCount: number;
 }> = ({
-  id, category_name, imgUrl, likeCount, content, commentCount
+  id, categoryName, imgUrl, likeCount, content, commentCount
 }) => {
 
     return (
@@ -27,8 +25,8 @@ const FeedCard: React.FC<{
           <img src={imgUrl} alt="피드 이미지" className="object-cover w-full h-full rounded-xl" />
         </div>
         <div className="flex flex-row w-full justify-start text-xs h-6 mt-2">
-          <div className={`text-white px-3 py-1 rounded-full h-fit w-fit text-center mr-5 bg-${category_name}`}>
-            {category_name}
+          <div className={`text-white px-3 py-1 rounded-full h-fit w-fit text-center mr-5 bg-${categoryName}`}>
+            {categoryName}
           </div>
           <div className="flex flex-row h-fit mr-5 items-start">
             <Heart />

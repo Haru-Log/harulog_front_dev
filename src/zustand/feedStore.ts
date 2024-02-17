@@ -11,16 +11,17 @@ export const useFeedStore = create<FeedState>()(
   devtools(
     (set) => ({
       feed: {
-        post_id: 0,
-        user_idx: 0,
-        category_name: "",
+        id: 0,
+        nickname: "",
+        categoryName: "",
         content: "",
-        post_image: "",
-        like: 0,
-        comment: 0,
-        created_at: new Date(),
-        updated_at: new Date(),
-        achievement: 0,
+        imgUrl: "",
+        createdAt: new Date(),
+        updateAt: new Date(),
+        activityTime: 0,
+        commentCount: 0,
+        likeCount: 0,
+        goal: 0
       },
       setFeed: (feed: FeedItem) => set({ feed }),
     }),

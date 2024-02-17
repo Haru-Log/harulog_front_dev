@@ -13,10 +13,10 @@ const FeedPage = () => {
   useEffect(() => {
 
     const fetchFeedItems = async () => {
-      try{
+      try {
         const response = await fetchFeedAll();
         setFeedItems(response.data)
-      } catch(error){
+      } catch (error) {
         console.log(error);
       }
     }
