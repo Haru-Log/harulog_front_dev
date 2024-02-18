@@ -20,7 +20,7 @@ const FeedSlide = () => {
     const fetchRandomFeed = async () => {
       const response = await fetchFeedAll();
 
-      if (response.message === "OK") {
+      if (response && response.message === "OK") {
         setData(response.data.filter((_: FeedItem, idx: number) => idx < 10))
       }
     }

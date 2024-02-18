@@ -12,6 +12,5 @@ export const fetchFeedAll = async () => {
     return response.data;
   } catch (error) {
     console.error('Error fetching all posts:', error);
-    throw error;
   }
 }

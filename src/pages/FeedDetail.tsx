@@ -2,11 +2,13 @@ import React, { useEffect, useState } from 'react'
 import { useNavigate, useParams } from "react-router-dom"
 import dummyImage1 from '../assets/20231010_084411.jpg' // 임시 이미지
 import { Heart, Pencil } from "lucide-react"
-import { dummy_comment } from "../types/Comment.type"
 import Comment from "../components/Feed/Comment"
 // import useFeedFetcher from "../hooks/useFeedFetcher"
 import { FeedItem } from "../types/FeedItem.type"
 import { fetchFeedDetail } from "../api/feed/FetchFeedDetail"
+import { Button } from "../ui/button"
+import { Textarea } from "../ui/textarea"
+import { addComment } from "../api/feed/addComment"
 
 
 const FeedDetail = () => {
@@ -15,20 +17,28 @@ const FeedDetail = () => {
   // const selectedPost = useFeedFetcher(post_id);
   const navigate = useNavigate();
   const [selectedPost, setSelectedPost] = useState<FeedItem>()
+  const [commentContent, setCommentContent] = useState("");
 
   useEffect(() => {
     const fetchFeedDetails = async () => {
       try {
         const feedDetails = await fetchFeedDetail(post_id);
-        setSelectedPost({...feedDetails.data, created_at: new Date(feedDetails.data.created_at), updated_at: new Date(feedDetails.data.updated_at)})
+        setSelectedPost({ ...feedDetails.data, createdAt: new Date(feedDetails.data.createdAt), updateAt: new Date(feedDetails.data.updateAt) })
 
       } catch (error) {
         console.log(error);
       }
     }
     fetchFeedDetails();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
+
+  const submitComment = async () => {
+    const response = await addComment(post_id, 0, commentContent);
+    if (response) {
+      window.location.reload();
+    }
+  }
 
   return (
     <div className="w-full flex justify-center font-ibm pt-5">
@@ -36,7 +46,7 @@ const FeedDetail = () => {
         <section className="w-full flex flex-row items-center h-fit justify-between mb-5">
           <div className="flex flex-row items-center h-fit">
             <img src={dummyImage1} alt="프로필 이미지" className="w-20 h-20 rounded-full mr-10" />
-            <div className="items-center text-3xl whitespace-nowrap font-bold">이강혁</div>
+            <div className="items-center text-3xl whitespace-nowrap font-bold">{selectedPost?.nickname}</div>
           </div>
           <div className="cursor-pointer" onClick={() => navigate(`/feed/edit/${post_id}`)}>
             <Pencil size={30} />
@@ -69,9 +79,13 @@ const FeedDetail = () => {
         <section className="mt-5 text-4xl">
           {selectedPost?.content}
         </section>
+        <form onSubmit={submitComment} className="w-full relative flex">
+          <Textarea value={commentContent} onChange={(e) => setCommentContent(e.target.value)} placeholder="댓글 작성" className="pr-14 resize-none h-fit scrollbar-hide" />
+          <Button type="submit" className="absolute right-1 text-[#92C7CF]">전송</Button>
+        </form>
         <section className="mt-10">
-          {dummy_comment.map(it => (
-            <Comment key={it.comment_id} />
+          {selectedPost?.commentList?.map(it => (
+            <Comment key={it.id} {...it} />
           ))}
         </section>
       </div>

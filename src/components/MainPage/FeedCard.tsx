@@ -1,6 +1,7 @@
 import React from 'react'
 import { Heart, MessageSquareMore } from "lucide-react";
 import { CommentType } from "@/src/types/CommentType";
+import { useNavigate } from "react-router-dom";
 
 const FeedCard: React.FC<{
   id: number;
@@ -19,8 +20,10 @@ const FeedCard: React.FC<{
   id, categoryName, imgUrl, likeCount, content, commentCount
 }) => {
 
+    const navigate = useNavigate()
+
     return (
-      <div className="cursor-pointer drop-shadow-xl mb-5 transform transition-transform hover:scale-110">
+      <div className="cursor-pointer drop-shadow-xl mb-5 transform transition-transform hover:scale-110" onClick={() => navigate(`/feed/${id}`)}>
         <div className="w-[100%] aspect-square rounded-xl">
           <img src={imgUrl} alt="피드 이미지" className="object-cover w-full h-full rounded-xl" />
         </div>
