@@ -19,6 +19,7 @@ import { useFeedStore } from "../zustand/feedStore"
 import axios from "axios"
 import { createPost } from "../api/feed/CreatePost"
 import { editPost } from "../api/feed/EditPost"
+import { deletePost } from "../api/feed/DeletePost"
 
 const REST_API_KEY = '60f504ceb850cf533b3d9d172bfb8d4c'
 
@@ -166,6 +167,14 @@ const RecordPage = () => {
     })
   }
 
+  const handleDeletePost = async () => {
+    const response = await deletePost(id);
+    if (response && response.message === "OK") {
+      alert('삭제 완료')
+      navigate('/feed', { replace: true })
+    }
+  }
+
   useEffect(() => {
     if (imgRef.current && imgURL.length) {
       imgRef.current.setAttribute('src', imgURL)
@@ -244,9 +253,14 @@ const RecordPage = () => {
         <Button className="bg-main rounded-lg text-sm text-black w-28 py-2 hover:bg-main-hover hover:ring-2 hover:ring-main active:bg-main-active drop-shadow-md" onClick={() => navigate(`/feed/${id}`, { replace: true })}>
           취소
         </Button>
+        {id ? <Button className="bg-red-500 rounded-lg text-sm w-28 py-2 hover:ring-2 hover:ring-point hover:bg-red-800 active:bg-point-active drop-shadow-md" onClick={handleDeletePost}>
+          삭제
+        </Button> :
+          <></>}
         <Button className="bg-point rounded-lg text-sm w-28 py-2 hover:ring-2 hover:ring-point hover:bg-point-hover active:bg-point-active drop-shadow-md" onClick={id ? handleEdit : handleSubmit}>
           저장
         </Button>
+
       </div>
     </div>
   )
