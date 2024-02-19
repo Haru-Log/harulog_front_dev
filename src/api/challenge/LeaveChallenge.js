@@ -3,7 +3,7 @@ import axios from 'axios';
 export const leaveChallenge = async (id) => {
   try {
     const accessToken = localStorage.getItem('AccessToken');
-    const response = await axios.post(`${process.env.REACT_APP_BACKEND_DEPLOY}api/challenge/leave`, {
+    const response = await axios.post(`${process.env.REACT_APP_BACKEND_DEPLOY}/api/challenge/leave`, {
       challengeId: id,
     }, {
       headers: {

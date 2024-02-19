@@ -3,7 +3,7 @@ import axios from "axios";
 export const editProfileInfo = async (userInfo) => {
   try {
     const accessToken = localStorage.getItem('AccessToken');
-    const response = await axios.put(`${process.env.REACT_APP_BACKEND_DEPLOY}api/edit/update`,userInfo,
+    const response = await axios.put(`${process.env.REACT_APP_BACKEND_DEPLOY}/api/edit/update`,userInfo,
     {
       headers: {
         Authorization: `Bearer ${accessToken}`

@@ -4,7 +4,7 @@ import axios from 'axios';
 export const createChallenge = async (challenge) => {
   try {
     const accessToken = localStorage.getItem('AccessToken');
-    const response = await axios.post(`${process.env.REACT_APP_BACKEND_DEPLOY}api/challenge/register`, {
+    const response = await axios.post(`${process.env.REACT_APP_BACKEND_DEPLOY}/api/challenge/register`, {
       challengeTitle: challenge.challengeTitle,
       challengeContent: challenge.challengeContent,
       challengeGoal: challenge.challengeGoal,

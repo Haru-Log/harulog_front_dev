@@ -3,7 +3,7 @@ import axios from 'axios';
 export const createPost = async (feed) => {
   try {
     const accessToken = localStorage.getItem('AccessToken');
-    const response = await axios.post(`${process.env.REACT_APP_BACKEND_DEPLOY}api/feed/create`, {
+    const response = await axios.post(`${process.env.REACT_APP_BACKEND_DEPLOY}/api/feed/create`, {
       "categoryName": feed.categoryName,
       "acitivityTime": feed.acitivityTime,
       "imgUrl": feed.imgUrl,
