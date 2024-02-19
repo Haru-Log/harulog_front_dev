@@ -7,10 +7,10 @@ export const sendLogoutRequest = async (userInfo) => {
       headers: { "Authorization": `Bearer ${accessToken}` }
     });
     console.log('Request logout: ', response.data.message);
-    localStorage.removeItem('AccessToken')
+    localStorage.clear();
     return response.data;
   } catch (error) {
-    localStorage.removeItem('AccessToken')
+    localStorage.clear();
     return error.response.data;
   }
 }
