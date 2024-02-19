@@ -1,9 +1,9 @@
 import axios from 'axios';
 
-export const fetchProfile = async (id) => {
+export const fetchProfile = async (nickname) => {
   try {
     const accessToken = localStorage.getItem('AccessToken');
-    const response = await axios.get(`${process.env.REACT_APP_BACKEND_DEPLOY}/api/profile${id ? `/${id}` : ""}`, {
+    const response = await axios.get(`${process.env.REACT_APP_BACKEND_DEPLOY}/api/profile${nickname ? `/${nickname}` : ""}`, {
       headers: {
         'Authorization': `Bearer ${accessToken}`,
       },

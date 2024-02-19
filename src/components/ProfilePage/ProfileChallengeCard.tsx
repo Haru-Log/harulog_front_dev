@@ -10,7 +10,7 @@ const ProfileChallengeCard: React.FC<{ nickname: string | undefined }> = ({ nick
   useEffect(() => {
     const fetchChallengesData = async () => {
       try {
-        const response = await fetchChallengeProfile(nickname);
+        const response = await fetchChallengeProfile();
         //내가 참여중인 챌린지만 가져오는 api로 변경해야함
         fetchChallenges(response.data);
       } catch (error) {

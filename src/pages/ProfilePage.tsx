@@ -11,12 +11,11 @@ import ProfileChallengeCard from '../components/ProfilePage/ProfileChallengeCard
 import { Jandi } from "../types/HeatmapData.type";
 import { fetchProfile } from "../api/profile/fetchProfile";
 import { fetchHeatmap } from "../api/grow/FetchHeatmap";
-import { fetchProfileWithNickname } from "../api/profile/FetchProfileWithNickname";
 
 const today = new Date(); // dummy data용
 
 const ProfilePage = () => {
-
+  
   const nickname = useParams().nickname;
   const [userProfile, setUserProfile] = useState<any>();
   const [feed, setFeed] = useState<FeedItem[]>([])
@@ -37,9 +36,10 @@ const ProfilePage = () => {
 
   useEffect(() => {
     const getUserProfile = async () => {
-      const userInfo = await fetchProfileWithNickname(nickname);
+      const userInfo = await fetchProfile(nickname);
+      
       setUserProfile(userInfo.data)
-
+      console.log(userProfile)
       //Heatmap
       const heatmap = await fetchHeatmap();
       const heat = heatmap.data.map((x: any) => {
@@ -112,7 +112,7 @@ const ProfilePage = () => {
           </div>
           <div className='flex flex-col items-center'>
             {feedToggle ?
-              <ProfileChallengeCard nickname={nickname} />
+              <ProfileChallengeCard nickname={userProfile.nickname} />
               :
               (feed?.length > 0 ? <FeedCard data={feed} /> : <></>)
             }
