@@ -27,7 +27,7 @@ const LoginModal = () => {
     const response = await sendLoginRequest(userInfo)
     if (response.code === "COM-000") {
       setLoginModal(false);
-      // window.location.reload()
+      window.location.reload()
     } else {
       setEmail("")
       setPassword("")

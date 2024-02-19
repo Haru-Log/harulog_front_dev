@@ -82,13 +82,14 @@ const GrowPage = () => {
 
       //Heatmap
       const heatmapRes = await fetchHeatmap();
-      const heat = heatmapRes.data.map((x: any) => {
+      const heat = heatmapRes.data.map((x: { activityTime: number; actegoryName: string; date: string }) => {
         return {
           ...x,
           date: new Date(x.date)
         }
       })
       const merge = mergeCategory(heat)
+      console.log('merge', merge);
 
       const mergedJandi = mergeJandi(chartData, merge.mergedJandi)
       setCategoryMax(merge.categoryMax)
