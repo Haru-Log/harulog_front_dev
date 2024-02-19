@@ -15,8 +15,8 @@ import { fetchHeatmap } from "../api/grow/FetchHeatmap";
 const today = new Date(); // dummy data용
 
 const ProfilePage = () => {
-
-  const id = useParams().id;
+  
+  const nickname = useParams().nickname;
   const [userProfile, setUserProfile] = useState<any>();
   const [feed, setFeed] = useState<FeedItem[]>([])
   const [chartData, setChartData] = useState<Jandi[]>(
@@ -36,9 +36,10 @@ const ProfilePage = () => {
 
   useEffect(() => {
     const getUserProfile = async () => {
-      const userInfo = await fetchProfile(id);
+      const userInfo = await fetchProfile(nickname);
+      
       setUserProfile(userInfo.data)
-
+      console.log(userProfile)
       //Heatmap
       const heatmap = await fetchHeatmap();
       const heat = heatmap.data.map((x: any) => {
@@ -111,7 +112,7 @@ const ProfilePage = () => {
           </div>
           <div className='flex flex-col items-center'>
             {feedToggle ?
-              <ProfileChallengeCard id={id} />
+              <ProfileChallengeCard nickname={userProfile.nickname} />
               :
               (feed?.length > 0 ? <FeedCard data={feed} /> : <></>)
             }
