@@ -2,7 +2,8 @@ interface NavItemProps {
   title: string;
   path: string;
 }
-const userRole = localStorage.getItem('userRole');
+
+const role = localStorage.getItem('role');
 
 export const NavItemList: NavItemProps[] = [
   { title: "FEED", path: "/feed" },
@@ -12,5 +13,5 @@ export const NavItemList: NavItemProps[] = [
   { title: "GROW", path: "/grow" },
   { title: "PROFILE", path: "/profile"},
   { title: "MESSAGE", path: "/chat"},
-  ...(userRole === "ADMIN" ? [{ title: "ADMIN", path: "/admin" }] : [])
+  ...(role === "ADMIN" ? [{ title: "ADMIN", path: "/admin" }] : [])
 ];
