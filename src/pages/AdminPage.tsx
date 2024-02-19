@@ -37,6 +37,7 @@ const AdminPage = () => {
       if (response.status === 200) {
         alert('삭제되었습니다.');
       }
+      window.location.reload();
     } catch (error) {
       console.error('Error fetching users:', error);
     }
@@ -68,7 +69,7 @@ const AdminPage = () => {
                 </TableCell>
                 <TableCell>{user.nickname}</TableCell>
                 <TableCell className="text-right w-[90px]">
-                  <Button className='bg-point rounded-lg font-bold shadow-sm hover:bg-point-hover active:bg-point-active'>
+                  <Button className='bg-point rounded-lg font-bold shadow-sm hover:bg-point-hover active:bg-point-active' onClick={() => handleUserDelete(user.id!)}>
                     <Trash2 color="#ffffff" className='mr-2 h-5 w-5' />삭제
                   </Button>
                 </TableCell>
@@ -82,7 +83,7 @@ const AdminPage = () => {
                 <TableCell>{feed.nickname}</TableCell>
                 <TableCell>{feed.content}</TableCell>
                 <TableCell className="text-right w-[90px]">
-                <Button className='bg-point rounded-lg font-bold shadow-sm hover:bg-point-hover active:bg-point-active' onClick={() => handleUserDelete(feed.id)}>
+                <Button className='bg-point rounded-lg font-bold shadow-sm hover:bg-point-hover active:bg-point-active' >
                     <Trash2 color="#ffffff" className='mr-2 h-5 w-5' />삭제
                   </Button>
                 </TableCell>
