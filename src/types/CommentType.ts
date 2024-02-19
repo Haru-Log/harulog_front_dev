@@ -6,5 +6,5 @@ export interface CommentType {
   nickname: string
   parentId: number;
   depth: 0
-  children?: CommentType[]
+  children: CommentType[]
 }
