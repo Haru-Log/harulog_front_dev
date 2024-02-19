@@ -15,9 +15,11 @@ import { Button } from "../ui/button"
 import { Switch } from "../ui/switch"
 import { useNavigate, useParams } from "react-router-dom"
 import { SelectLabel } from "@radix-ui/react-select"
-import { dummy_sample } from "../types/FeedItem.type"
 import { useFeedStore } from "../zustand/feedStore"
 import axios from "axios"
+import { createPost } from "../api/feed/CreatePost"
+import { editPost } from "../api/feed/EditPost"
+import { deletePost } from "../api/feed/DeletePost"
 
 const REST_API_KEY = '60f504ceb850cf533b3d9d172bfb8d4c'
 
@@ -26,12 +28,12 @@ const RecordPage = () => {
   const { feed, setFeed } = useFeedStore();
   const id = useParams().id;
 
-  const [date] = useState<Date | undefined>(id ? feed.created_at : new Date());
-  const [minute, setMinute] = useState(id ? (feed.category_name === "기상" ? feed.achievement % 60 : feed.achievement) : 0)
-  const [hour, setHour] = useState(id ? (feed.category_name === "기상" ? Math.floor(feed.achievement / 60) : 0) : 0)
-  const [category, setCategory] = useState(id ? feed.category_name : "");
+  const [date] = useState<Date | undefined>(id ? feed.createdAt : new Date());
+  const [minute, setMinute] = useState(id ? (feed.categoryName === "기상" ? feed.activityTime % 60 : feed.activityTime) : 0)
+  const [hour, setHour] = useState(id ? (feed.categoryName === "기상" ? Math.floor(feed.activityTime / 60) : 0) : 0)
+  const [category, setCategory] = useState(id ? feed.categoryName : "");
   const [content, setContent] = useState(id ? feed.content : "");
-  const [imgURL, setImgURL] = useState(id ? feed.post_image : "");
+  const [imgURL, setImgURL] = useState(id ? feed.imgUrl : "");
 
   const categoryRef: RefObject<HTMLButtonElement> = useRef<HTMLButtonElement>(null);
   const hourRef: RefObject<HTMLInputElement> = useRef<HTMLInputElement>(null);
@@ -44,30 +46,28 @@ const RecordPage = () => {
     if (id) {
       if (feed) {
         if (imgRef.current) {
-          imgRef.current.setAttribute('src', feed.post_image);
+          imgRef.current.setAttribute('src', feed.imgUrl);
         }
       }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
-  const handleSubmit = () => {
+
+  const handleSubmit = async () => {
 
     if (content.length < 1) {
       contentRef.current?.focus()
       return;
     }
-
     if (!imgRef.current?.src) {
       alert('이미지를 업로드 하세요');
       return;
     }
-
     if (category === "") {
       categoryRef.current?.focus()
       return;
     }
-
     if (category === "기상" && hour === 0) {
       hourRef.current?.focus()
       return;
@@ -78,21 +78,29 @@ const RecordPage = () => {
 
 
     if (window.confirm("피드 작성을 완료하시겠습니까?")) {
-      //더미코드
-      localStorage.setItem((dummy_sample.length + 1).toString(), JSON.stringify(imgURL))
-      setFeed({
-        ...feed,
-        category_name: category,
-        content: content,
-        post_image: imgURL,
-        achievement: category === "기상" ? hour * 60 + minute : minute
+
+      const response = await createPost({
+        categoryName: category,
+        activityTime: minute,
+        imgUrl: imgURL,
+        content: content
       })
-      dummy_sample.push(feed);
-      navigate(`/feed/${id}`, { replace: true })
+
+      if (response.message === "OK") {
+        setFeed({
+          ...feed,
+          categoryName: category,
+          content: content,
+          imgUrl: imgURL,
+          activityTime: category === "기상" ? hour * 60 + minute : minute
+        })
+        navigate(`/feed/${id}`, { replace: true })
+      }
+
     }
   }
 
-  const handleEdit = () => {
+  const handleEdit = async () => {
 
     if (content.length < 1) {
       contentRef.current?.focus()
@@ -107,17 +115,24 @@ const RecordPage = () => {
     }
 
     if (window.confirm("피드 수정을 완료하시겠습니까?")) {
-      //더미코드
-      localStorage.setItem((dummy_sample.length + 1).toString(), JSON.stringify(imgURL))
-      setFeed({
-        ...feed,
-        category_name: category,
-        content: content,
-        post_image: imgURL,
-        achievement: category === "기상" ? hour * 60 + minute : minute
+
+      const response = await editPost({
+        categoryName: category,
+        activityTime: minute,
+        imgUrl: imgURL,
+        content: content
       })
 
-      navigate(`/feed/${id}`, { replace: true })
+      if (response.message === "OK") {
+        setFeed({
+          ...feed,
+          categoryName: category,
+          content: content,
+          imgUrl: imgURL,
+          activityTime: category === "기상" ? hour * 60 + minute : minute
+        })
+        navigate(`/feed/${id}`, { replace: true })
+      }
     }
   }
 
@@ -147,9 +162,17 @@ const RecordPage = () => {
           'Content-Type': 'application/json'
         }
       }
-    ).then((res)=>{
+    ).then((res) => {
       console.log(res);
     })
+  }
+
+  const handleDeletePost = async () => {
+    const response = await deletePost(id);
+    if (response && response.message === "OK") {
+      alert('삭제 완료')
+      navigate('/feed', { replace: true })
+    }
   }
 
   useEffect(() => {
@@ -230,9 +253,14 @@ const RecordPage = () => {
         <Button className="bg-main rounded-lg text-sm text-black w-28 py-2 hover:bg-main-hover hover:ring-2 hover:ring-main active:bg-main-active drop-shadow-md" onClick={() => navigate(`/feed/${id}`, { replace: true })}>
           취소
         </Button>
+        {id ? <Button className="bg-red-500 rounded-lg text-sm w-28 py-2 hover:ring-2 hover:ring-point hover:bg-red-800 active:bg-point-active drop-shadow-md" onClick={handleDeletePost}>
+          삭제
+        </Button> :
+          <></>}
         <Button className="bg-point rounded-lg text-sm w-28 py-2 hover:ring-2 hover:ring-point hover:bg-point-hover active:bg-point-active drop-shadow-md" onClick={id ? handleEdit : handleSubmit}>
           저장
         </Button>
+
       </div>
     </div>
   )

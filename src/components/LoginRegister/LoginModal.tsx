@@ -29,7 +29,7 @@ const LoginModal = () => {
     if (response.code === "COM-000") {
       setLoginModal(false);
       // window.location.reload()
-    } else{
+    } else {
       setEmail("")
       setPassword("")
     }
@@ -74,7 +74,13 @@ const LoginModal = () => {
                 <input type="password"
                   className="border-2 border-[#92C7CF] rounded-xl w-full text-xl p-3"
                   value={password}
-                  onChange={(e) => setPassword(e.target.value)} />
+                  onChange={(e) => setPassword(e.target.value)}
+                  onKeyUp={(e) => {
+                    if (e.key === 'Enter') {
+                      handleLogin();
+                    }
+                  }}
+                />
               </div>
               <button disabled={!isEmailValid} className="w-full bg-[#92C7CF] text-white text-3xl p-5 rounded-xl shadow-xl whitespace-nowrap" onClick={handleLogin}>
                 로그인

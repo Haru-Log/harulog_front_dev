@@ -10,7 +10,7 @@ export const sendLogoutRequest = async (userInfo) => {
     localStorage.removeItem('AccessToken')
     return response.data;
   } catch (error) {
-    console.error('Error logout:', error);
-    throw error;
+    localStorage.removeItem('AccessToken')
+    return error.response.data;
   }
 }
