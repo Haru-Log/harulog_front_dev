@@ -8,7 +8,7 @@ export const fetchProfile = async (nickname) => {
         'Authorization': `Bearer ${accessToken}`,
       },
     });
-    console.log('fetching Profile data: ', response.data.message);
+    console.log('fetching Profile data: ', response.data.data);
     return response.data;
   } catch (error) {
     console.error('Error fetching Profile data:', error);
