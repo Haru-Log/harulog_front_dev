@@ -81,12 +81,12 @@ const RecordPage = () => {
 
       const response = await createPost({
         categoryName: category,
-        activityTime: minute,
+        acitivityTime: minute,
         imgUrl: imgURL,
         content: content
       })
 
-      if (response.message === "OK") {
+      if (response && response.message === "OK") {
         setFeed({
           ...feed,
           categoryName: category,
@@ -94,7 +94,7 @@ const RecordPage = () => {
           imgUrl: imgURL,
           activityTime: category === "기상" ? hour * 60 + minute : minute
         })
-        navigate(`/feed/${id}`, { replace: true })
+        navigate(`/feed/${response.data.id}`, { replace: true })
       }
 
     }
@@ -118,12 +118,13 @@ const RecordPage = () => {
 
       const response = await editPost({
         categoryName: category,
-        activityTime: minute,
+        acitivityTime: minute,
         imgUrl: imgURL,
-        content: content
+        content: content,
+        id: id
       })
 
-      if (response.message === "OK") {
+      if (response && response.message === "OK") {
         setFeed({
           ...feed,
           categoryName: category,

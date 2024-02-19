@@ -12,7 +12,6 @@ import { Jandi } from "../types/HeatmapData.type";
 import { fetchProfile } from "../api/profile/fetchProfile";
 import { fetchHeatmap } from "../api/grow/FetchHeatmap";
 import { fetchFeedAll } from "../api/feed/FetchFeedAll";
-import { ChallengeItem } from "../types/ChallengeItem.type";
 import { useChallengeAllStore } from "../zustand/challengeAllStore";
 import { fetchChallengeProfile } from "../api/challenge/FetchChallengeProfile";
 
@@ -43,9 +42,7 @@ const ProfilePage = () => {
   useEffect(() => {
     const getUserProfile = async () => {
       const userInfo = await fetchProfile(nickname);
-
       setUserProfile(userInfo.data)
-      console.log(userProfile)
       //Heatmap
       const heatmap = await fetchHeatmap();
       const heat = heatmap.data.map((x: any) => {
