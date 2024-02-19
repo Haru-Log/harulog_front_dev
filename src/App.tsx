@@ -19,6 +19,7 @@ import { createContext, useState } from "react";
 import LoginModal from "./components/LoginRegister/LoginModal";
 import RegisterModal from "./components/LoginRegister/RegisterModal";
 import EditChallengePage from './pages/EditChallengePage';
+import AdminPage from './pages/AdminPage';
 
 type SetModalState = {
   setLoginModal: any;
@@ -62,6 +63,7 @@ function App() {
               <Route path="grow" element={<GrowPage />} />
               <Route path="dashboard" element={<DashboardPage />} />
               <Route path="profile/edit" element={<EditMyInfoPage />} />
+              <Route path="admin" element={<AdminPage />} />
             </Route>
           </Routes>
 

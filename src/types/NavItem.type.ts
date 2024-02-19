@@ -10,5 +10,6 @@ export const NavItemList: NavItemProps[] = [
   { title: "SOCIAL", path: "/social" },
   { title: "GROW", path: "/grow" },
   { title: "PROFILE", path: "/profile"},
-  { title : "MESSAGE", path: "/chat"}
+  { title : "MESSAGE", path: "/chat"},
+  { title: "ADMIN", path: "/admin"}
 ];
