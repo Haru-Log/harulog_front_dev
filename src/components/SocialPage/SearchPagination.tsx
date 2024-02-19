@@ -6,12 +6,13 @@ const SearchPagination = () => {
   const { currentPage, totalPage, setCurrentPage } = useContentStore();
 
   const handlePrevClick = () => {
-      setCurrentPage(currentPage - 1);
+    setCurrentPage(currentPage - 1);
   };
 
   const handleNextClick = () => {
-      setCurrentPage(currentPage + 1);
+    setCurrentPage(currentPage + 1);
   };
+
   return (
     <div className="flex items-center w-full justify-center">
       <div className='w-full mt-7 rounded-xl flex justify-between'>

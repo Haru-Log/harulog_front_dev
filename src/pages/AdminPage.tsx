@@ -1,12 +1,15 @@
-import { Archive, Trash2, User, UserPlus } from 'lucide-react'
+import { Archive, Trash2, User } from 'lucide-react'
 import React, { useEffect } from 'react'
 import { useAdminStore } from '../zustand/adminStore'
 import { Table, TableBody, TableCell, TableRow } from '../ui/table';
 import { Button } from '../ui/button';
 import { fetchAll } from '../api/admin/FetchAll';
+import { deleteFeedOrUsers } from '../api/admin/DeleteFeedOrUser';
+import AdminPagination from '../components/AdminPage/AdminPagination';
 
 const AdminPage = () => {
-  const { toggle, userList, feedList, currentFeedPage, totalFeedPage, currentUserPage, totalUserPage, setToggle, setUserList, setFeedList, setCurrentFeedPage, setTotalFeedPage, setCurrentUserPage, setTotalUserPage } = useAdminStore();
+  const { toggle, userList, feedList, currentFeedPage, currentUserPage,  setToggle, setUserList, setFeedList, setCurrentFeedPage, setTotalFeedPage, setCurrentUserPage, setTotalUserPage } = useAdminStore();
+  const deleteType = toggle === 'users' ? 'user' : 'post';
 
   useEffect(() => {
     const fetchUsers = async () => {
@@ -27,6 +30,17 @@ const AdminPage = () => {
     };
     fetchUsers();
   }, [setUserList, setFeedList, setCurrentFeedPage, setTotalFeedPage, setCurrentUserPage, setTotalUserPage, toggle, currentUserPage, currentFeedPage])
+
+  const handleUserDelete = async (id: number) => {
+    try {
+      const response = await deleteFeedOrUsers(deleteType, id);
+      if (response.status === 200) {
+        alert('삭제되었습니다.');
+      }
+    } catch (error) {
+      console.error('Error fetching users:', error);
+    }
+  }
 
   return (
     <div className="w-full flex justify-center mt-10 font-ibm">
@@ -68,7 +82,7 @@ const AdminPage = () => {
                 <TableCell>{feed.nickname}</TableCell>
                 <TableCell>{feed.content}</TableCell>
                 <TableCell className="text-right w-[90px]">
-                <Button className='bg-point rounded-lg font-bold shadow-sm hover:bg-point-hover active:bg-point-active'>
+                <Button className='bg-point rounded-lg font-bold shadow-sm hover:bg-point-hover active:bg-point-active' onClick={() => handleUserDelete(feed.id)}>
                     <Trash2 color="#ffffff" className='mr-2 h-5 w-5' />삭제
                   </Button>
                 </TableCell>
@@ -76,6 +90,7 @@ const AdminPage = () => {
             ))}
           </TableBody>
         </Table>
+        <AdminPagination />
       </div>
     </div>
   )
