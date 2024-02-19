@@ -100,7 +100,8 @@ const ProfilePage = () => {
                 <Link to={'edit'}>
                   <span className='font-bold'>프로필 편집</span>
                 </Link>
-              </Button> : <Button className="bg-point hover:bg-point-hover active:bg-point-active shadow-xl rounded-full font-bold">
+              </Button> 
+              : <Button className="bg-point hover:bg-point-hover active:bg-point-active shadow-xl rounded-full font-bold">
               <UserPlus color="#ffffff" className='mr-2 h-5 w-5' />팔로우
               </Button>}
             </div>
