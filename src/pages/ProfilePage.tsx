@@ -2,7 +2,7 @@ import { Button } from "../ui/button"
 import ProfileNumber from "../components/ProfilePage/ProfileNumber"
 import Heatmap from "../components/ProfilePage/Heatmap";
 import { useEffect, useState } from "react";
-import { Archive, Mountain } from "lucide-react";
+import { Archive, Mountain, UserPlus } from "lucide-react";
 import FeedCard from "../components/Feed/Cards";
 import { FeedItem } from "../types/FeedItem.type";
 import { getRange, mergeCategory, mergeJandi, shiftDate } from "../utils/rawDatatoJandi";
@@ -12,7 +12,6 @@ import { Jandi } from "../types/HeatmapData.type";
 import { fetchProfile } from "../api/profile/fetchProfile";
 import { fetchHeatmap } from "../api/grow/FetchHeatmap";
 import { fetchFeedAll } from "../api/feed/FetchFeedAll";
-import { ChallengeItem } from "../types/ChallengeItem.type";
 import { useChallengeAllStore } from "../zustand/challengeAllStore";
 import { fetchChallengeProfile } from "../api/challenge/FetchChallengeProfile";
 
@@ -21,6 +20,7 @@ const today = new Date(); // dummy data용
 const ProfilePage = () => {
 
   const nickname = useParams().nickname;
+  const myName = localStorage.getItem('nickname');
   const [userProfile, setUserProfile] = useState<any>();
   const [feed, setFeed] = useState<FeedItem[]>([])
   const [chartData, setChartData] = useState<Jandi[]>(
@@ -96,11 +96,13 @@ const ProfilePage = () => {
               <div className="font-bold text-3xl">
                 {userProfile && userProfile.userName}
               </div>
-              <Button className="bg-point hover:bg-point-hover active:bg-point-active shadow-xl rounded-full">
+              {(!nickname || nickname === myName) ? <Button className="bg-point hover:bg-point-hover active:bg-point-active shadow-xl rounded-full">
                 <Link to={'edit'}>
                   <span className='font-bold'>프로필 편집</span>
                 </Link>
-              </Button>
+              </Button> : <Button className="bg-point hover:bg-point-hover active:bg-point-active shadow-xl rounded-full font-bold">
+              <UserPlus color="#ffffff" className='mr-2 h-5 w-5' />팔로우
+              </Button>}
             </div>
             <div className="flex p-6 justify-between">
               <ProfileNumber title={"게시물"} count={feed.length} />
