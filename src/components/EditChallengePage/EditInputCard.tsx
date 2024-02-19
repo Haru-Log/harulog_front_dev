@@ -44,7 +44,6 @@ const EditInputCard = () => {
       !challenge.challengeTitle ||
       !challenge.challengeContent ||
       !challenge.challengeGoal ||
-      !challenge.imageUrl ||
       !challenge.submission ||
       !challenge.startDate ||
       !challenge.endDate
@@ -124,7 +123,7 @@ const EditInputCard = () => {
               type="file"
               className={`mt-5 w-[280px] border-2 `}
               onChange={(e) => {
-                setChallenge({ ...challenge, imageUrl: e.target.value });
+                // setChallenge({ ...challenge, imageUrl: e.target.value });
               }}
             />
           </div>
