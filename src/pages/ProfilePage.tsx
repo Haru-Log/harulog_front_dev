@@ -11,11 +11,15 @@ import ProfileChallengeCard from '../components/ProfilePage/ProfileChallengeCard
 import { Jandi } from "../types/HeatmapData.type";
 import { fetchProfile } from "../api/profile/fetchProfile";
 import { fetchHeatmap } from "../api/grow/FetchHeatmap";
+import { fetchFeedAll } from "../api/feed/FetchFeedAll";
+import { ChallengeItem } from "../types/ChallengeItem.type";
+import { useChallengeAllStore } from "../zustand/challengeAllStore";
+import { fetchChallengeProfile } from "../api/challenge/FetchChallengeProfile";
 
 const today = new Date(); // dummy data용
 
 const ProfilePage = () => {
-  
+
   const nickname = useParams().nickname;
   const [userProfile, setUserProfile] = useState<any>();
   const [feed, setFeed] = useState<FeedItem[]>([])
@@ -33,11 +37,13 @@ const ProfilePage = () => {
     "운동"?: number;
     "독서"?: number;
   }>({})
+  const fetchChallenges = useChallengeAllStore(state => state.setChallenge);
+
 
   useEffect(() => {
     const getUserProfile = async () => {
       const userInfo = await fetchProfile(nickname);
-      
+
       setUserProfile(userInfo.data)
       console.log(userProfile)
       //Heatmap
@@ -58,13 +64,25 @@ const ProfilePage = () => {
         setChartData(mergedJandi)
       }
 
-      // setFeed(response.data.feed)
+      const response = await fetchFeedAll();
+      const myFeed = response.data.filter((x: FeedItem) => x.nickname === nickname)
+      setFeed(myFeed);
+
+      try {
+        const response = await fetchChallengeProfile();
+        //내가 참여중인 챌린지만 가져오는 api로 변경해야함
+        fetchChallenges(response.data);
+      } catch (error) {
+        console.error(error);
+      }
     }
+
     getUserProfile();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+  }, [nickname])
 
   const [feedToggle, setFeedToggle] = useState(false);
+  const challenge = useChallengeAllStore(state => state.challenge);
 
   return (
     <div className="w-full flex justify-center py-16 font-ibm">
@@ -85,8 +103,8 @@ const ProfilePage = () => {
               </Button>
             </div>
             <div className="flex p-6 justify-between">
-              <ProfileNumber title={"게시물"} count={userProfile && userProfile.posts} />
-              <ProfileNumber title={"챌린지"} count={userProfile && userProfile.challenges} />
+              <ProfileNumber title={"게시물"} count={feed.length} />
+              <ProfileNumber title={"챌린지"} count={challenge.length} />
               <ProfileNumber title={"팔로워"} count={userProfile && userProfile.followerCount} />
               <ProfileNumber title={"팔로잉"} count={userProfile && userProfile.followingCount} />
             </div>
@@ -112,7 +130,7 @@ const ProfilePage = () => {
           </div>
           <div className='flex flex-col items-center'>
             {feedToggle ?
-              <ProfileChallengeCard nickname={userProfile.nickname} />
+              (challenge?.length > 0 ? <ProfileChallengeCard challenge={challenge} /> : <></>)
               :
               (feed?.length > 0 ? <FeedCard data={feed} /> : <></>)
             }

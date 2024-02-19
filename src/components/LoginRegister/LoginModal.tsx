@@ -5,7 +5,6 @@ import { SetModalContext } from '../../App'
 import useOnClickOutside from "../../hooks/useOnClickOutside"
 import { sendLoginRequest } from './../../api/loginRegister/sendLoginRequest';
 
-
 const LoginModal = () => {
 
   const setLoginModal = useContext(SetModalContext)?.setLoginModal;
@@ -91,7 +90,7 @@ const LoginModal = () => {
               <div className="w-fit whitespace-nowrap">또는</div>
               <div className="border-2 h-0 border-gray-300 w-[40%] ml-10 mt-2" />
             </div>
-            <Link to={''}><img src={KakaoIcon} alt="kakao icon"
+            <Link to={`${process.env.REACT_APP_BACKEND_DEPLOY}/oauth2/authorization/kakao`}><img src={KakaoIcon} alt="kakao icon"
               className="w-20 h-20 mx-2 shadow-2xl mt-10" /></Link>
           </div>
         </div>

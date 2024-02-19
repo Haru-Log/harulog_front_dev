@@ -10,6 +10,13 @@ export const sendLoginRequest = async (userInfo) => {
       });
     const AccessToken = response.headers.getAuthorization().split(' ')[1]
     localStorage.setItem('AccessToken', AccessToken);
+
+    const role = response.data.data.userRole
+    const nickname = response.data.data.nickname
+
+    localStorage.setItem('role', role)
+    localStorage.setItem('nickname', nickname);
+
     return response.data;
   } catch (error) {
     alert(error.response.data.message)
