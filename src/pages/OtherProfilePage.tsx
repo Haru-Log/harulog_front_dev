@@ -15,7 +15,7 @@ import { fetchProfileWithNickname } from "../api/profile/FetchProfileWithNicknam
 
 const today = new Date(); // dummy data용
 
-const ProfilePage = () => {
+const OtherProfilePage = () => {
 
   const nickname = useParams().nickname;
   const [userProfile, setUserProfile] = useState<any>();
@@ -123,4 +123,4 @@ const ProfilePage = () => {
   )
 }
 
-export default ProfilePage
+export default OtherProfilePage

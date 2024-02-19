@@ -20,6 +20,7 @@ import LoginModal from "./components/LoginRegister/LoginModal";
 import RegisterModal from "./components/LoginRegister/RegisterModal";
 import EditChallengePage from './pages/EditChallengePage';
 import AdminPage from './pages/AdminPage';
+import OtherProfilePage from './pages/OtherProfilePage';
 
 type SetModalState = {
   setLoginModal: any;
@@ -48,6 +49,7 @@ function App() {
             <Route element={<Layout />}>
               <Route path="/" element={<MainPage />} />
               <Route path="profile" element={<ProfilePage />} />
+              <Route path="profile/:nickname" element={<OtherProfilePage />} />
               <Route path="feed/:id" element={<FeedDetail />} />
               <Route path="challenge/:id" element={<ChallengeDetailPage />} />
               <Route path="chat" element={<ChattingPage />} />

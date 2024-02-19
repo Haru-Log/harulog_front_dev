@@ -4,13 +4,13 @@ import { Flame } from 'lucide-react';
 import { useChallengeAllStore } from 'src/zustand/challengeAllStore';
 import { fetchChallengeProfile } from 'src/api/challenge/FetchChallengeProfile';
 
-const ProfileChallengeCard: React.FC<{ id: string | undefined }> = ({ id }) => {
+const ProfileChallengeCard: React.FC<{ nickname: string | undefined }> = ({ nickname }) => {
   const fetchChallenges = useChallengeAllStore(state => state.setChallenge);
 
   useEffect(() => {
     const fetchChallengesData = async () => {
       try {
-        const response = await fetchChallengeProfile(id);
+        const response = await fetchChallengeProfile(nickname);
         //내가 참여중인 챌린지만 가져오는 api로 변경해야함
         fetchChallenges(response.data);
       } catch (error) {
@@ -18,7 +18,7 @@ const ProfileChallengeCard: React.FC<{ id: string | undefined }> = ({ id }) => {
       }
     }
     fetchChallengesData();
-  }, [fetchChallenges, id]);
+  }, [fetchChallenges, nickname]);
 
   const challenge = useChallengeAllStore(state => state.challenge);
   const navigate = useNavigate();
