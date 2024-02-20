@@ -1,21 +1,21 @@
-import { ChatRoom } from 'src/types/ChatRoom.type'
+import { Messages } from 'src/types/ChatRoom.type'
 import { Textarea } from 'src/ui/textarea'
 import { Button } from 'src/ui/button'
 import { Send } from 'lucide-react'
 import Chat from './Chat'
 import ChatroomHeader from './ChatroomHeader'
 
-const Chatroom = ({ messages }: { messages: ChatRoom[] }) => {
+const Chatroom = ({ messages }: { messages: Messages[] }) => {
 
   return (
     <div className='h-[1000px] flex flex-col'>
       <ChatroomHeader />
       <div className='flex-1'>
-        {messages.map((message) => (
+        {messages.map((message, index) => (
           <Chat
             message={message}
-            key={message.message_id}
-            isSentByCurrentUser={message.sender_name === '사용자'}
+            key={index}
+            isSentByCurrentUser={message.senderName === '사용자'}
           />
         ))}
       </div>

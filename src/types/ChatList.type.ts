@@ -1,6 +1,6 @@
 export interface ChatList {
   challengeName: string;
-  roomId: number;
+  roomId: string;
   roomType: string;
   unreadCount: number;
   updatedAt: string;

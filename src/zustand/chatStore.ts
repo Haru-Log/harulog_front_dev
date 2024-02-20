@@ -1,12 +1,13 @@
 import create from 'zustand';
 import { devtools } from 'zustand/middleware';
 import { ChatList } from '../types/ChatList.type';
+import { ChatRoom } from '../types/ChatRoom.type';
 
 interface ChatState {
   chatList: ChatList[];
   setChatList: (chatList: ChatList[]) => void;
-  selectedChatroomId: number;
-  selectChatroom: (chatroomId: number) => void;
+  selectedChatroomInfo : ChatRoom;
+  selectChatroomInfo: (chatroomInfo: ChatRoom) => void;
 }
 
 export const useChatStore = create<ChatState>()(
@@ -14,8 +15,12 @@ export const useChatStore = create<ChatState>()(
     (set) => ({
       chatList: [],
       setChatList: (chatList: ChatList[]) => set({ chatList }),
-      selectedChatroomId: 0,
-      selectChatroom: (selectedChatroomId: number) => set({ selectedChatroomId }),
+      selectedChatroomInfo: {
+        roomId: '',
+        userCount: 0,
+        messages: [],
+      },
+      selectChatroomInfo: (selectedChatroomInfo: ChatRoom) => set({ selectedChatroomInfo }),
     }),
     { name: 'chatStore' }
   ),

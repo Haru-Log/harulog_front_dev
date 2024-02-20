@@ -4,12 +4,19 @@ import getTimeDifference from 'src/utils/getTimeDifference'
 import { useChatStore } from 'src/zustand/chatStore'
 import { fetchChatsList } from 'src/api/chats/FetchChatsList'
 import { getChatRoomName } from 'src/utils/getChatRoomName'
+import { enterChatRoom } from 'src/api/chats/EnterChatRoom'
 
 const MessageList = () => {
-  const {chatList, setChatList, selectChatroom, selectedChatroomId} = useChatStore();
+  const {chatList, setChatList, selectedChatroomInfo, selectChatroomInfo} = useChatStore();
 
-  const handleChatroomClick = (chatroomId:number) => {
-    selectChatroom(chatroomId);
+  const handleChatroomClick = async(chatroomId:string) => {
+    try {
+      const response = await enterChatRoom(chatroomId);
+      selectChatroomInfo(response.data)
+    }
+    catch (error) {
+      console.error(error);
+    }
     console.log(chatroomId);
   };
 
@@ -35,7 +42,7 @@ const MessageList = () => {
     <div>
       {chatList && chatList.map((chats, index) => (
         <div
-          className={`cursor-pointer hover:bg-gray-100 ${selectedChatroomId === chats.roomId ? 'bg-gray-200':''}`}
+          className={`cursor-pointer hover:bg-gray-100 ${selectedChatroomInfo.roomId === chats.roomId ? 'bg-gray-200':''}`}
           key={index}
           onClick={()=>handleChatroomClick(chats.roomId)}>
           <div className="text-sm py-3 whitespace-nowrap flex flex-row justify-between items-center">
