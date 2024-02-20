@@ -2,7 +2,7 @@ import { Button } from "../ui/button"
 import ProfileNumber from "../components/ProfilePage/ProfileNumber"
 import Heatmap from "../components/ProfilePage/Heatmap";
 import { useEffect, useState } from "react";
-import { Archive, Mountain, Trash2, UserPlus } from "lucide-react";
+import { Archive, Mountain, Trash2, UserPlus, XCircle } from "lucide-react";
 import FeedCard from "../components/Feed/Cards";
 import { FeedItem } from "../types/FeedItem.type";
 import { getRange, mergeCategory, mergeJandi, shiftDate } from "../utils/rawDatatoJandi";
@@ -118,7 +118,7 @@ const ProfilePage = () => {
               </Button>
                 : <Button className="bg-point hover:bg-point-hover active:bg-point-active shadow-xl rounded-xl font-bold"
                   onClick={() => setShowConfirmation(true)}>
-                  {followState ? <><Trash2 color="#ffffff" className='mr-2 h-5 w-5' /><p>삭제</p></> : <><UserPlus color="#ffffff" className='mr-2 h-5 w-5' /><p>팔로우</p></>}
+                  {followState ? <><XCircle color="#ffffff" className='mr-2 h-5 w-5'/><p>팔로우 취소</p></> : <><UserPlus color="#ffffff" className='mr-2 h-5 w-5' /><p>팔로우</p></>}
                 </Button>}
             </div>
             <div className="flex p-6 justify-between">
