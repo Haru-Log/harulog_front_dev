@@ -31,7 +31,7 @@ const AdminPage = () => {
     fetchUsers();
   }, [setUserList, setFeedList, setCurrentFeedPage, setTotalFeedPage, setCurrentUserPage, setTotalUserPage, toggle, currentUserPage, currentFeedPage])
 
-  const handleUserDelete = async (id: number) => {
+  const handleDelete = async (id: number) => {
     try {
       const response = await deleteFeedOrUsers(deleteType, id);
       if (response.status === 200) {
@@ -69,7 +69,7 @@ const AdminPage = () => {
                 </TableCell>
                 <TableCell>{user.nickname}</TableCell>
                 <TableCell className="text-right w-[90px]">
-                  <Button className='bg-point rounded-lg font-bold shadow-sm hover:bg-point-hover active:bg-point-active' onClick={() => handleUserDelete(user.id!)}>
+                  <Button className='bg-point rounded-lg font-bold shadow-sm hover:bg-point-hover active:bg-point-active' onClick={() => handleDelete(user.id!)}>
                     <Trash2 color="#ffffff" className='mr-2 h-5 w-5' />삭제
                   </Button>
                 </TableCell>
@@ -83,7 +83,7 @@ const AdminPage = () => {
                 <TableCell>{feed.nickname}</TableCell>
                 <TableCell>{feed.content}</TableCell>
                 <TableCell className="text-right w-[90px]">
-                <Button className='bg-point rounded-lg font-bold shadow-sm hover:bg-point-hover active:bg-point-active' >
+                <Button className='bg-point rounded-lg font-bold shadow-sm hover:bg-point-hover active:bg-point-active' onClick={() => handleDelete(feed.id!)}>
                     <Trash2 color="#ffffff" className='mr-2 h-5 w-5' />삭제
                   </Button>
                 </TableCell>

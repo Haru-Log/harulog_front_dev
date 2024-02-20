@@ -7,6 +7,7 @@ import { useNavigate } from 'react-router-dom'
 
 const SearchResultList = () => {
   const myName = localStorage.getItem('nickname');
+  console.log('myName:', myName);
   const { userList } = useContentStore();
   const navi = useNavigate();
   console.log('userList:', userList);
