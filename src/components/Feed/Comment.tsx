@@ -33,7 +33,9 @@ const Comment: React.FC<CommentComponent> = ({
             <div>
               {new Date(createdAt).toDateString()}
             </div>
-            <Button className="text-red" onClick={()=>handleDeleteComment(id)}>삭제</Button>
+            {localStorage.getItem('nickname') === nickname ?
+              <Button className="text-red" onClick={() => handleDeleteComment(id)}>삭제</Button>
+              : <></>}
           </div>
           <div className="text-2xl">
             {content}

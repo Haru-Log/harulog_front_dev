@@ -19,6 +19,7 @@ const FeedDetail = () => {
   const feed = useFeedStore(state => state.feed)
   const navigate = useNavigate();
   const [commentContent, setCommentContent] = useState("");
+  const [liked, setLiked] = useState(false)
 
   useEffect(() => {
     const fetchFeedDetails = async () => {
@@ -65,12 +66,16 @@ const FeedDetail = () => {
       <div className="w-[50%] h-full p-12 flex flex-col">
         <section className="w-full flex flex-row items-center h-fit justify-between mb-5">
           <div className="flex flex-row items-center h-fit">
-            <img src={dummyImage1} alt="프로필 이미지" className="w-20 h-20 rounded-full mr-10" />
-            <div className="items-center text-3xl whitespace-nowrap font-bold">{feed?.nickname}</div>
+            <img src={dummyImage1} alt="프로필 이미지" className="w-20 h-20 rounded-full mr-10 cursor-pointer" onClick={() => navigate(`/profile/${feed.nickname}`)} />
+            <div className="items-center text-3xl whitespace-nowrap font-bold cursor-pointer" onClick={() => navigate(`/profile/${feed.nickname}`)}>{feed?.nickname}</div>
           </div>
-          <div className="cursor-pointer" onClick={() => navigate(`/feed/edit/${post_id}`)}>
-            <Pencil size={30} />
-          </div>
+          {
+            localStorage.getItem('nickname') === feed.nickname ?
+              <div className="cursor-pointer" onClick={() => navigate(`/feed/edit/${post_id}`)}>
+                <Pencil size={30} />
+              </div>
+              :
+              <></>}
         </section>
         <section className="w-full mb-5">
           <img src={feed?.imgUrl} alt="post" className="max-h-[100vh] w-full object-cover" />
@@ -91,7 +96,11 @@ const FeedDetail = () => {
           </div>
         </section>
         <section className="mt-5 flex items-center">
-          <Heart size={50} />
+          {
+            liked ?
+              <Heart size={50} className="cursor-pointer" onClick={() => setLiked(!liked)} colorRendering='#ff0000' /> :
+              <Heart size={50} className="cursor-pointer" onClick={() => setLiked(!liked)} />
+          }
           <div className="ml-5 text-4xl font-bold">
             {feed?.likeCount}
           </div>
@@ -108,9 +117,9 @@ const FeedDetail = () => {
             <Comment key={it.id} {...it} post_id={post_id} submitComment={submitComment} handleDeleteComment={handleDeleteComment} />
           ))}
         </section>
-      </div>
+      </div >
 
-    </div>)
+    </div >)
 }
 
 export default FeedDetail
