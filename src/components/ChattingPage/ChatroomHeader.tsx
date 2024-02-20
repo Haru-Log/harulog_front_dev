@@ -4,11 +4,11 @@ import { LogOut } from 'lucide-react'
 import React, { useEffect, useState } from 'react'
 
 const ChatroomHeader = () => {
-  const { selectedChatroomId } = useChatStore();
+  const { chatList, selectedChatroomId } = useChatStore();
   const [chatRoomName, setChatRoomName] = useState('');
 
   useEffect(() => {
-    const name = getChatRoomName(selectedChatroomId);
+    const name = getChatRoomName(chatList, selectedChatroomId);
     setChatRoomName(name);
   }, [selectedChatroomId]);
 

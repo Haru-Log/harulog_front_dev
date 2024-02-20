@@ -33,19 +33,19 @@ const MessageList = () => {
   
   return (
     <div>
-      {chatList && chatList.map((chatList, index) => (
+      {chatList && chatList.map((chats, index) => (
         <div
-          className={`cursor-pointer hover:bg-gray-100 ${selectedChatroomId === chatList.roomId ? 'bg-gray-200':''}`}
+          className={`cursor-pointer hover:bg-gray-100 ${selectedChatroomId === chats.roomId ? 'bg-gray-200':''}`}
           key={index}
-          onClick={()=>handleChatroomClick(chatList.roomId)}>
+          onClick={()=>handleChatroomClick(chats.roomId)}>
           <div className="text-sm py-3 whitespace-nowrap flex flex-row justify-between items-center">
             <div className='flex flex-row justify-start items-center' >
               <img src={'chatList.chatroom_profile'} alt="Chatroom Profile" className='object-cover rounded-full w-12 h-12 mr-5 ml-3' />
               <span className=''>
-                {truncateChatroomName(getChatRoomName(chatList.roomId), 20)}
+                {truncateChatroomName(getChatRoomName(chatList, chats.roomId), 20)}
               </span>
             </div>
-            <span className='text-xs text-gray-400 mx-3'>{getTimeDifference(chatList.updatedAt)}</span>
+            <span className='text-xs text-gray-400 mx-3'>{getTimeDifference(chats.updatedAt)}</span>
           </div>
           <Separator />
         </div>
