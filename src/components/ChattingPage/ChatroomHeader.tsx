@@ -10,7 +10,7 @@ const ChatroomHeader = () => {
   useEffect(() => {
     const name = getChatRoomName(chatList, selectedChatroomId);
     setChatRoomName(name);
-  }, [selectedChatroomId]);
+  }, [selectedChatroomId, chatList]);
 
   return (
     <div className="text-lg leading-none bg-[#EAF0F7] pt-4 pb-2 px-4 flex justify-between items-start sticky top-0 z-10">
