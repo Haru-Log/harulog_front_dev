@@ -18,9 +18,9 @@ const Slogan = () => {
             매일 반복되는 하루, 기록을 통해 성장하는 자신을 발견해보세요.
           </div>
         </div>
-        <button className="bg-[#92C7CF] w-fit px-5 py-2 text-white rounded-xl mt-10" onClick={() => { setRegisterModal(true)} }>
+        {!localStorage.getItem('AccessToken') && <button className="bg-[#92C7CF] w-fit px-5 py-2 text-white rounded-xl mt-10" onClick={() => { setRegisterModal(true) }}>
           가입하기
-        </button>
+        </button>}
       </div>
       <div className="w-fit h-fit p-5 flex">
         <img src={achievement} alt="Achievement" className="w-full max-w-[40rem] h-fit min-w-60 object-contain" />

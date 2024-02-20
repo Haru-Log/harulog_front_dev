@@ -34,6 +34,7 @@ const RecordPage = () => {
   const [category, setCategory] = useState(id ? feed.categoryName : "");
   const [content, setContent] = useState(id ? feed.content : "");
   const [imgURL, setImgURL] = useState(id ? feed.imgUrl : "");
+  // const [postImage, setPostImage] = useState<File | undefined>()
 
   const categoryRef: RefObject<HTMLButtonElement> = useRef<HTMLButtonElement>(null);
   const hourRef: RefObject<HTMLInputElement> = useRef<HTMLInputElement>(null);
@@ -78,13 +79,14 @@ const RecordPage = () => {
 
 
     if (window.confirm("피드 작성을 완료하시겠습니까?")) {
+      const formData = new FormData();
 
-      const response = await createPost({
-        categoryName: category,
-        activityTime: minute,
-        imgUrl: imgURL,
-        content: content
-      })
+      formData.append('categoryName', category)
+      formData.append('activityTime', minute.toString());
+      formData.append('content', content)
+      // formData.append('imgUrl', postImage as File)
+
+      const response = await createPost(formData)
 
       if (response && response.message === "OK") {
         setFeed({
@@ -115,7 +117,6 @@ const RecordPage = () => {
     }
 
     if (window.confirm("피드 수정을 완료하시겠습니까?")) {
-
       const response = await editPost({
         categoryName: category,
         activityTime: minute,
@@ -123,7 +124,6 @@ const RecordPage = () => {
         content: content,
         id: id
       })
-
       if (response && response.message === "OK") {
         setFeed({
           ...feed,
@@ -140,6 +140,7 @@ const RecordPage = () => {
   const handleUploadImage = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.files) {
       const file = event.target.files[0]
+      // setPostImage(file)
       setImgURL(URL.createObjectURL(file))
     }
   }
