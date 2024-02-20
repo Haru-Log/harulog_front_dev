@@ -38,7 +38,7 @@ const RegisterModal = () => {
 
     const res = await sendRegisterInfo(userInfo);
 
-    if(!res){
+    if (!res) {
       alert('사용중인 닉네임과 메일입니다.')
     }
     else if (res.code === "COM-000") {
@@ -117,7 +117,8 @@ const RegisterModal = () => {
               <div className="w-fit whitespace-nowrap">또는</div>
               <div className="border-2 h-0 border-gray-300 w-[40%] ml-10 mt-2" />
             </div>
-            <Link to={''}><img src={KakaoIcon} alt="kakao icon" className="w-20 h-20 mx-2 shadow-2xl mt-5 mb-5" /></Link>
+            <Link to={`${process.env.REACT_APP_BACKEND_DEPLOY}/oauth2/authorization/kakao`}><img src={KakaoIcon} alt="kakao icon"
+              className="w-20 h-20 mx-2 shadow-2xl mt-10" /></Link>
           </div>
         </div>
       </div>

@@ -81,7 +81,7 @@ const RecordPage = () => {
 
       const response = await createPost({
         categoryName: category,
-        acitivityTime: minute,
+        activityTime: minute,
         imgUrl: imgURL,
         content: content
       })
@@ -118,7 +118,7 @@ const RecordPage = () => {
 
       const response = await editPost({
         categoryName: category,
-        acitivityTime: minute,
+        activityTime: minute,
         imgUrl: imgURL,
         content: content,
         id: id
