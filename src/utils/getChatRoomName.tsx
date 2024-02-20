@@ -11,5 +11,8 @@ function combineNicknameExceptMe(users: chatUser[], myNickname: string|null) {
 export const getChatRoomName = (chatList:ChatList[] ,selectedChatroomId: number): string => {
   const myName = localStorage.getItem('nickname');
   const selectedChatRoom = chatList.find(room => room.roomId === selectedChatroomId);
-  return selectedChatRoom ? combineNicknameExceptMe(selectedChatRoom.users, myName) : '';
+  if (selectedChatRoom && selectedChatRoom.roomType === "CHALLENGE")
+    return "[챌린지] "+selectedChatRoom.challengeName;
+  else
+    return selectedChatRoom ? combineNicknameExceptMe(selectedChatRoom.users, myName) : '';
 };

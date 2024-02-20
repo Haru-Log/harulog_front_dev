@@ -1,4 +1,5 @@
 export interface ChatList {
+  challengeName: string;
   roomId: number;
   roomType: string;
   unreadCount: number;
