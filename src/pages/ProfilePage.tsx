@@ -2,7 +2,7 @@ import { Button } from "../ui/button"
 import ProfileNumber from "../components/ProfilePage/ProfileNumber"
 import Heatmap from "../components/ProfilePage/Heatmap";
 import { useEffect, useState } from "react";
-import { Archive, Mountain, UserPlus } from "lucide-react";
+import { Archive, Mountain, Trash2, UserPlus } from "lucide-react";
 import FeedCard from "../components/Feed/Cards";
 import { FeedItem } from "../types/FeedItem.type";
 import { getRange, mergeCategory, mergeJandi, shiftDate } from "../utils/rawDatatoJandi";
@@ -14,6 +14,10 @@ import { fetchHeatmap } from "../api/grow/FetchHeatmap";
 import { fetchFeedAll } from "../api/feed/FetchFeedAll";
 import { useChallengeAllStore } from "../zustand/challengeAllStore";
 import { fetchChallengeProfile } from "../api/challenge/FetchChallengeProfile";
+import { set } from "date-fns";
+import ConfirmationModal from "../components/ConfirmationModal";
+import { actionFollow } from "../api/follow/ActionFollow";
+import { cancelFollow } from "../api/follow/CancelFollow";
 
 const today = new Date(); // dummy data용
 
@@ -23,6 +27,7 @@ const ProfilePage = () => {
   const myName = localStorage.getItem('nickname');
   const [userProfile, setUserProfile] = useState<any>();
   const [feed, setFeed] = useState<FeedItem[]>([])
+  const [showConfirmation, setShowConfirmation] = useState(false);
   const [chartData, setChartData] = useState<Jandi[]>(
     getRange(51 * 7 + today.getDay() + 1).map(index => {
       return {
@@ -38,13 +43,14 @@ const ProfilePage = () => {
     "독서"?: number;
   }>({})
   const fetchChallenges = useChallengeAllStore(state => state.setChallenge);
-
+  const [followState, setFollowState] = useState(false);
 
   useEffect(() => {
     console.log('nickname', nickname)
     const getUserProfile = async () => {
       const userInfo = await fetchProfile(nickname);
       setUserProfile(userInfo.data)
+      setFollowState(userInfo.data.following)
       //Heatmap
       const heatmap = await fetchHeatmap();
       const heat = heatmap.data.map((x: any) => {
@@ -83,6 +89,16 @@ const ProfilePage = () => {
   const [feedToggle, setFeedToggle] = useState(false);
   const challenge = useChallengeAllStore(state => state.challenge);
 
+  const handleActionFollow = async () => {
+    await actionFollow(nickname);
+    window.location.reload();
+  }
+
+  const handleCancelFollow = async() => {
+    await cancelFollow(nickname);
+    window.location.reload();
+  }
+
   return (
     <div className="w-full flex justify-center py-16 font-ibm">
       <div className="w-[80%] h-full flex flex-col">
@@ -99,10 +115,11 @@ const ProfilePage = () => {
                 <Link to={'edit'}>
                   <span className='font-bold'>프로필 편집</span>
                 </Link>
-              </Button> 
-              : <Button className="bg-point hover:bg-point-hover active:bg-point-active shadow-xl rounded-full font-bold">
-              <UserPlus color="#ffffff" className='mr-2 h-5 w-5' />팔로우
-              </Button>}
+              </Button>
+                : <Button className="bg-point hover:bg-point-hover active:bg-point-active shadow-xl rounded-xl font-bold"
+                  onClick={() => setShowConfirmation(true)}>
+                  {followState ? <><Trash2 color="#ffffff" className='mr-2 h-5 w-5' /><p>삭제</p></> : <><UserPlus color="#ffffff" className='mr-2 h-5 w-5' /><p>팔로우</p></>}
+                </Button>}
             </div>
             <div className="flex p-6 justify-between">
               <ProfileNumber title={"게시물"} count={feed.length} />
@@ -139,6 +156,13 @@ const ProfilePage = () => {
           </div>
         </section>
       </div>
+      {showConfirmation && (
+        <ConfirmationModal
+          message={followState ? "정말 팔로우를 취소하시겠습니까?" : "정말 팔로우 하시겠습니까?"}
+          onConfirm={() => {followState ? handleCancelFollow() : handleActionFollow(); setShowConfirmation(false)}}
+          onCancel={() => setShowConfirmation(false)}
+        />
+      )}
     </div>
   )
 }
