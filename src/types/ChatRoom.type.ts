@@ -1,7 +1,7 @@
 export interface ChatRoom {
   roomId: string;
   userCount: number;
-  messages?: Messages[];
+  messages: Messages[];
 }
 
 export interface Messages {

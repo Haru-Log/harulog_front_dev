@@ -1,16 +1,38 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { ResizablePanelGroup, ResizablePanel, ResizableHandle } from '../ui/resizable-panel'
 import { ScrollArea } from '../ui/scroll-area'
 import MessageListHeader from '../components/ChattingPage/MessageListHeader'
 import MessageList from '../components/ChattingPage/MessageList'
 import Chatroom from '../components/ChattingPage/Chatroom'
 import { useChatStore } from '../zustand/chatStore'
-import { Messages } from '../types/ChatRoom.type'
+import { fetchChatsList } from '../api/chats/FetchChatsList'
+import { ChatRoom } from '../types/ChatRoom.type'
 
 const ChattingPage = () => {
-  const { selectedChatroomInfo } = useChatStore();
-  const selectedMessages: Messages[] = selectedChatroomInfo?.messages ?? [];
+  const { setChatList, selectedChatroomInfo, selectChatroomInfo } = useChatStore();
 
+  useEffect(() => {
+    const initialChatroomInfo: ChatRoom = {
+      roomId: '',
+      userCount: 0,
+      messages: [],
+    };
+    selectChatroomInfo(initialChatroomInfo);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  useEffect(() => {
+    const fetchChats = async () => {
+      try {
+        const response = await fetchChatsList();
+        setChatList(response);
+      }
+      catch (error) {
+        console.error(error);
+      }
+    }
+    fetchChats();
+  }, [setChatList]);
   return (
     <div className='mt-12 font-ibm'>
       <ResizablePanelGroup
@@ -26,7 +48,7 @@ const ChattingPage = () => {
         <ResizableHandle withHandle />
         <ResizablePanel>
           <ScrollArea className="h-[1000px]">
-            {selectedChatroomInfo.roomId !=='' ? <Chatroom messages={selectedMessages} /> : <div className='bg-[#EAF0F7] h-[1000px] flex items-center justify-center'><div>채팅방을 선택해보세요!</div></div>}
+            {selectedChatroomInfo.roomId ? <Chatroom messages={selectedChatroomInfo.messages} /> : <div className='bg-[#EAF0F7] h-[1000px] flex items-center justify-center'><div>채팅방을 선택해보세요!</div></div>}
           </ScrollArea>
         </ResizablePanel>
       </ResizablePanelGroup>
