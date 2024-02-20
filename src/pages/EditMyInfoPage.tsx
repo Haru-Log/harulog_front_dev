@@ -3,8 +3,9 @@ import MyForm from '../components/EditMyInfoPage/MyForm'
 import PasswordChangeForm from '../components/EditMyInfoPage/PasswordChangeForm'
 import ProfileImageUpload from '../components/EditMyInfoPage/ProfileImageUpload'
 import Modal from '../components/EditMyInfoPage/Modal'
-import { fetchProfile } from "../api/profile/fetchProfile"
 import { UserInfo } from "../types/UserInfo.type"
+import { fetchEditProfile } from "../api/profile/fetchEditProfile"
+
 
 const initialUserInfo: UserInfo = {
   userName: "",
@@ -23,7 +24,7 @@ const EditMyInfoPage = () => {
 
   useEffect(() => {
     const getUserInfo = async () => {
-      const response = await fetchProfile();
+      const response = await fetchEditProfile();
       if (response.message === "OK") {
         setUserInfo(response.data);
       }
@@ -45,9 +46,11 @@ const EditMyInfoPage = () => {
         </div>
         {/* Bottom Section */}
         <div className="w-full ml-2 gap-4 p-4" style={{}}>
-          <div>
-            <PasswordChangeForm />
-          </div>
+          {
+            userInfo.socialType === "HARU" &&
+            <div>
+              <PasswordChangeForm />
+            </div>}
           <br />
           <div className="w-full ">
             <Modal />
