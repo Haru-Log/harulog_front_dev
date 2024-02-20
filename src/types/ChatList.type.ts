@@ -1,7 +1,12 @@
 export interface ChatList {
-  chatroom_id: number;
-  chatroom_profile: string;
-  chatroom_name: string;
-  last_message: string;
-  isGroup: boolean;
+  roomId: number;
+  roomType: string;
+  unreadCount: number;
+  updatedAt: string;
+  users: chatUser[];
+}
+
+export interface chatUser {
+  nickname: string;
+  profileImage: string;
 }
