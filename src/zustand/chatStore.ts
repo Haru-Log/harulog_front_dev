@@ -5,6 +5,8 @@ import { ChatRoom } from '../types/ChatRoom.type';
 
 interface ChatState {
   chatList: ChatList[];
+  userWillAdded: string[];
+  setUserWillAdded: (userWillAdded: string[]) => void;
   setChatList: (chatList: ChatList[]) => void;
   selectedChatroomInfo : ChatRoom;
   selectChatroomInfo: (chatroomInfo: ChatRoom) => void;
@@ -14,6 +16,8 @@ export const useChatStore = create<ChatState>()(
   devtools(
     (set) => ({
       chatList: [],
+      userWillAdded: [],
+      setUserWillAdded: (userWillAdded: string[]) => set({ userWillAdded }),
       setChatList: (chatList: ChatList[]) => set({ chatList }),
       selectedChatroomInfo: {
         roomId: '',
