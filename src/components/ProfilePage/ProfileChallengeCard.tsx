@@ -1,26 +1,10 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { useNavigate } from "react-router-dom";
 import { Flame } from 'lucide-react';
-import { useChallengeAllStore } from 'src/zustand/challengeAllStore';
-import { fetchChallengeProfile } from 'src/api/challenge/FetchChallengeProfile';
+import { ChallengeAll } from "../../types/ChallengeAll.type";
 
-const ProfileChallengeCard: React.FC<{ id: string | undefined }> = ({ id }) => {
-  const fetchChallenges = useChallengeAllStore(state => state.setChallenge);
+const ProfileChallengeCard: React.FC<{ challenge: ChallengeAll[] }> = ({ challenge }) => {
 
-  useEffect(() => {
-    const fetchChallengesData = async () => {
-      try {
-        const response = await fetchChallengeProfile(id);
-        //내가 참여중인 챌린지만 가져오는 api로 변경해야함
-        fetchChallenges(response.data);
-      } catch (error) {
-        console.error(error);
-      }
-    }
-    fetchChallengesData();
-  }, [fetchChallenges, id]);
-
-  const challenge = useChallengeAllStore(state => state.challenge);
   const navigate = useNavigate();
 
   return (

@@ -1,6 +1,6 @@
 import { HeatmapCategory, Jandi } from "../types/HeatmapData.type";
 
-export const mergeCategory = (receieved_jandi: { date: Date, category: "기상" | "공부" | "운동" | "독서", activityTime: number }[]) => {
+export const mergeCategory = (receieved_jandi: { date: Date, categoryName: "기상" | "공부" | "운동" | "독서", activityTime: number }[]) => {
   const mergedJandi: Jandi[] = [];
   const categoryMax = {"공부": 0, "운동": 0, "독서": 0 }
   let currentGroup: Jandi = { date: new Date('1900-01-01'), category: {} };
@@ -11,13 +11,13 @@ export const mergeCategory = (receieved_jandi: { date: Date, category: "기상" 
       if (currentGroup.date.toISOString().split('T')[0] !== new Date('1900-01-01').toISOString().split('T')[0]) {
         mergedJandi.push(currentGroup);
       }
-      currentGroup = { date: item.date, category: { [item.category]: item.activityTime } };
+      currentGroup = { date: item.date, category: { [item.categoryName]: item.activityTime } };
     } else {
       // 같은 날짜의 그룹에 추가
-      if (currentGroup.category[item.category]) {
-        currentGroup.category[item.category]! += item.activityTime
+      if (currentGroup.category[item.categoryName]) {
+        currentGroup.category[item.categoryName]! += item.activityTime
       } else {
-        currentGroup.category[item.category] = item.activityTime
+        currentGroup.category[item.categoryName] = item.activityTime
       }
     }    
   });

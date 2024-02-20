@@ -1,11 +1,18 @@
 import { Table, TableBody, TableCell, TableRow } from 'src/ui/table'
-import { UserPlus } from 'lucide-react'
+import { UserSearch } from 'lucide-react'
 import React from 'react'
 import { Button } from 'src/ui/button'
 import { useContentStore } from 'src/zustand/searchUserStore'
+import { useNavigate } from 'react-router-dom'
 
 const SearchResultList = () => {
+  const myName = localStorage.getItem('nickname');
   const { userList } = useContentStore();
+  const navi = useNavigate();
+  console.log('userList:', userList);
+  const handleBtn = (nickname: string) => {
+    navi(`/profile/${nickname}`)
+  }
 
   return (
     <div className="flex items-center w-full justify-center">
@@ -19,9 +26,10 @@ const SearchResultList = () => {
                 </TableCell>
                 <TableCell>{user.nickname}</TableCell>
                 <TableCell className="text-right w-[90px]">
-                  <Button className='bg-point rounded-lg font-bold shadow-sm hover:bg-point-hover active:bg-point-active'>
-                    <UserPlus color="#ffffff" className='mr-2 h-5 w-5' />팔로우
-                  </Button>
+                  {(user.nickname !== myName) && <Button className='bg-point rounded-lg font-bold shadow-sm hover:bg-point-hover active:bg-point-active'
+                  onClick={() => handleBtn(user.nickname)}>
+                    <UserSearch color="#ffffff" className='mr-2 h-5 w-5'/>프로필 보러가기
+                  </Button>}
                 </TableCell>
               </TableRow>
             ))}

@@ -9,6 +9,7 @@ import { Textarea } from "../ui/textarea"
 import { addComment } from "../api/feed/addComment"
 import { CommentType } from "../types/CommentType"
 import { useFeedStore } from "../zustand/feedStore"
+import { deleceComment } from "../api/feed/DeleteComment"
 
 
 const FeedDetail = () => {
@@ -33,10 +34,29 @@ const FeedDetail = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
-  const submitComment = async () => {
-    const response = await addComment(post_id, 0, commentContent);
+  const submitComment = async (e: any, id = 0, postId: number = post_id, content = commentContent) => {
+    e.preventDefault()
+    const response = await addComment(postId, id, content);
     if (response) {
-      window.location.reload();
+      const newComment = await fetchFeedDetail(post_id);
+      setFeed({
+        ...feed,
+        commentList: newComment.data.commentList
+      })
+      setCommentContent("")
+    }
+  }
+
+  const handleDeleteComment = async (id: number) => {
+    const response = await deleceComment(id);
+    if (response) {
+      alert('삭제 완료')
+      const newComment = await fetchFeedDetail(post_id);
+      setFeed({
+        ...feed,
+        commentList: newComment.data.commentList
+      })
+      setCommentContent("")
     }
   }
 
@@ -79,13 +99,13 @@ const FeedDetail = () => {
         <section className="mt-5 text-4xl">
           {feed?.content}
         </section>
-        <form onSubmit={submitComment} className="w-full relative flex">
+        <form onSubmit={submitComment} className="w-full relative flex mt-5">
           <Textarea value={commentContent} onChange={(e) => setCommentContent(e.target.value)} placeholder="댓글 작성" className="pr-14 resize-none h-fit scrollbar-hide" />
           <Button type="submit" className="absolute right-1 text-[#92C7CF]">전송</Button>
         </form>
         <section className="mt-10">
           {feed?.commentList?.map((it: CommentType) => (
-            <Comment key={it.id} {...it} />
+            <Comment key={it.id} {...it} post_id={post_id} submitComment={submitComment} handleDeleteComment={handleDeleteComment} />
           ))}
         </section>
       </div>

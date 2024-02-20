@@ -4,7 +4,7 @@ import axios from 'axios';
 export const editChallenge = async (challenge, id) => {
   try {
     const accessToken = localStorage.getItem('AccessToken');
-    const response = await axios.post(`${process.env.REACT_APP_BACKEND_DEPLOY}api/challenge/${id}`, {
+    const response = await axios.post(`${process.env.REACT_APP_BACKEND_DEPLOY}/api/challenge/${id}`, {
       challengeTitle: challenge.challengeTitle,
       challengeContent: challenge.challengeContent,
       challengeGoal: challenge.challengeGoal,

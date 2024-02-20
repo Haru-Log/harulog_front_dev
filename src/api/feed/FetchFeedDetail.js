@@ -3,7 +3,7 @@ import axios from 'axios';
 export const fetchFeedDetail = async (feedId) => {
   const accessToken = localStorage.getItem('AccessToken');
   try {
-    const response = await axios.get(`${process.env.REACT_APP_BACKEND_DEPLOY}api/feed/${feedId}`, {
+    const response = await axios.get(`${process.env.REACT_APP_BACKEND_DEPLOY}/api/feed/${feedId}`, {
       headers: {
         'Authorization': `Bearer ${accessToken}`,
       },

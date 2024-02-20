@@ -48,6 +48,7 @@ function App() {
             <Route element={<Layout />}>
               <Route path="/" element={<MainPage />} />
               <Route path="profile" element={<ProfilePage />} />
+              <Route path="profile/:nickname" element={<ProfilePage />} />
               <Route path="feed/:id" element={<FeedDetail />} />
               <Route path="challenge/:id" element={<ChallengeDetailPage />} />
               <Route path="chat" element={<ChattingPage />} />
