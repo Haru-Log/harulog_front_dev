@@ -9,6 +9,7 @@ export const fetchProfile = async (nickname) => {
       },
     });
     console.log('fetching Profile data: ', response.data.data);
+    console.log('fetchProfile: ', response.data);
     return response.data;
   } catch (error) {
     console.error('Error fetching Profile data:', error);
