@@ -1,6 +1,18 @@
-import { dummyChatList } from "../types/ChatList.dummy";
+import { ChatList, chatUser } from "../types/ChatList.type";
 
-export const getChatRoomName = (selectedChatroomId: number): string => {
-  const selectedChatRoom = dummyChatList.find(room => room.chatroom_id === selectedChatroomId);
-  return selectedChatRoom ? selectedChatRoom.chatroom_name : '';
+function combineNicknameExceptMe(users: chatUser[], myNickname: string|null) {
+  const otherNicknames = users
+    .filter(user => user.nickname !== myNickname)
+    .map(user => user.nickname);
+  const combinedNicknames = otherNicknames.join(', ');
+  return combinedNicknames;
+}
+
+export const getChatRoomName = (chatList:ChatList[] ,selectedChatroomId: string): string => {
+  const myName = localStorage.getItem('nickname');
+  const selectedChatRoom = chatList.find(room => room.roomId === selectedChatroomId);
+  if (selectedChatRoom && selectedChatRoom.roomType === "CHALLENGE")
+    return "[챌린지] "+selectedChatRoom.challengeName;
+  else
+    return selectedChatRoom ? combineNicknameExceptMe(selectedChatRoom.users, myName) : '';
 };
