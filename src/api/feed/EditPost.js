@@ -5,7 +5,7 @@ export const editPost = async (feed) => {
     const accessToken = localStorage.getItem('AccessToken');
     const response = await axios.put(`${process.env.REACT_APP_BACKEND_DEPLOY}/api/feed/${feed.id}`, {
       "categoryName": feed.categoryName,
-      "acitivityTime": feed.acitivityTime,
+      "activityTime": feed.activityTime,
       "imgUrl": feed.imgUrl,
       "content": feed.content
     }
