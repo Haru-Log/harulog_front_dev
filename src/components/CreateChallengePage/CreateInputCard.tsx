@@ -11,10 +11,12 @@ import { DateRange } from 'react-day-picker'
 import { createChallenge } from 'src/api/challenge/CreateChallenge'
 import { useNavigate } from 'react-router-dom'
 import ConfirmationModal from '../ConfirmationModal'
+import { imageUpload } from 'src/api/challenge/ImageUpload'
 
 const CreateInputCard = () => {
   const { newChallenge, setNewChallenge } = useNewChallengeStore();
   const [showConfirmation, setShowConfirmation] = useState(false);
+  const [file, setFile] = useState()
   const navi = useNavigate();
   const [date, setDate] = useState<DateRange | undefined>({
     from: new Date(""),
@@ -32,6 +34,8 @@ const CreateInputCard = () => {
     setNewChallenge({ ...newChallenge, challengeGoal: totalMinutes });
   };
 
+
+
   const saveButtonDisabled = (): boolean => {
     return (
       !newChallenge.categoryName ||
@@ -44,9 +48,33 @@ const CreateInputCard = () => {
     );
   };
 
+  const onChangeImg = (e: any) => {
+    e.preventDefault();
+    const uploadFile = e.target.files?.[0];
+    if (!uploadFile) {
+      return;
+    }
+    setFile(uploadFile);
+  }
+
   const saveButtonOnClick = async () => {
+    if (!file) {
+      alert('이미지를 업로드해주세요')
+      return
+    }
+    const formData = new FormData();
+    formData.append('file', file);
+
     try {
-      await createChallenge(newChallenge);
+      const responseChallenge = await createChallenge(newChallenge);
+      try {
+        const responseImg = await imageUpload(formData, responseChallenge.data.challengeId);
+        console.log('이미지 업로드 성공: ', responseImg.data.data.imageUrl)
+      }
+      catch (error) {
+        console.error('Error uploading image:', error);
+        alert('Failed to upload image. Please try again.');
+      }
       alert('Challenge created successfully!');
     } catch (error) {
       console.error('Error creating challenge:', error);
@@ -54,6 +82,7 @@ const CreateInputCard = () => {
     }
     setShowConfirmation(false);
     navi('/challenge');
+
   }
 
   return (
@@ -123,9 +152,8 @@ const CreateInputCard = () => {
             <Input
               type="file"
               className={`mt-5 w-[280px] border-2 `}
-              onChange={(e) => {
-                // setNewChallenge({ ...newChallenge, imageUrl: e.target.value });
-              }}
+              accept='image/*'
+              onChange={onChangeImg}
             />
           </div>
         </div>
@@ -172,7 +200,7 @@ const CreateInputCard = () => {
       {showConfirmation && (
         <ConfirmationModal
           message="챌린지를 생성하시겠습니까?"
-          onConfirm={saveButtonOnClick}
+          onConfirm={() => { saveButtonOnClick(); }}
           onCancel={() => setShowConfirmation(false)}
         />
       )}

@@ -41,6 +41,7 @@ const ProfilePage = () => {
 
 
   useEffect(() => {
+    console.log('nickname', nickname)
     const getUserProfile = async () => {
       const userInfo = await fetchProfile(nickname);
       setUserProfile(userInfo.data)
@@ -67,7 +68,7 @@ const ProfilePage = () => {
       setFeed(myFeed);
 
       try {
-        const response = await fetchChallengeProfile();
+        const response = await fetchChallengeProfile(nickname);
         //내가 참여중인 챌린지만 가져오는 api로 변경해야함
         fetchChallenges(response.data);
       } catch (error) {

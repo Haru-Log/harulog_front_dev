@@ -1,41 +1,58 @@
-import { dummyChatList } from 'src/types/ChatList.dummy'
-import React from 'react'
+import React, { useEffect } from 'react'
 import { Separator } from 'src/ui/seperator'
 import getTimeDifference from 'src/utils/getTimeDifference'
 import { useChatStore } from 'src/zustand/chatStore'
+import { fetchChatsList } from 'src/api/chats/FetchChatsList'
+import { getChatRoomName } from 'src/utils/getChatRoomName'
+import { enterChatRoom } from 'src/api/chats/EnterChatRoom'
 
 const MessageList = () => {
-  const chatList = dummyChatList
-  const {selectChatroom} = useChatStore();
+  const {chatList, setChatList, selectedChatroomInfo, selectChatroomInfo} = useChatStore();
 
-  const handleChatroomClick = (chatroomId:number) => {
-    selectChatroom(chatroomId);
+  const handleChatroomClick = async(chatroomId:string) => {
+    try {
+      const response = await enterChatRoom(chatroomId);
+      selectChatroomInfo(response.data)
+    }
+    catch (error) {
+      console.error(error);
+    }
     console.log(chatroomId);
   };
 
-  chatList.sort((a, b) => {
-    const dateA = new Date(a.last_message);
-    const dateB = new Date(b.last_message);
-    return dateB.getTime() - dateA.getTime();
-  });
+  useEffect(() => {
+    const fetchChats = async () => {
+      try {
+        const response = await fetchChatsList();
+        setChatList(response);
+      }
+      catch (error) {
+        console.error(error);
+      }
+    }
+    fetchChats();
+  }, [setChatList]);
+  console.log(chatList);
 
-  const { selectedChatroomId } = useChatStore();
-
+  const truncateChatroomName = (name:string, maxLength:number) => {
+    return name && name.length > maxLength ? `${name.slice(0, maxLength)}...` : name;
+  };
+  
   return (
     <div>
-      {chatList.map(chatList => (
+      {chatList && chatList.map((chats, index) => (
         <div
-          className={`cursor-pointer hover:bg-gray-100 ${selectedChatroomId === chatList.chatroom_id ? 'bg-gray-200':''}`}
-          key={chatList.chatroom_id}
-          onClick={()=>handleChatroomClick(chatList.chatroom_id)}>
+          className={`cursor-pointer hover:bg-gray-100 ${selectedChatroomInfo.roomId === chats.roomId ? 'bg-gray-200':''}`}
+          key={index}
+          onClick={()=>handleChatroomClick(chats.roomId)}>
           <div className="text-sm py-3 whitespace-nowrap flex flex-row justify-between items-center">
             <div className='flex flex-row justify-start items-center' >
-              <img src={chatList.chatroom_profile} alt="Chatroom Profile" className='object-cover rounded-full w-12 h-12 mr-5 ml-3' />
+              <img src={'chatList.chatroom_profile'} alt="Chatroom Profile" className='object-cover rounded-full w-12 h-12 mr-5 ml-3' />
               <span className=''>
-                {chatList.chatroom_name.length > 12 ? `${chatList.chatroom_name.slice(0, 12)}...` : chatList.chatroom_name}
+                {truncateChatroomName(getChatRoomName(chatList, chats.roomId), 20)}
               </span>
             </div>
-            <span className='text-xs text-gray-400 mx-3'>{getTimeDifference(chatList.last_message)}</span>
+            <span className='text-xs text-gray-400 mx-3'>{getTimeDifference(chats.updatedAt)}</span>
           </div>
           <Separator />
         </div>
