@@ -13,6 +13,7 @@ import { deleceComment } from "../api/feed/DeleteComment"
 import Heart from "react-animated-heart";
 import { sendLike } from "../api/feed/sendLike"
 import { cancelLike } from "../api/feed/cancelLike"
+import { editComment } from "../api/feed/EditComment"
 
 
 const FeedDetail = () => {
@@ -67,13 +68,13 @@ const FeedDetail = () => {
   const handleLike = async () => {
     if (liked) {
       setLiked(false);
-        const response = await cancelLike(post_id);
-        if (response) {
-          setFeed({
-            ...feed,
-            likeCount: response.data.likeCount
-          })
-        }
+      const response = await cancelLike(post_id);
+      if (response) {
+        setFeed({
+          ...feed,
+          likeCount: response.data.likeCount
+        })
+      }
     } else {
       setLiked(true);
       const response = await sendLike(post_id);
@@ -83,6 +84,19 @@ const FeedDetail = () => {
           likeCount: response.data.likeCount
         })
       }
+    }
+  }
+
+  const handleEditComment = async (content: string, commentId: number) => {
+    const response = await editComment(commentId, content);
+    if (response) {
+      alert('수정 완료')
+      const newComment = await fetchFeedDetail(post_id);
+      setFeed({
+        ...feed,
+        commentList: newComment.data.commentList
+      })
+      setCommentContent("")
     }
   }
 
@@ -135,7 +149,7 @@ const FeedDetail = () => {
         </form>
         <section className="mt-10">
           {feed?.commentList?.map((it: CommentType) => (
-            <Comment key={it.id} {...it} post_id={post_id} submitComment={submitComment} handleDeleteComment={handleDeleteComment} />
+            <Comment key={it.id} {...it} post_id={post_id} submitComment={submitComment} handleDeleteComment={handleDeleteComment} handleEditComment={handleEditComment} />
           ))}
         </section>
       </div >
