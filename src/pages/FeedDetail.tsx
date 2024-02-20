@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { useNavigate, useParams } from "react-router-dom"
 import dummyImage1 from '../assets/20231010_084411.jpg' // 임시 이미지
-import { Heart, Pencil } from "lucide-react"
+import { Pencil } from "lucide-react"
 import Comment from "../components/Feed/Comment"
 import { fetchFeedDetail } from "../api/feed/FetchFeedDetail"
 import { Button } from "../ui/button"
@@ -10,6 +10,9 @@ import { addComment } from "../api/feed/addComment"
 import { CommentType } from "../types/CommentType"
 import { useFeedStore } from "../zustand/feedStore"
 import { deleceComment } from "../api/feed/DeleteComment"
+import Heart from "react-animated-heart";
+import { sendLike } from "../api/feed/sendLike"
+import { cancelLike } from "../api/feed/cancelLike"
 
 
 const FeedDetail = () => {
@@ -26,7 +29,7 @@ const FeedDetail = () => {
       try {
         const feedDetails = await fetchFeedDetail(post_id);
         setFeed({ ...feedDetails.data, createdAt: new Date(feedDetails.data.createdAt), updateAt: new Date(feedDetails.data.updateAt) })
-
+        setLiked(feedDetails.data.likedByUser)
       } catch (error) {
         console.log(error);
       }
@@ -61,6 +64,28 @@ const FeedDetail = () => {
     }
   }
 
+  const handleLike = async () => {
+    if (liked) {
+      setLiked(false);
+        const response = await cancelLike(post_id);
+        if (response) {
+          setFeed({
+            ...feed,
+            likeCount: response.data.likeCount
+          })
+        }
+    } else {
+      setLiked(true);
+      const response = await sendLike(post_id);
+      if (response) {
+        setFeed({
+          ...feed,
+          likeCount: response.data.likeCount
+        })
+      }
+    }
+  }
+
   return (
     <div className="w-full flex justify-center font-ibm pt-5">
       <div className="w-[50%] h-full p-12 flex flex-col">
@@ -82,25 +107,21 @@ const FeedDetail = () => {
         </section>
         <section className="flex items-center justify-between">
           <div className="flex flex-row">
-            <div className={`text-white px-3 py-1 rounded-full h-fit w-fit text-center mr-3 text-2xl bg-${feed?.categoryName}`}>
+            <div className={`text-white px-3 py-1 rounded-full h-fit w-fit text-center mr-3 text-2xl bg-${feed?.categoryName} whitespace-nowrap`}>
               {feed?.categoryName}
             </div>
-            <div className={`text-white px-3 py-1 rounded-full h-fit w-fit text-center text-2xl bg-${feed?.categoryName}`}>
+            <div className={`text-white px-3 py-1 rounded-full h-fit w-fit text-center text-2xl bg-${feed?.categoryName} whitespace-nowrap`}>
               {feed?.categoryName === "기상"
                 ? `${Math.floor(feed.activityTime / 60)}시 ${feed.activityTime % 60}분`
                 : `${feed?.activityTime}분`}
             </div>
           </div>
-          <div className="text-xl">
+          <div className="text-xl whitespace-nowrap ml-5">
             {feed?.createdAt.toDateString()}
           </div>
         </section>
-        <section className="mt-5 flex items-center">
-          {
-            liked ?
-              <Heart size={50} className="cursor-pointer" onClick={() => setLiked(!liked)} colorRendering='#ff0000' /> :
-              <Heart size={50} className="cursor-pointer" onClick={() => setLiked(!liked)} />
-          }
+        <section className="mt-5 flex items-center h-fit">
+          <Heart isClick={liked} onClick={() => handleLike()} />
           <div className="ml-5 text-4xl font-bold">
             {feed?.likeCount}
           </div>
