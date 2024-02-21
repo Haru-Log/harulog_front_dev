@@ -1,5 +1,5 @@
 import { joinChallenge } from 'src/api/challenge/JoinChallenge'
-import { UserPlus } from 'lucide-react'
+import { UserSearch } from 'lucide-react'
 import { Button } from 'src/ui/button'
 import {
   Table,
@@ -13,9 +13,11 @@ import { useChallengeDetailStore } from 'src/zustand/challengeDetailStore'
 import { useState } from 'react'
 import ConfirmationModal from '../ConfirmationModal'
 import ChallengeMemberProfile from "./ChallengeMemberProfile"
+import { useNavigate } from 'react-router-dom'
 const ChallengeMemberList = () => {
   const challenge = useChallengeDetailStore((state) => state.challenge);
   const [showConfirmation, setShowConfirmation] = useState(false);
+  const navi = useNavigate();
   console.log()
   const handleJoinChallenge = async () => {
     try {
@@ -48,7 +50,7 @@ const ChallengeMemberList = () => {
               <TableHead className='w-[80px]'>이름</TableHead>
               <TableHead>현황</TableHead>
               <TableHead>일일 달성</TableHead>
-              <TableHead>팔로우</TableHead>
+              <TableHead>프로필</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
@@ -65,8 +67,9 @@ const ChallengeMemberList = () => {
                   </div>
                 </TableCell>
                 <TableCell className="text-right w-[90px]">
-                  <Button className='bg-point rounded-lg font-bold shadow-sm hover:bg-point-hover active:bg-point-active'>
-                    <UserPlus color="#ffffff" className='mr-2 h-5 w-5' />팔로우
+                  <Button className='bg-point rounded-lg font-bold shadow-sm hover:bg-point-hover active:bg-point-active'
+                    onClick={() => navi(`/profile/${member.nickname}`)}>
+                    <UserSearch color="#ffffff" className='mr-2 h-5 w-5' />프로필
                   </Button>
                 </TableCell>
               </TableRow>
