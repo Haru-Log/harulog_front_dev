@@ -28,7 +28,7 @@ const ChallengeInfoLeft = () => {
     }
     fetchChallengeImg()
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+  }, [challenge])
 
   return (
     <div className='flex flex-col mr-10'>

@@ -12,11 +12,12 @@ import {
 import { useChallengeDetailStore } from 'src/zustand/challengeDetailStore'
 import { useState } from 'react'
 import ConfirmationModal from '../ConfirmationModal'
+import ChallengeMemberProfile from "./ChallengeMemberProfile"
 const ChallengeMemberList = () => {
   const challenge = useChallengeDetailStore((state) => state.challenge);
   const [showConfirmation, setShowConfirmation] = useState(false);
-console.log()
-  const handleJoinChallenge = async() => {
+  console.log()
+  const handleJoinChallenge = async () => {
     try {
       await joinChallenge(challenge.challengeId);
       alert('Challenge joined successfully!');
@@ -54,7 +55,7 @@ console.log()
             {challenge.challengeUserList?.map((member, index) => (
               <TableRow key={index}>
                 <TableCell className="w-[100px]">
-                  <img src={member.imageUrl} alt={`profile-img-${index}`} className='rounded-full w-12'></img>
+                  <ChallengeMemberProfile key={member.nickname + index} imgUrl={member.imageUrl} index={index} />
                 </TableCell>
                 <TableCell className='w-[80px] font-semibold'>{member.nickname}</TableCell>
                 <TableCell>{member.status}</TableCell>

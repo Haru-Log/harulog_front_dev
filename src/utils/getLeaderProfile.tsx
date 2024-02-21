@@ -1,8 +1,13 @@
+import { fetchImgFromFirebase } from "../api/fetchImgFirebase";
 import { ChallengeDetail } from '../types/ChallengeDetail.type'
 
-const getLeaderProfile = (challenge: ChallengeDetail): string | undefined => {
+const getLeaderProfile = async (challenge: ChallengeDetail): Promise<string> => {
   const leaderUser = challenge.challengeUserList.find(user => user.role === "LEADER");
-
-  return leaderUser?.imageUrl; 
+  const img = await fetchImgFromFirebase(leaderUser?.imageUrl);
+  if (img) {
+    return img
+  } else {
+    return ""
+  }
 }
 export default getLeaderProfile
