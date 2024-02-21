@@ -19,3 +19,27 @@ export const shareKakao = (challenge_id, challenge_title, challenge_img, challen
     });
   }
 };
+
+export const shareFeedKakao = (feed_id, feed_profile, feed_likes, feed_comments, user_name, feed_img, feed_content, feed_category) => {
+  if (window.Kakao) {
+    const Kakao = window.Kakao;
+    if (!Kakao.isInitialized()) {
+      Kakao.init(process.env.REACT_APP_SHARE_KAKAO_LINK_KEY);
+      console.log('kakao init');
+    }
+
+    Kakao.Share.sendCustom({
+      templateId: 104632,
+      templateArgs: {
+        description: `${feed_content}`,
+        path: `feed/${feed_id}`,
+        PRF : `${feed_profile}`,
+        likes : `${feed_likes}`,
+        comments : `${feed_comments}`,
+        name : `${user_name}`,
+        THU: `${feed_img}`,
+        category : `${feed_category}`,
+      },
+    });
+  }
+}

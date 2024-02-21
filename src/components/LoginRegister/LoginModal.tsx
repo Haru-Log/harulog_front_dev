@@ -5,10 +5,12 @@ import { SetModalContext } from '../../App'
 import useOnClickOutside from "../../hooks/useOnClickOutside"
 import { sendLoginRequest } from './../../api/loginRegister/sendLoginRequest';
 
+
 const LoginModal = () => {
 
   const setLoginModal = useContext(SetModalContext)?.setLoginModal;
   const setRegisterModal = useContext(SetModalContext)?.setRegisterModal;
+
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
