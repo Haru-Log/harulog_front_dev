@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { useNavigate, useParams } from "react-router-dom"
 import { Pencil } from "lucide-react"
 import Comment from "../components/Feed/Comment"
@@ -16,9 +16,12 @@ import { editComment } from "../api/feed/EditComment"
 import { fetchImgFromFirebase } from "../api/fetchImgFirebase"
 import kakao_share from 'src/assets/kakaotalk_sharing_btn_small.png';
 import { shareFeedKakao } from '../utils/shareKakaoLink'
+import { SetModalContext } from "../App"
 
 
 const FeedDetail = () => {
+
+  const setLoginModal = useContext(SetModalContext)?.setLoginModal;
 
   const post_id = parseInt(useParams().id || "");
   const setFeed = useFeedStore(state => state.setFeed);
@@ -29,6 +32,14 @@ const FeedDetail = () => {
   const [profileImg, setProfileImg] = useState("");
 
   useEffect(() => {
+
+    const accessToken = localStorage.getItem('AccessToken');
+
+    if (!accessToken) {
+      setLoginModal(true)
+      navigate('/', { replace: true })
+    }
+
     const fetchFeedDetails = async () => {
       try {
         const feedDetails = await fetchFeedDetail(post_id);
@@ -38,7 +49,7 @@ const FeedDetail = () => {
 
         const profileImg = await fetchImgFromFirebase(feedDetails.data.profileImg);
         setProfileImg(profileImg);
-        
+
       } catch (error) {
         console.log(error);
       }
