@@ -4,9 +4,20 @@ import { Button } from 'src/ui/button';
 import { useChallengeDetailStore } from 'src/zustand/challengeDetailStore';
 import getLeaderName from 'src/utils/getLeaderName';
 import getLeaderProfile from 'src/utils/getLeaderProfile';
+import { useEffect, useState } from "react";
 
 const ChallengeInfoRight = () => {
   const challenge = useChallengeDetailStore((state) => state.challenge);
+
+  const [profileImg, setProfileImg] = useState("")
+
+  useEffect(() => {
+    const fetchProfile = async () => {
+      const res = await getLeaderProfile(challenge)
+      setProfileImg(res)
+    }
+    fetchProfile();
+  }, [challenge])
 
   return (
     <div className='flex flex-col w-full min-w-72'>
@@ -14,7 +25,7 @@ const ChallengeInfoRight = () => {
         <span className='font-bold text-lg mr-10 whitespace-nowrap'>챌린지 마스터</span>
         <div className='flex flex-row items-center justify-between w-full py-1 mt-3  border rounded-lg'>
           <div className='flex items-center ml-4'>
-            <img src={getLeaderProfile(challenge)} alt="챌린지 마스터 이미지" className="object-cover w-12 h-12 rounded-full" />
+            <img src={profileImg} alt="챌린지 마스터 이미지" className="object-cover w-12 h-12 rounded-full" />
             <span className='ml-5 font-semibold'>{getLeaderName(challenge)}</span>
           </div>
           <div className='flex flex-row items-center mr-2'>

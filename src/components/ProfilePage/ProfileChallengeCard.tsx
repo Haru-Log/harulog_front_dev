@@ -2,6 +2,7 @@ import React from 'react';
 import { useNavigate } from "react-router-dom";
 import { Flame } from 'lucide-react';
 import { ChallengeAll } from "../../types/ChallengeAll.type";
+import MainChallengeImg from "../MainPage/MainChallengeImg";
 
 const ProfileChallengeCard: React.FC<{ challenge: ChallengeAll[] }> = ({ challenge }) => {
 
@@ -12,7 +13,7 @@ const ProfileChallengeCard: React.FC<{ challenge: ChallengeAll[] }> = ({ challen
       {challenge.map(challenge => (
         <div key={challenge.challengeId} className="cursor-pointer transform transition-transform hover:scale-110 drop-shadow-xl" onClick={() => navigate(`/challenge/${challenge.challengeId}`)}>
           <div className="w-[90%] h-[90%] aspect-square rounded-xl">
-            <img src={challenge.imageUrl} alt="챌린지 이미지" className="object-cover w-full h-full rounded-xl" />
+            <MainChallengeImg key={challenge.imageUrl} imageUrl={challenge.imageUrl} />
             <div className={`absolute top-0 right-[10%] text-white text-xs font-bold px-3 py-1 mr-2 mt-2 rounded-lg bg-${challenge.categoryName}`}>
               {challenge.categoryName}
             </div>

@@ -1,7 +1,6 @@
 import firebase from './../firebase'
 
 export const fetchImgFromFirebase = async (imgUrl) => {
-
   if (imgUrl?.startsWith('image')) {
     try {
       const storageRef = firebase.storage().ref()
@@ -14,7 +13,4 @@ export const fetchImgFromFirebase = async (imgUrl) => {
   } else {
     return imgUrl
   }
-
-
-
 }

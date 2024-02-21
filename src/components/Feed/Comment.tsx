@@ -1,9 +1,9 @@
-import React, { useState } from 'react'
-import dummyImage1 from '../../assets/20231010_084411.jpg' // 임시 이미지
+import React, { useEffect, useState } from 'react'
 import { Button } from "../../ui/button"
 import { Textarea } from "../../ui/textarea"
 import ChildComment from './ChildComment';
 import { CommentType } from './../../types/CommentType';
+import { fetchImgFromFirebase } from "../../api/fetchImgFirebase";
 
 interface CommentComponent extends CommentType {
   post_id: number
@@ -13,7 +13,7 @@ interface CommentComponent extends CommentType {
 }
 
 const Comment: React.FC<CommentComponent> = ({
-  content, createdAt, nickname, id, post_id, submitComment, children, handleDeleteComment, handleEditComment
+  content, createdAt, nickname, id, post_id, submitComment, children, handleDeleteComment, handleEditComment, profileImg
 }) => {
 
   const [displayReplyInput, setDisplayReplyInput] = useState(false)
@@ -21,11 +21,18 @@ const Comment: React.FC<CommentComponent> = ({
   const [displayChild, setDisplayChild] = useState(false)
   const [isEdit, setIsEdit] = useState(false)
   const [editValue, setEditValue] = useState(content);
+  const [imgUrl, setImgUrl] = useState("")
+
+  useEffect(() => {
+    fetchImgFromFirebase(profileImg).then((res) => {
+      setImgUrl(res);
+    })
+  }, [profileImg])
 
   return (
     <div className=" mb-5">
       <div className="w-full h-fit flex items-start mb-3">
-        <img src={dummyImage1} alt="dummy profile" className="w-16 h-16 rounded-full mr-5" />
+        <img src={imgUrl} alt="dummy profile" className="w-16 h-16 rounded-full mr-5" />
         <section className="w-full flex-col">
           <div className="flex items-end w-full">
             <div className="text-xl mr-5 font-bold">
