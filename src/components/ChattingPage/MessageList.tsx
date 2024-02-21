@@ -1,13 +1,11 @@
-import React, { useEffect } from 'react'
 import { Separator } from 'src/ui/seperator'
 import getTimeDifference from 'src/utils/getTimeDifference'
 import { useChatStore } from 'src/zustand/chatStore'
-import { fetchChatsList } from 'src/api/chats/FetchChatsList'
 import { getChatRoomName } from 'src/utils/getChatRoomName'
 import { enterChatRoom } from 'src/api/chats/EnterChatRoom'
 
 const MessageList = () => {
-  const { chatList, setChatList, selectedChatroomInfo, selectChatroomInfo } = useChatStore();
+  const { chatList, selectedChatroomInfo, selectChatroomInfo } = useChatStore();
 
   const handleChatroomClick = async (chatroomId: string) => {
     try {

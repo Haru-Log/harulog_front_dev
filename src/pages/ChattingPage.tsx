@@ -19,7 +19,7 @@ const ChattingPage = () => {
     };
     selectChatroomInfo(initialChatroomInfo);
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [selectChatroomInfo]);
 
   useEffect(() => {
     const fetchChats = async () => {
