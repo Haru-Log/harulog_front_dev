@@ -20,7 +20,7 @@ const CreateNewChatModal: React.FC<CreateNewChatModalProps> = ({ onCancel, onCon
       onCancel();
     }
   };
-  const { content, searchToggle, currentPage, userList, setContent, setUserList, setTotalPage, setCurrentPage } = useContentStore();
+  const { content, searchToggle, currentPage, setContent, setUserList, setTotalPage, setCurrentPage } = useContentStore();
   const { userWillAdded, setUserWillAdded } = useChatStore();
   const [showConfirmation, setShowConfirmation] = useState(false);
 
@@ -56,7 +56,7 @@ const CreateNewChatModal: React.FC<CreateNewChatModalProps> = ({ onCancel, onCon
   const addedUserBadge = (
     <div className="flex mt-5">
       {userWillAdded.map((user, index) => (
-        <div key={index} className="bg-point text-white px-3 py-2 rounded-2xl mr-2 flex flex-row items-center justify-between">{user}<XCircle color="#ffffff" className='ml-2 cursor-pointer' onClick={() => handleRemoveUser(user)} /></div>
+        <div key={index} className="bg-point text-white px-3 py-2 rounded-2xl mr-2 flex flex-row items-center justify-between">@{user}<XCircle color="#ffffff" className='ml-2 cursor-pointer' onClick={() => handleRemoveUser(user)} /></div>
       ))}
     </div>
   );

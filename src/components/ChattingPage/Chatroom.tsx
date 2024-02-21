@@ -19,7 +19,7 @@ const Chatroom = ({ messages }: { messages: Messages[] }) => {
           />
         ))}
       </div>
-      <div className='sticky bottom-0 z-10 bg-white flex flex-row items-center p-5 '>
+      <div className='sticky bottom-0 bg-white flex flex-row items-center p-5 '>
         <Textarea placeholder='메세지를 입력하세요' className='resize-none h-12 mr-3' />
         <Button className='w-14 h-12 p-1 bg-point hover:bg-point-hover active:bg-point-active'><Send color="#ffffff" size={20} /></Button>
       </div>

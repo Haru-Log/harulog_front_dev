@@ -4,15 +4,14 @@ import { Button } from 'src/ui/button';
 import { UserRoundPlus } from 'lucide-react';
 import { useChatStore } from 'src/zustand/chatStore';
 
-const ModalSearchResult = () => {
+const ModalThisChatResult = ({ usersInChat }: { usersInChat: string[] }) => {
   const { userList } = useContentStore();
-  const { userWillAdded, setUserWillAdded } = useChatStore();
+  const { userWillAddedAfter, setUserWillAddedAfter } = useChatStore();
   const myName = localStorage.getItem('nickname');
 
   const handleAddUser = (nickname: string) => {
-    const updatedUserList = [...userWillAdded, nickname];
-    setUserWillAdded(updatedUserList);
-    console.log(userWillAdded);
+    const updatedUserList = [...userWillAddedAfter, nickname];
+    setUserWillAddedAfter(updatedUserList);
   }
 
   return (
@@ -27,7 +26,7 @@ const ModalSearchResult = () => {
                 </TableCell>
                 <TableCell>{user.nickname}</TableCell>
                 <TableCell className="text-right w-[90px]">
-                  {(user.nickname !== myName) && (!userWillAdded.includes(user.nickname)) &&<Button className='bg-point rounded-lg font-bold shadow-sm hover:bg-point-hover active:bg-point-active'onClick={() => handleAddUser(user.nickname)}><UserRoundPlus color="#ffffff" />사용자 추가하기</Button>}
+                  {(user.nickname !== myName) && (![...usersInChat, ...userWillAddedAfter].includes(user.nickname)) &&<Button className='bg-point rounded-lg font-bold shadow-sm hover:bg-point-hover active:bg-point-active'onClick={() => handleAddUser(user.nickname)}><UserRoundPlus color="#ffffff" />사용자 추가하기</Button>}
                 </TableCell>
               </TableRow>
             ))}
@@ -38,4 +37,4 @@ const ModalSearchResult = () => {
   )
 }
 
-export default ModalSearchResult
+export default ModalThisChatResult
