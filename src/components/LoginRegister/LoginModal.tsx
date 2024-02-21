@@ -92,6 +92,7 @@ const LoginModal = () => {
             </div>
             <Link to={`${process.env.REACT_APP_BACKEND_DEPLOY}/oauth2/authorization/kakao`}><img src={KakaoIcon} alt="kakao icon"
               className="w-20 h-20 mx-2 shadow-2xl mt-10" /></Link>
+              <div onClick={()=>window.location.replace(`${process.env.REACT_APP_BACKEND_DEPLOY}/oauth2/authorization/kakao`)}>window.locatoin 카카오</div>
           </div>
         </div>
       </div>
