@@ -12,17 +12,15 @@ import { dummy_categories } from "../types/Category.type"
 import { Textarea } from "../ui/textarea"
 import { Input } from "../ui/input"
 import { Button } from "../ui/button"
-import { Switch } from "../ui/switch"
+// import { Switch } from "../ui/switch"
 import { useNavigate, useParams } from "react-router-dom"
 import { SelectLabel } from "@radix-ui/react-select"
 import { useFeedStore } from "../zustand/feedStore"
-import axios from "axios"
+// import axios from "axios"
 import { createPost } from "../api/feed/CreatePost"
 import { editPost } from "../api/feed/EditPost"
 import { deletePost } from "../api/feed/DeletePost"
 import { sendPostImage } from "../api/profile/SendPostImage"
-
-const REST_API_KEY = '60f504ceb850cf533b3d9d172bfb8d4c'
 
 const RecordPage = () => {
 
@@ -73,7 +71,7 @@ const RecordPage = () => {
     if (category === "기상" && hour === 0) {
       hourRef.current?.focus()
       return;
-    } else if (minute === 0) {
+    } else if (category !== "기상" && minute === 0) {
       minuteRef.current?.focus()
       return;
     }
@@ -82,7 +80,7 @@ const RecordPage = () => {
     if (window.confirm("피드 작성을 완료하시겠습니까?")) {
       const response = await createPost({
         'categoryName': category,
-        'activityTime': minute.toString(),
+        'activityTime': category === "기상" ? (hour * 60 + minute).toString() : minute.toString(),
         'content': content
       })
 
@@ -115,7 +113,7 @@ const RecordPage = () => {
     if (category === "기상" && hour === 0) {
       hourRef.current?.focus()
       return;
-    } else if (minute === 0) {
+    } else if (category !== "기상" && minute === 0) {
       minuteRef.current?.focus()
       return;
     }
@@ -124,7 +122,6 @@ const RecordPage = () => {
       const response = await editPost({
         categoryName: category,
         activityTime: minute,
-        imgUrl: imgURL,
         content: content,
         id: id
       })
@@ -136,7 +133,19 @@ const RecordPage = () => {
           imgUrl: imgURL,
           activityTime: category === "기상" ? hour * 60 + minute : minute
         })
-        navigate(`/feed/${id}`, { replace: true })
+
+        if (postImage) {
+          const feedId = response.data.id
+          const formData = new FormData();
+          formData.append('image', postImage as File)
+          const imgResponse = await sendPostImage(formData, feedId)
+
+          if (imgResponse) {
+            navigate(`/feed/${response.data.id}`, { replace: true })
+          }
+        } else {
+          navigate(`/feed/${response.data.id}`, { replace: true })
+        }
       }
     }
   }
@@ -149,29 +158,29 @@ const RecordPage = () => {
     }
   }
 
-  const autoGenerateContent = () => {
-    const max_tokens = 32;
-    const temperature = 0.3;
-    const top_p = 0.85;
-    const n = 3;
-    axios.post("https://api.kakaobrain.com/v1/inference/kogpt/generation",
-      {
-        'prompt': content,
-        'max_tokens': max_tokens,
-        'temperature': temperature,
-        'top_p': top_p,
-        'n': n
-      },
-      {
-        headers: {
-          'Authorization': 'KakaoAK ' + REST_API_KEY,
-          'Content-Type': 'application/json'
-        }
-      }
-    ).then((res) => {
-      console.log(res);
-    })
-  }
+  // const autoGenerateContent = () => {
+  //   const max_tokens = 32;
+  //   const temperature = 0.3;
+  //   const top_p = 0.85;
+  //   const n = 3;
+  //   axios.post("https://api.kakaobrain.com/v1/inference/kogpt/generation",
+  //     {
+  //       'prompt': content,
+  //       'max_tokens': max_tokens,
+  //       'temperature': temperature,
+  //       'top_p': top_p,
+  //       'n': n
+  //     },
+  //     {
+  //       headers: {
+  //         'Authorization': 'KakaoAK ' + REST_API_KEY,
+  //         'Content-Type': 'application/json'
+  //       }
+  //     }
+  //   ).then((res) => {
+  //     console.log(res);
+  //   })
+  // }
 
   const handleDeletePost = async () => {
     const response = await deletePost(id);
@@ -250,9 +259,9 @@ const RecordPage = () => {
           </div>
           <img ref={imgRef} alt="사진을 업로드하세요." className="object-contain mb-5 h-[265px] rounded-lg max-h-96 border-2 " />
           <Textarea className="resize-none w-full border-2" placeholder="내용을 입력하세요." value={content} onChange={(e) => setContent(e.target.value)} ref={contentRef} />
-          <div className="flex mt-8 justify-end items-center">
+          {/* <div className="flex mt-8 justify-end items-center">
             <div className="mr-5 font-bold">자동게시</div>
-            <Switch onClick={autoGenerateContent} /></div>
+            <Switch onClick={autoGenerateContent} /></div> */}
         </div>
       </div>
       <div className='flex justify-between mt-10'>
