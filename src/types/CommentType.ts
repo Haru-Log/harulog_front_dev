@@ -7,4 +7,5 @@ export interface CommentType {
   parentId: number;
   depth: 0
   children: CommentType[]
+  profileImg: string;
 }
