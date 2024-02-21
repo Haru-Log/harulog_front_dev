@@ -3,12 +3,17 @@ import getTimeDifference from 'src/utils/getTimeDifference'
 import { useChatStore } from 'src/zustand/chatStore'
 import { getChatRoomName } from 'src/utils/getChatRoomName'
 import { enterChatRoom } from 'src/api/chats/EnterChatRoom'
+import { outChatRoom } from 'src/api/chats/OutChatRoom'
 
 const MessageList = () => {
   const { chatList, selectedChatroomInfo, selectChatroomInfo } = useChatStore();
 
   const handleChatroomClick = async (chatroomId: string) => {
     try {
+      if (selectedChatroomInfo.roomId) {
+        await outChatRoom(selectedChatroomInfo.roomId);
+        console.log("나간 채팅방: ", selectedChatroomInfo.roomId)
+      }
       const response = await enterChatRoom(chatroomId);
       selectChatroomInfo(response)
       console.log("selectedChatroomInfo: ", selectedChatroomInfo);

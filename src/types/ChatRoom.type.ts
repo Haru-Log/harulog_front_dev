@@ -5,6 +5,7 @@ export interface ChatRoom {
 }
 
 export interface Messages {
+  messageId: number;
   senderName: string;
   imageUrl: string;
   type: string;

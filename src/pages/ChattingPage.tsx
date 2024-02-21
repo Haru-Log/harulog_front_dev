@@ -7,11 +7,16 @@ import Chatroom from '../components/ChattingPage/Chatroom'
 import { useChatStore } from '../zustand/chatStore'
 import { fetchChatsList } from '../api/chats/FetchChatsList'
 import { ChatRoom } from '../types/ChatRoom.type'
+import { outChatRoom } from '../api/chats/OutChatRoom'
 
 const ChattingPage = () => {
   const { setChatList, selectedChatroomInfo, selectChatroomInfo } = useChatStore();
 
   useEffect(() => {
+    if (selectedChatroomInfo.roomId)
+    {
+      outChatRoom(selectedChatroomInfo.roomId);
+    }
     const initialChatroomInfo: ChatRoom = {
       roomId: '',
       userCount: 0,
@@ -19,7 +24,7 @@ const ChattingPage = () => {
     };
     selectChatroomInfo(initialChatroomInfo);
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [selectChatroomInfo]);
+  }, []);
 
   useEffect(() => {
     const fetchChats = async () => {
