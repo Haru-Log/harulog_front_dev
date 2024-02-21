@@ -11,7 +11,7 @@ export const loadPrevMsg = async (roomId, msgId) => {
       },
     });
     console.log('loadPrevMsg response: ', response.data);
-    return response.data.data;
+    return response.data;
   } catch (error) {
     console.error('Error Load Prev Messages:', error.response.data.message);
     throw error; 
