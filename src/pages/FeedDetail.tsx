@@ -14,6 +14,8 @@ import { sendLike } from "../api/feed/sendLike"
 import { cancelLike } from "../api/feed/cancelLike"
 import { editComment } from "../api/feed/EditComment"
 import { fetchImgFromFirebase } from "../api/fetchImgFirebase"
+import kakao_share from 'src/assets/kakaotalk_sharing_btn_small.png';
+import { shareFeedKakao } from '../utils/shareKakaoLink'
 
 
 const FeedDetail = () => {
@@ -116,11 +118,16 @@ const FeedDetail = () => {
           </div>
           {
             localStorage.getItem('nickname') === feed.nickname ?
-              <div className="cursor-pointer" onClick={() => navigate(`/feed/edit/${post_id}`)}>
-                <Pencil size={30} />
+              <div className='flex items-center justify-center'>
+                <div className="cursor-pointer" onClick={() => navigate(`/feed/edit/${post_id}`)}>
+                  <Pencil size={30} />
+                </div>
+                <Button className='hover:opacity-70' onClick={() => shareFeedKakao(post_id, profileImg, feed?.likeCount, feed?.commentList?.length, feed.nickname, feed.imgUrl, feed?.content, feed?.categoryName)}><img src={kakao_share} alt='kakao logo'></img></Button>
               </div>
               :
-              <></>}
+              <div>
+                <Button className='hover:opacity-70' onClick={() => shareFeedKakao(post_id, profileImg, feed?.likeCount, feed?.commentList?.length, feed.nickname, feed.imgUrl, feed?.content, feed?.categoryName)}><img src={kakao_share} alt='kakao logo'></img></Button>
+              </div>}
         </section>
         <section className="w-full mb-5">
           <img src={feed.imgUrl} alt="post" className="max-h-[100vh] w-full object-cover" />
