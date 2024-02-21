@@ -63,7 +63,7 @@ const CreateInputCard = () => {
       return
     }
     const formData = new FormData();
-    formData.append('file', file);
+    formData.append('image', file);
 
     try {
       const responseChallenge = await createChallenge(newChallenge);

@@ -12,6 +12,7 @@ import { DateRange } from 'react-day-picker'
 import { editChallenge } from 'src/api/challenge/EditChallenge'
 import ConfirmationModal from '../ConfirmationModal'
 import { useNavigate } from 'react-router-dom'
+import { imageUpload } from './../../api/challenge/ImageUpload';
 
 const EditInputCard = () => {
   const challenge = useChallengeDetailStore((state) => state.challenge);
@@ -20,16 +21,30 @@ const EditInputCard = () => {
   const navi = useNavigate();
   const times = getTimes();
   const defaultTime = challenge.challengeGoal ? getFormattedTime(challenge.challengeGoal) : '';
+  const [file, setFile] = useState()
 
   const [date, setDate] = useState<DateRange | undefined>({
     from: new Date(challenge.startDate!),
     to: new Date(challenge.endDate!),
   })
 
-  const saveButtonOnClick = async() => {
+  const saveButtonOnClick = async () => {
     try {
       await editChallenge(challenge, challenge.challengeId);
       alert('Challenge edited successfully!');
+
+      if (file) {
+        const formData = new FormData();
+        formData.append('image', file)
+
+        try {
+          const responseImg = await imageUpload(formData, challenge.challengeId);
+          console.log('이미지 수정 성공: ', responseImg.data.data.imageUrl);
+        } catch (error) {
+          console.error('Error uploading image:', error);
+          alert('Failed to upload image. Please try again.');
+        }
+      }
     } catch (error) {
       console.error('Error editing challenge:', error);
       alert('Failed to edit challenge. Please try again.');
@@ -57,6 +72,15 @@ const EditInputCard = () => {
     const totalMinutes = hour * 60 + minute;
     setChallenge({ ...challenge, challengeGoal: totalMinutes });
   };
+
+  const onChangeImg = (e: any) => {
+    e.preventDefault();
+    const uploadFile = e.target.files?.[0];
+    if (!uploadFile) {
+      return;
+    }
+    setFile(uploadFile);
+  }
 
   return (
     <div className='flex flex-col mx-10 mt-10 border-2 rounded-xl px-10 py-10'>
@@ -122,9 +146,7 @@ const EditInputCard = () => {
             <Input
               type="file"
               className={`mt-5 w-[280px] border-2 `}
-              onChange={(e) => {
-                // setChallenge({ ...challenge, imageUrl: e.target.value });
-              }}
+              onChange={onChangeImg}
             />
           </div>
         </div>
