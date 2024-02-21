@@ -15,8 +15,7 @@ const Cards = ({ data }) => {
 
   return (
     <div className="w-full h-full p-12 mt-8">
-      {
-        // isImgLoaded && isImgLoaded.reduce((prev, curr) => prev && curr, true) &&
+      {filteredCards.length > 0 &&
         <MagicGrid items={data.length} gutter={30} animate={true}>
           {filteredCards.map((item, idx) => (
             <FeedCard key={item.id} {...item} idx={idx} setIsImgLoaded={setIsImgLoaded} isImgLoaded={isImgLoaded} />
