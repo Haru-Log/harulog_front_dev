@@ -7,7 +7,7 @@ const OauthCallbackPage = () => {
   useEffect(() => {
     const handleOAuthRedirect = async () => {
       const urlParams = new URLSearchParams(window.location.search);
-      const token = urlParams.get('token');
+      const token = urlParams.get('token')?.split(' ')[1]
       const nickname = urlParams.get('nickname')
       const role = urlParams.get('role')
 
