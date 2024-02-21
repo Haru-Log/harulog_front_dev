@@ -17,6 +17,8 @@ const FeedCard: React.FC<FeedCardType> =
     const imgRef = useRef<HTMLImageElement>(null);
     const [postImg, setPostImg] = useState("")
 
+
+
     useEffect(()=>{
       const fetchPostImg = async () => {
         const response = await fetchImgFromFirebase(imgUrl)
@@ -25,6 +27,8 @@ const FeedCard: React.FC<FeedCardType> =
       }
       fetchPostImg()
     }, [imgUrl])
+
+
 
     useEffect(() => {
       if (!imgRef.current) {
@@ -70,6 +74,7 @@ const FeedCard: React.FC<FeedCardType> =
             <MessageSquareMore />
             <div className="text-xl w-fit h-full ml-1">{commentCount}</div>
           </div>
+          
         </div>
         <div>
           {content}
