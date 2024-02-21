@@ -12,7 +12,7 @@ const ShowPrevMessage = () => {
     if (response.code === 'CHT-301')
       setNoMoreMsg(true);
     else {
-      const updatedMessages = [...response.messages, ...selectedChatroomInfo.messages];
+      const updatedMessages = [response.messages, ...selectedChatroomInfo.messages];
       selectChatroomInfo({ ...selectedChatroomInfo, messages: updatedMessages });
     }
   }
