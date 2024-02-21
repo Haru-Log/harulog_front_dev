@@ -9,7 +9,7 @@ const ShowPrevMessage = () => {
 
   const handleLoadPrevMsg = async () => {
     const response = await loadPrevMsg(selectedChatroomInfo.roomId, selectedChatroomInfo.messages[0].messageId);
-    if (!response.messages)
+    if (response.code === 'CHT-301')
       setNoMoreMsg(true);
     else {
       const updatedMessages = [...response.messages, ...selectedChatroomInfo.messages];
@@ -22,7 +22,7 @@ const ShowPrevMessage = () => {
     }
   };
   return (
-    <div>
+    <div className='flex items-start z-50'>
       <div className='w-full flex items-center justify-center underline cursor-pointer' onClick={handleLoadPrevMsg}>
         이전 메세지 보기
       </div>
