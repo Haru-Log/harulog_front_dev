@@ -4,7 +4,7 @@ import { Send } from 'lucide-react'
 import Chat from './Chat'
 import ChatroomHeader from './ChatroomHeader'
 import ShowPrevMessage from './ShowPrevMessage'
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { useChatStore } from 'src/zustand/chatStore'
 import { CompatClient } from "@stomp/stompjs";
 interface ChatroomProps {
@@ -31,12 +31,10 @@ const Chatroom: React.FC<ChatroomProps> = ({ stompClient }) => {
     stompClient.send(destination, { "content-type": "application/json" }, JSON.stringify(message));
     setMessageInput('');
   };
-
+  
+  const messageEndRef = useRef<HTMLDivElement | null>(null);
   useEffect(() => {
-    const element = document.getElementById('scrollTarget');
-    if (element) {
-      element.scrollIntoView({ behavior: 'smooth', block: 'end', inline: 'nearest' });
-    }
+    messageEndRef.current?.scrollIntoView({ behavior: 'smooth' })
   }, [selectedChatroomInfo]);
 
   return (
@@ -51,6 +49,7 @@ const Chatroom: React.FC<ChatroomProps> = ({ stompClient }) => {
             isSentByCurrentUser={message.senderName === myName}
           />
         ))}
+        <div ref={messageEndRef} />
       </div>
       <div className='sticky bottom-0 bg-white flex flex-row items-center p-5 '>
         <Textarea
