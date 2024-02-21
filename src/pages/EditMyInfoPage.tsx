@@ -5,6 +5,7 @@ import ProfileImageUpload from '../components/EditMyInfoPage/ProfileImageUpload'
 import Modal from '../components/EditMyInfoPage/Modal'
 import { UserInfo } from "../types/UserInfo.type"
 import { fetchEditProfile } from "../api/profile/fetchEditProfile"
+import { fetchImgFromFirebase } from "../api/fetchImgFirebase"
 
 
 const initialUserInfo: UserInfo = {
@@ -22,14 +23,17 @@ const EditMyInfoPage = () => {
 
   const [userInfo, setUserInfo] = useState<UserInfo>(initialUserInfo);
 
+
   useEffect(() => {
     const getUserInfo = async () => {
       const response = await fetchEditProfile();
       if (response.message === "OK") {
-        setUserInfo(response.data);
+        const imgUrl = await fetchImgFromFirebase(response.data.imageUrl)
+        setUserInfo({...response.data, imageUrl: imgUrl});
       }
     }
     getUserInfo();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   return (
