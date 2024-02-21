@@ -1,5 +1,5 @@
 import firebase from "firebase/compat/app";
-import "firebase/storage"
+import "firebase/compat/storage"
 // TODO: Add SDKs for Firebase products that you want to use
 // 
 
