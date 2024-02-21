@@ -2,7 +2,7 @@ import { Button } from "../ui/button"
 import ProfileNumber from "../components/ProfilePage/ProfileNumber"
 import Heatmap from "../components/ProfilePage/Heatmap";
 import { useEffect, useState } from "react";
-import { Archive, Mountain, Trash2, UserPlus, XCircle } from "lucide-react";
+import { Archive, Mountain, UserPlus, XCircle } from "lucide-react";
 import FeedCard from "../components/Feed/Cards";
 import { FeedItem } from "../types/FeedItem.type";
 import { getRange, mergeCategory, mergeJandi, shiftDate } from "../utils/rawDatatoJandi";
@@ -14,7 +14,6 @@ import { fetchHeatmap } from "../api/grow/FetchHeatmap";
 import { fetchFeedAll } from "../api/feed/FetchFeedAll";
 import { useChallengeAllStore } from "../zustand/challengeAllStore";
 import { fetchChallengeProfile } from "../api/challenge/FetchChallengeProfile";
-import { set } from "date-fns";
 import ConfirmationModal from "../components/ConfirmationModal";
 import { actionFollow } from "../api/follow/ActionFollow";
 import { cancelFollow } from "../api/follow/CancelFollow";

@@ -1,25 +1,75 @@
 import { getChatRoomName } from 'src/utils/getChatRoomName';
 import { useChatStore } from 'src/zustand/chatStore';
-import { LogOut } from 'lucide-react'
+import { LogOut, Trash2, Users } from 'lucide-react'
 import React, { useEffect, useState } from 'react'
+import ConfirmationModal from '../ConfirmationModal';
+import { exitChatRoom } from 'src/api/chats/ExitChatRoom';
+import { deleteChatRoom } from 'src/api/chats/DeleteChatRoom';
+import ThisChatUserModal from './ThisChatUserModal';
+import GetUsersInThisChatBySelectedRoomId from 'src/utils/getUsersInThisChatBySelectedRoomId';
 
 const ChatroomHeader = () => {
   const { chatList, selectedChatroomInfo } = useChatStore();
   const [chatRoomName, setChatRoomName] = useState('');
+  const [showConfirmation, setShowConfirmation] = useState('');
+  const [showUserModal, setShowUserModal] = useState(false);
 
   useEffect(() => {
     const name = getChatRoomName(chatList, selectedChatroomInfo.roomId);
     setChatRoomName(name);
   }, [selectedChatroomInfo.roomId, chatList]);
 
+
+  const handleExitChat = async () => {
+    await exitChatRoom(selectedChatroomInfo.roomId);
+    window.location.reload();
+  }
+
+  const handleDeleteChat = async () => {
+    await deleteChatRoom(selectedChatroomInfo.roomId);
+    window.location.reload();
+  }
+
+  const shouldShowConfirmationModal = showConfirmation !== '';
+  const shouldShowUserModal = showUserModal;
+
+  
   return (
     <div className="text-lg leading-none bg-[#EAF0F7] pt-4 pb-2 px-4 flex justify-between items-start sticky top-0 z-10">
-        <span>{chatRoomName}</span>
-        <div className='flex flex-col items-center justify-center'>
-          <LogOut className='cursor-pointer' size={15} />
+      <div className='flex items-start'>
+        <span className='mr-3'>{chatRoomName}</span>
+        <div className='cursor-pointer flex items-center justify-center mr-3' onClick={()=>setShowUserModal(true)}>
+          <Users size={16} />
+          <span className='text-xs font-thin'>{selectedChatroomInfo.userCount}</span>
+        </div>
+        </div>
+      <div className='flex'>
+        <div className='cursor-pointer flex flex-col items-center justify-center mr-3' onClick={() => setShowConfirmation('exit')}>
+          <LogOut size={15} />
           <span className='text-xs font-thin'>나가기</span>
         </div>
+        <div className='cursor-pointer flex flex-col items-center justify-center'
+          onClick={() => setShowConfirmation('delete')}>
+          <Trash2 size={15} />
+          <span className='text-xs font-thin'>삭제</span>
+        </div>
       </div>
+      {shouldShowConfirmationModal && (
+        <ConfirmationModal
+          message={showConfirmation === 'exit' ? "정말 채팅방에서 퇴장하시겠습니까?" : "정말 채팅방을 삭제하시겠습니까?"}
+          onConfirm={() => { showConfirmation === 'exit' ? handleExitChat() : handleDeleteChat(); setShowConfirmation('') }}
+          onCancel={() => setShowConfirmation('')}
+        />
+      )}
+      {shouldShowUserModal&&
+        (<ThisChatUserModal
+          usersInChat={GetUsersInThisChatBySelectedRoomId()}
+          onAddUsers={() => []}
+          onClose={() => setShowUserModal(false)}
+        />)
+
+      }
+    </div>
   )
 }
 
