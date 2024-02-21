@@ -1,11 +1,16 @@
 import { EditProfileImg } from "../../api/profile/EditProfileImg";
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 
 const ProfileImageUpload: React.FC<{
   userName: string; email: string; createdAt: string; imageUrl: string
 }> = ({ userName, email, createdAt, imageUrl }) => {
+
   const [image, setImage] = useState<string | null>(imageUrl);
   const fileInputRef = useRef<HTMLInputElement>(null);
+
+  useEffect(()=>{
+    setImage(imageUrl)
+  }, [imageUrl])
 
   const handleImageChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];

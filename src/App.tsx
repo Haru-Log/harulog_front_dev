@@ -20,6 +20,7 @@ import LoginModal from "./components/LoginRegister/LoginModal";
 import RegisterModal from "./components/LoginRegister/RegisterModal";
 import EditChallengePage from './pages/EditChallengePage';
 import AdminPage from './pages/AdminPage';
+import OauthCallbackPage from "./pages/OauthCallbackPage";
 
 type SetModalState = {
   setLoginModal: any;
@@ -66,6 +67,7 @@ function App() {
               <Route path="profile/edit" element={<EditMyInfoPage />} />
               <Route path="admin" element={<AdminPage />} />
             </Route>
+            <Route path="/domain/oauth/callback" element={<OauthCallbackPage />} />
           </Routes>
 
           {loginModal && (

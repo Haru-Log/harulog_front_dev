@@ -20,6 +20,7 @@ import axios from "axios"
 import { createPost } from "../api/feed/CreatePost"
 import { editPost } from "../api/feed/EditPost"
 import { deletePost } from "../api/feed/DeletePost"
+import { sendPostImage } from "../api/profile/SendPostImage"
 
 const REST_API_KEY = '60f504ceb850cf533b3d9d172bfb8d4c'
 
@@ -34,7 +35,7 @@ const RecordPage = () => {
   const [category, setCategory] = useState(id ? feed.categoryName : "");
   const [content, setContent] = useState(id ? feed.content : "");
   const [imgURL, setImgURL] = useState(id ? feed.imgUrl : "");
-  // const [postImage, setPostImage] = useState<File | undefined>()
+  const [postImage, setPostImage] = useState<File | undefined>()
 
   const categoryRef: RefObject<HTMLButtonElement> = useRef<HTMLButtonElement>(null);
   const hourRef: RefObject<HTMLInputElement> = useRef<HTMLInputElement>(null);
@@ -79,14 +80,11 @@ const RecordPage = () => {
 
 
     if (window.confirm("피드 작성을 완료하시겠습니까?")) {
-      const formData = new FormData();
-
-      formData.append('categoryName', category)
-      formData.append('activityTime', minute.toString());
-      formData.append('content', content)
-      // formData.append('imgUrl', postImage as File)
-
-      const response = await createPost(formData)
+      const response = await createPost({
+        'categoryName': category,
+        'activityTime': minute.toString(),
+        'content': content
+      })
 
       if (response && response.message === "OK") {
         setFeed({
@@ -96,9 +94,15 @@ const RecordPage = () => {
           imgUrl: imgURL,
           activityTime: category === "기상" ? hour * 60 + minute : minute
         })
-        navigate(`/feed/${response.data.id}`, { replace: true })
-      }
+        const feedId = response.data.id
+        const formData = new FormData();
+        formData.append('image', postImage as File)
+        const imgResponse = await sendPostImage(formData, feedId)
 
+        if (imgResponse) {
+          navigate(`/feed/${response.data.id}`, { replace: true })
+        }
+      }
     }
   }
 
@@ -140,7 +144,7 @@ const RecordPage = () => {
   const handleUploadImage = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.files) {
       const file = event.target.files[0]
-      // setPostImage(file)
+      setPostImage(file)
       setImgURL(URL.createObjectURL(file))
     }
   }

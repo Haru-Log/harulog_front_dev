@@ -9,6 +9,9 @@ export const editProfileInfo = async (userInfo) => {
         Authorization: `Bearer ${accessToken}`
       }
     });
+    const newToken = response.headers.getAuthorization().split(' ')[1]
+    localStorage.setItem('AccessToken', newToken);
+    localStorage.setItem('nickname', userInfo.nickname)
     console.log(response.data);
     return response.data
   } catch (error) {
