@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react'
+import React, { useEffect } from 'react'
 import { ResizablePanelGroup, ResizablePanel, ResizableHandle } from '../ui/resizable-panel'
 import { ScrollArea } from '../ui/scroll-area'
 import MessageListHeader from '../components/ChattingPage/MessageListHeader'
@@ -29,6 +29,8 @@ const ChattingPage = () => {
         console.log('STOMP connected');
         stompClient.subscribe(`/queue/user.${myName}`, (message) => {
           console.log('Received message:', message.body);
+          selectChatroomInfo({ ...selectedChatroomInfo, messages: [...selectedChatroomInfo.messages, JSON.parse(message.body)] });
+          console.log('selectedChatroomInfo: ', selectedChatroomInfo);
         });
       }, function(e:any) {
         alert('STOMP error ' + e);
@@ -38,25 +40,27 @@ const ChattingPage = () => {
     initializeStompClient();
 
     return () => {
-      if (stompClient && stompClient.connected) {
-        stompClient.disconnect();
-        console.log('STOMP disconnected');
+      if (stompClient) {
+        stompClient.disconnect(() => {
+          console.log('STOMP disconnected');
+        });
       }
     };
-  }, [accessToken, myName]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [accessToken, myName, stompClient]);
 
-  useEffect(() => {
-    if (selectedChatroomInfo.roomId) {
-      outChatRoom(selectedChatroomInfo.roomId);
-    }
-    const initialChatroomInfo: ChatRoom = {
-      roomId: '',
-      userCount: 0,
-      messages: [],
-    };
-    selectChatroomInfo(initialChatroomInfo);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  // useEffect(() => {
+  //   if (selectedChatroomInfo.roomId) {
+  //     outChatRoom(selectedChatroomInfo.roomId);
+  //   }
+  //   const initialChatroomInfo: ChatRoom = {
+  //     roomId: '',
+  //     userCount: 0,
+  //     messages: [],
+  //   };
+  //   selectChatroomInfo(initialChatroomInfo);
+  //   // eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, []);
 
   useEffect(() => {
     const fetchChats = async () => {
@@ -70,7 +74,10 @@ const ChattingPage = () => {
     }
     fetchChats();
   }, [setChatList]);
+
+
   return (
+
     <div className='mt-12 font-ibm'>
       <ResizablePanelGroup
         direction="horizontal"
@@ -85,7 +92,7 @@ const ChattingPage = () => {
         <ResizableHandle withHandle />
         <ResizablePanel>
           <ScrollArea className="h-[1000px]">
-            {selectedChatroomInfo.roomId ? <Chatroom messages={selectedChatroomInfo.messages} stompClient={stompClient} /> : <div className='bg-[#EAF0F7] h-[1000px] flex items-center justify-center'><div>채팅방을 선택해보세요!</div></div>}
+            {selectedChatroomInfo.roomId ? <Chatroom stompClient={stompClient} /> : <div className='bg-[#EAF0F7] h-[1000px] flex items-center justify-center'><div>채팅방을 선택해보세요!</div></div>}
           </ScrollArea>
         </ResizablePanel>
       </ResizablePanelGroup>
