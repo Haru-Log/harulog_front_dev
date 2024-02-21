@@ -5,17 +5,22 @@ import React, { useEffect, useState } from 'react'
 import ConfirmationModal from '../ConfirmationModal';
 import { exitChatRoom } from 'src/api/chats/ExitChatRoom';
 import ThisChatUserModal from './ThisChatUserModal';
-import GetUsersInThisChatBySelectedRoomId from 'src/utils/getUsersInThisChatBySelectedRoomId';
+import useGetUsersInThisChatBySelectedRoomId from 'src/utils/useGetUsersInThisChatBySelectedRoomId';
 
 const ChatroomHeader = () => {
   const { chatList, selectedChatroomInfo } = useChatStore();
   const [chatRoomName, setChatRoomName] = useState('');
   const [showConfirmation, setShowConfirmation] = useState(false);
   const [showUserModal, setShowUserModal] = useState(false);
+  const [userInChat, setUserInChat] = useState<string[]>([]);
+
+  const users = useGetUsersInThisChatBySelectedRoomId();
 
   useEffect(() => {
     const name = getChatRoomName(chatList, selectedChatroomInfo.roomId);
     setChatRoomName(name);
+    setUserInChat(users);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedChatroomInfo.roomId, chatList]);
 
 
@@ -48,10 +53,9 @@ const ChatroomHeader = () => {
       )}
       {showUserModal&&
         (<ThisChatUserModal
-          usersInChat={GetUsersInThisChatBySelectedRoomId()}
+          usersInChat={userInChat}
           onClose={() => setShowUserModal(false)}
         />)
-
       }
     </div>
   )

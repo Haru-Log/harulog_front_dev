@@ -4,6 +4,7 @@ import { Button } from 'src/ui/button'
 import { Send } from 'lucide-react'
 import Chat from './Chat'
 import ChatroomHeader from './ChatroomHeader'
+import ShowPrevMessage from './ShowPrevMessage'
 
 const Chatroom = ({ messages }: { messages: Messages[] }) => {
 
@@ -11,10 +12,11 @@ const Chatroom = ({ messages }: { messages: Messages[] }) => {
     <div className='h-[1000px] flex flex-col'>
       <ChatroomHeader />
       <div className='flex-1'>
-        {messages.map((message, index) => (
+        <ShowPrevMessage />
+        {messages.map((message) => (
           <Chat
             message={message}
-            key={index}
+            key={message.messageId}
             isSentByCurrentUser={message.senderName === '사용자'}
           />
         ))}
