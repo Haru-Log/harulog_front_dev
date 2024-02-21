@@ -4,6 +4,7 @@ function combineNicknameExceptMe(users: chatUser[], myNickname: string|null) {
   const otherNicknames = users
     .filter(user => user.nickname !== myNickname)
     .map(user => user.nickname);
+  if (otherNicknames.length === 0) return '나와의 채팅';
   const combinedNicknames = otherNicknames.join(', ');
   return combinedNicknames;
 }

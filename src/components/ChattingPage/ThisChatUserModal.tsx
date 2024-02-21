@@ -11,11 +11,10 @@ import ConfirmationModal from '../ConfirmationModal';
 
 interface ThisChatUserModalProps {
   usersInChat: string[];
-  onAddUsers: (users: string[]) => void;
   onClose: () => void;
 }
 
-const ThisChatUserModal: React.FC<ThisChatUserModalProps> = ({ usersInChat, onAddUsers, onClose }) => {
+const ThisChatUserModal: React.FC<ThisChatUserModalProps> = ({ usersInChat, onClose }) => {
   const { content, searchToggle, currentPage, setContent, setUserList, setTotalPage, setCurrentPage } = useContentStore();
   const handleSearchButton = async () => {
     setCurrentPage(0);

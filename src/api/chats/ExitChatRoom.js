@@ -3,7 +3,7 @@ import axios from 'axios';
 export const exitChatRoom = async (roomId) => {
   const accessToken = localStorage.getItem('AccessToken');
   try {
-    const response = await axios.delete(`${process.env.REACT_APP_BACKEND_DEPLOY}/api/chats/${roomId}/user`, {
+    const response = await axios.delete(`${process.env.REACT_APP_BACKEND_DEPLOY}/api/chats/${roomId}/me`, {
       headers: {
         'Authorization': `Bearer ${accessToken}`,
       },
