@@ -24,7 +24,10 @@ const MainPage = () => {
       <div className="w-full mb-10 flex flex-col">
         <div className="flex flex-row justify-between items-baseline w-full mb-5">
           <div className="text-xl">피드</div>
-          <div className="text-sm text-[#92C7CF] cursor-pointer" onClick={() => { setRegisterModal(true) }}>가입하기</div>
+          {localStorage.getItem('AccessToken') ?
+            <div className="text-sm text-[#92C7CF] cursor-pointer" onClick={() => { navi('/feed') }}>피드 탐색</div>
+            :
+            <div className="text-sm text-[#92C7CF] cursor-pointer" onClick={() => { setRegisterModal(true) }}>가입하기</div>}
         </div>
         <div className="flex justify-center">
           <FeedSlide />
