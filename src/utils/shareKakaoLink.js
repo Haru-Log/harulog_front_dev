@@ -31,14 +31,14 @@ export const shareFeedKakao = (feed_id, feed_profile, feed_likes, feed_comments,
     Kakao.Share.sendCustom({
       templateId: 104632,
       templateArgs: {
-        description: `${feed_content}`,
-        path: `feed/${feed_id}`,
         PRF : `${feed_profile}`,
         likes : `${feed_likes}`,
         comments : `${feed_comments}`,
+        description: `${feed_content}`,
+        path: `feed/${feed_id}`,
+        category : `${feed_category}`,
         name : `${user_name}`,
         THU: `${feed_img}`,
-        category : `${feed_category}`,
       },
     });
   }
