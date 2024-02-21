@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react'
 import { useNavigate, useParams } from "react-router-dom"
-import dummyImage1 from '../assets/20231010_084411.jpg' // 임시 이미지
 import { Pencil } from "lucide-react"
 import Comment from "../components/Feed/Comment"
 import { fetchFeedDetail } from "../api/feed/FetchFeedDetail"
@@ -14,6 +13,7 @@ import Heart from "react-animated-heart";
 import { sendLike } from "../api/feed/sendLike"
 import { cancelLike } from "../api/feed/cancelLike"
 import { editComment } from "../api/feed/EditComment"
+import { fetchImgFromFirebase } from "../api/fetchImgFirebase"
 
 
 const FeedDetail = () => {
@@ -24,6 +24,7 @@ const FeedDetail = () => {
   const navigate = useNavigate();
   const [commentContent, setCommentContent] = useState("");
   const [liked, setLiked] = useState(false)
+  const [profileImg, setProfileImg] = useState("");
 
   useEffect(() => {
     const fetchFeedDetails = async () => {
@@ -31,6 +32,10 @@ const FeedDetail = () => {
         const feedDetails = await fetchFeedDetail(post_id);
         setFeed({ ...feedDetails.data, createdAt: new Date(feedDetails.data.createdAt), updateAt: new Date(feedDetails.data.updateAt) })
         setLiked(feedDetails.data.likedByUser)
+
+        const profileImg = await fetchImgFromFirebase(feedDetails.data.profileImg);
+        setProfileImg(profileImg);
+        
       } catch (error) {
         console.log(error);
       }
@@ -105,7 +110,7 @@ const FeedDetail = () => {
       <div className="w-[50%] h-full p-12 flex flex-col">
         <section className="w-full flex flex-row items-center h-fit justify-between mb-5">
           <div className="flex flex-row items-center h-fit">
-            <img src={dummyImage1} alt="프로필 이미지" className="w-20 h-20 rounded-full mr-10 cursor-pointer" onClick={() => navigate(`/profile/${feed.nickname}`)} />
+            <img src={profileImg} alt="프로필 이미지" className="w-20 h-20 rounded-full mr-10 cursor-pointer" onClick={() => navigate(`/profile/${feed.nickname}`)} />
             <div className="items-center text-3xl whitespace-nowrap font-bold cursor-pointer" onClick={() => navigate(`/profile/${feed.nickname}`)}>{feed?.nickname}</div>
           </div>
           {

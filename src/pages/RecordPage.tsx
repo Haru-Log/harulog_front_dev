@@ -34,7 +34,7 @@ const RecordPage = () => {
   const [category, setCategory] = useState(id ? feed.categoryName : "");
   const [content, setContent] = useState(id ? feed.content : "");
   const [imgURL, setImgURL] = useState(id ? feed.imgUrl : "");
-  // const [postImage, setPostImage] = useState<File | undefined>()
+  const [postImage, setPostImage] = useState<File | undefined>()
 
   const categoryRef: RefObject<HTMLButtonElement> = useRef<HTMLButtonElement>(null);
   const hourRef: RefObject<HTMLInputElement> = useRef<HTMLInputElement>(null);
@@ -84,7 +84,7 @@ const RecordPage = () => {
       formData.append('categoryName', category)
       formData.append('activityTime', minute.toString());
       formData.append('content', content)
-      // formData.append('imgUrl', postImage as File)
+      formData.append('imgUrl', postImage as File)
 
       const response = await createPost(formData)
 
@@ -140,7 +140,7 @@ const RecordPage = () => {
   const handleUploadImage = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.files) {
       const file = event.target.files[0]
-      // setPostImage(file)
+      setPostImage(file)
       setImgURL(URL.createObjectURL(file))
     }
   }

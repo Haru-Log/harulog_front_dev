@@ -1,9 +1,9 @@
 import axios from 'axios';
 
-export const fetchHeatmap = async () => {
+export const fetchHeatmap = async (nickname) => {
   const accessToken = localStorage.getItem('AccessToken');
   try {
-    const response = await axios.get(`${process.env.REACT_APP_BACKEND_DEPLOY}/api/grow/yearly`, {
+    const response = await axios.get(`${process.env.REACT_APP_BACKEND_DEPLOY}/api/grow/yearly${nickname ? `/${nickname}` : ""}`, {
       headers: {
         'Authorization': `Bearer ${accessToken}`,
       },

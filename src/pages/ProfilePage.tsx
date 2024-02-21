@@ -17,6 +17,7 @@ import { fetchChallengeProfile } from "../api/challenge/FetchChallengeProfile";
 import ConfirmationModal from "../components/ConfirmationModal";
 import { actionFollow } from "../api/follow/ActionFollow";
 import { cancelFollow } from "../api/follow/CancelFollow";
+import { fetchImgFromFirebase } from "../api/fetchImgFirebase";
 
 const today = new Date(); // dummy data용
 
@@ -48,10 +49,12 @@ const ProfilePage = () => {
     console.log('nickname', nickname)
     const getUserProfile = async () => {
       const userInfo = await fetchProfile(nickname);
-      setUserProfile(userInfo.data)
+      const imgUrl = await fetchImgFromFirebase(userInfo.data.imageUrl)
+      setUserProfile({...userInfo.data, imageUrl: imgUrl})
       setFollowState(userInfo.data.following)
       //Heatmap
       const heatmap = await fetchHeatmap();
+      // const heatmap = await fetchHeatmap(nickname);
       const heat = heatmap.data.map((x: any) => {
         return {
           ...x,
