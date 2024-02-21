@@ -1,7 +1,8 @@
-import React, { useEffect, useRef } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { Heart, MessageSquareMore } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { FeedItem } from '../../types/FeedItem.type';
+import { fetchImgFromFirebase } from "../../api/fetchImgFirebase";
 
 interface FeedCardType extends FeedItem {
   idx: number;
@@ -14,6 +15,16 @@ const FeedCard: React.FC<FeedCardType> =
 
     const navigate = useNavigate();
     const imgRef = useRef<HTMLImageElement>(null);
+    const [postImg, setPostImg] = useState("")
+
+    useEffect(()=>{
+      const fetchPostImg = async () => {
+        const response = await fetchImgFromFirebase(imgUrl)
+
+        setPostImg(response)
+      }
+      fetchPostImg()
+    }, [imgUrl])
 
     useEffect(() => {
       if (!imgRef.current) {
@@ -45,7 +56,7 @@ const FeedCard: React.FC<FeedCardType> =
     return (
       <div className="w-96 flex flex-col items-start cursor-pointer transform transition-transform hover:scale-110" onClick={() => navigate(`/feed/${id}`)}>
         <div className="mb-3">
-          <img src={imgUrl} alt="피드 이미지" className="rounded-xl h-fit w-96 transform transition-transform hover:scale-110" ref={imgRef} />
+          <img src={postImg} alt="피드 이미지" className="rounded-xl h-fit w-96 transform transition-transform hover:scale-110" ref={imgRef} />
         </div>
         <div className="flex flex-row w-full justify-start text-xs h-6">
           <div className={`text-white px-3 py-1 rounded-full h-fit w-fit text-center mr-5 bg-${categoryName}`}>

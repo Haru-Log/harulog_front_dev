@@ -12,17 +12,15 @@ import { dummy_categories } from "../types/Category.type"
 import { Textarea } from "../ui/textarea"
 import { Input } from "../ui/input"
 import { Button } from "../ui/button"
-import { Switch } from "../ui/switch"
 import { useNavigate, useParams } from "react-router-dom"
 import { SelectLabel } from "@radix-ui/react-select"
 import { useFeedStore } from "../zustand/feedStore"
-import axios from "axios"
 import { createPost } from "../api/feed/CreatePost"
 import { editPost } from "../api/feed/EditPost"
 import { deletePost } from "../api/feed/DeletePost"
 import { sendPostImage } from "../api/profile/SendPostImage"
-
-const REST_API_KEY = '60f504ceb850cf533b3d9d172bfb8d4c'
+import axios from "axios"
+import { Switch } from "../ui/switch"
 
 const RecordPage = () => {
 
@@ -73,7 +71,7 @@ const RecordPage = () => {
     if (category === "기상" && hour === 0) {
       hourRef.current?.focus()
       return;
-    } else if (minute === 0) {
+    } else if (category !== "기상" && minute === 0) {
       minuteRef.current?.focus()
       return;
     }
@@ -82,7 +80,7 @@ const RecordPage = () => {
     if (window.confirm("피드 작성을 완료하시겠습니까?")) {
       const response = await createPost({
         'categoryName': category,
-        'activityTime': minute.toString(),
+        'activityTime': category === "기상" ? (hour * 60 + minute).toString() : minute.toString(),
         'content': content
       })
 
@@ -115,7 +113,7 @@ const RecordPage = () => {
     if (category === "기상" && hour === 0) {
       hourRef.current?.focus()
       return;
-    } else if (minute === 0) {
+    } else if (category !== "기상" && minute === 0) {
       minuteRef.current?.focus()
       return;
     }
@@ -123,8 +121,7 @@ const RecordPage = () => {
     if (window.confirm("피드 수정을 완료하시겠습니까?")) {
       const response = await editPost({
         categoryName: category,
-        activityTime: minute,
-        imgUrl: imgURL,
+        activityTime: category === "기상" ? hour * 60 + minute : minute,
         content: content,
         id: id
       })
@@ -136,7 +133,19 @@ const RecordPage = () => {
           imgUrl: imgURL,
           activityTime: category === "기상" ? hour * 60 + minute : minute
         })
-        navigate(`/feed/${id}`, { replace: true })
+
+        if (postImage) {
+          const feedId = response.data.id
+          const formData = new FormData();
+          formData.append('image', postImage as File)
+          const imgResponse = await sendPostImage(formData, feedId)
+
+          if (imgResponse) {
+            navigate(`/feed/${response.data.id}`, { replace: true })
+          }
+        } else {
+          navigate(`/feed/${response.data.id}`, { replace: true })
+        }
       }
     }
   }
@@ -164,8 +173,8 @@ const RecordPage = () => {
       },
       {
         headers: {
-          'Authorization': 'KakaoAK ' + REST_API_KEY,
-          'Content-Type': 'application/json'
+          'Authorization': `KakaoAK ${process.env.REACT_KOGPT_API_KEY}`,
+          'Content-type': 'application/json',
         }
       }
     ).then((res) => {
@@ -182,7 +191,7 @@ const RecordPage = () => {
   }
 
   useEffect(() => {
-    if (imgRef.current && imgURL.length) {
+    if (imgRef.current && imgURL?.length) {
       imgRef.current.setAttribute('src', imgURL)
     }
   }, [imgURL])

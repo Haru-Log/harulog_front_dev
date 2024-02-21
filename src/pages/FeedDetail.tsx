@@ -25,20 +25,17 @@ const FeedDetail = () => {
   const [commentContent, setCommentContent] = useState("");
   const [liked, setLiked] = useState(false)
   const [profileImg, setProfileImg] = useState("");
-  const [feedImg, setFeedImg] = useState("")
 
   useEffect(() => {
     const fetchFeedDetails = async () => {
       try {
         const feedDetails = await fetchFeedDetail(post_id);
-        setFeed({ ...feedDetails.data, createdAt: new Date(feedDetails.data.createdAt), updateAt: new Date(feedDetails.data.updateAt) })
+        const feedImg = await fetchImgFromFirebase(feedDetails.data.imgUrl)
+        setFeed({ ...feedDetails.data, createdAt: new Date(feedDetails.data.createdAt), updateAt: new Date(feedDetails.data.updateAt), imgUrl: feedImg })
         setLiked(feedDetails.data.likedByUser)
 
         const profileImg = await fetchImgFromFirebase(feedDetails.data.profileImg);
         setProfileImg(profileImg);
-
-        const feedImg = await fetchImgFromFirebase(feedDetails.data.imgUrl)
-        setFeedImg(feedImg)
         
       } catch (error) {
         console.log(error);
@@ -126,7 +123,7 @@ const FeedDetail = () => {
               <></>}
         </section>
         <section className="w-full mb-5">
-          <img src={feedImg} alt="post" className="max-h-[100vh] w-full object-cover" />
+          <img src={feed.imgUrl} alt="post" className="max-h-[100vh] w-full object-cover" />
         </section>
         <section className="flex items-center justify-between">
           <div className="flex flex-row">
