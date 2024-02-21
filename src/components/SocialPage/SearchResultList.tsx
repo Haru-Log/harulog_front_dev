@@ -6,6 +6,7 @@ import { useNavigate } from 'react-router-dom'
 import { cancelFollow } from 'src/api/follow/CancelFollow'
 import { deleteFollower } from 'src/api/follow/DeleteFollow'
 import { UserList } from 'src/types/userList.type'
+import SocialProfileImg from "./SocialProfileImg"
 
 const SearchResultList = () => {
   const myName = localStorage.getItem('nickname');
@@ -37,21 +38,21 @@ const SearchResultList = () => {
         return (
           <Button className='bg-point rounded-lg font-bold shadow-sm hover:bg-point-hover active:bg-point-active'
             onClick={() => handleBtn(user.nickname)}>
-            <UserSearch color="#ffffff" className='mr-2 h-5 w-5'/>프로필 보러가기
+            <UserSearch color="#ffffff" className='mr-2 h-5 w-5' />프로필 보러가기
           </Button>
         );
       case 'followings':
         return (
           <Button className='bg-point rounded-lg font-bold shadow-sm hover:bg-point-hover active:bg-point-active'
             onClick={() => handleUnfollow(user.nickname)}>
-            <XCircle color="#ffffff" className='mr-2 h-5 w-5'/>팔로잉 취소하기
+            <XCircle color="#ffffff" className='mr-2 h-5 w-5' />팔로잉 취소하기
           </Button>
         );
       case 'followers':
         return (
           <Button className='bg-point rounded-lg font-bold shadow-sm hover:bg-point-hover active:bg-point-active'
             onClick={() => handleDelete(user.nickname)}>
-            <UserRoundX color="#ffffff" className='mr-2 h-5 w-5'/>팔로워 삭제하기
+            <UserRoundX color="#ffffff" className='mr-2 h-5 w-5' />팔로워 삭제하기
           </Button>
         );
       default:
@@ -67,7 +68,7 @@ const SearchResultList = () => {
             {userList.map((user, index) => (
               <TableRow key={index}>
                 <TableCell className='w-[100px]'>
-                  <img src={user.imageUrl} alt={`profile-img-${index}`} className='rounded-full w-12'></img>
+                  <SocialProfileImg key={user.imageUrl} imageUrl={user.imageUrl} index={index} />
                 </TableCell>
                 <TableCell>{user.nickname}</TableCell>
                 <TableCell className="text-right w-[90px]">
