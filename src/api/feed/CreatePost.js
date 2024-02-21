@@ -6,7 +6,6 @@ export const createPost = async (formData) => {
     const response = await axios.post(`${process.env.REACT_APP_BACKEND_DEPLOY}/api/feed/create`, formData, {
       headers: {
         'Authorization': `Bearer ${accessToken}`,
-        "Content-Type": "multipart/form-data",
       },
     });
     console.log(response.data);

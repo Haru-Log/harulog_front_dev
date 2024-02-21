@@ -20,6 +20,7 @@ import axios from "axios"
 import { createPost } from "../api/feed/CreatePost"
 import { editPost } from "../api/feed/EditPost"
 import { deletePost } from "../api/feed/DeletePost"
+import { sendPostImage } from "../api/profile/SendPostImage"
 
 const REST_API_KEY = '60f504ceb850cf533b3d9d172bfb8d4c'
 
@@ -79,14 +80,11 @@ const RecordPage = () => {
 
 
     if (window.confirm("피드 작성을 완료하시겠습니까?")) {
-      const formData = new FormData();
-
-      formData.append('categoryName', category)
-      formData.append('activityTime', minute.toString());
-      formData.append('content', content)
-      formData.append('imgUrl', postImage as File)
-
-      const response = await createPost(formData)
+      const response = await createPost({
+        'categoryName': category,
+        'activityTime': minute.toString(),
+        'content': content
+      })
 
       if (response && response.message === "OK") {
         setFeed({
@@ -96,9 +94,15 @@ const RecordPage = () => {
           imgUrl: imgURL,
           activityTime: category === "기상" ? hour * 60 + minute : minute
         })
-        navigate(`/feed/${response.data.id}`, { replace: true })
-      }
+        const feedId = response.data.id
+        const formData = new FormData();
+        formData.append('image', postImage as File)
+        const imgResponse = await sendPostImage(formData, feedId)
 
+        if (imgResponse) {
+          navigate(`/feed/${response.data.id}`, { replace: true })
+        }
+      }
     }
   }
 
