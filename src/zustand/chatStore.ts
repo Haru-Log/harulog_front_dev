@@ -7,10 +7,10 @@ interface ChatState {
   chatList: ChatList[];
   userWillAdded: string[];
   userWillAddedAfter: string[];
+  selectedChatroomInfo : ChatRoom;
   setUserWillAdded: (userWillAdded: string[]) => void;
   setUserWillAddedAfter: (userWillAddedAfter: string[]) => void;
   setChatList: (chatList: ChatList[]) => void;
-  selectedChatroomInfo : ChatRoom;
   selectChatroomInfo: (chatroomInfo: ChatRoom) => void;
 }
 

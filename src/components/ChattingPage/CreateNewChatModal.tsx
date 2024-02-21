@@ -84,12 +84,12 @@ const CreateNewChatModal: React.FC<CreateNewChatModalProps> = ({ onCancel, onCon
 
         <div className="mt-10 flex justify-between w-full">
           <Button className='bg-main font-semibold hover:bg-main-hover shadow-lg' onClick={onCancel}>취소</Button>
-          <Button className='bg-point text-white font-semibold ml-4 hover:bg-point-hover shadow-lg' onClick={() => setShowConfirmation(true)}>생성</Button>
+          <Button className='bg-point text-white font-semibold ml-4 hover:bg-point-hover shadow-lg' onClick={() => setShowConfirmation(true)} disabled={userWillAdded.length===0}>생성</Button>
         </div>
       </div>
       {showConfirmation && (
         <ConfirmationModal
-          message={`${userWillAdded} 과 채팅방을 만드시겠습니까?`}
+          message={`${userWillAdded} 님과의 채팅방을 만드시겠습니까?`}
           onConfirm={() => { handleChatCreate(userWillAdded); setShowConfirmation(false) }}
           onCancel={() => setShowConfirmation(false)}
         />

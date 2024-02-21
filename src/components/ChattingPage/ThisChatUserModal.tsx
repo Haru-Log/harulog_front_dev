@@ -11,11 +11,10 @@ import ConfirmationModal from '../ConfirmationModal';
 
 interface ThisChatUserModalProps {
   usersInChat: string[];
-  onAddUsers: (users: string[]) => void;
   onClose: () => void;
 }
 
-const ThisChatUserModal: React.FC<ThisChatUserModalProps> = ({ usersInChat, onAddUsers, onClose }) => {
+const ThisChatUserModal: React.FC<ThisChatUserModalProps> = ({ usersInChat, onClose }) => {
   const { content, searchToggle, currentPage, setContent, setUserList, setTotalPage, setCurrentPage } = useContentStore();
   const handleSearchButton = async () => {
     setCurrentPage(0);
@@ -43,6 +42,7 @@ const ThisChatUserModal: React.FC<ThisChatUserModalProps> = ({ usersInChat, onAd
   };
 
   const handleAddUsers = async() => {
+    console.log("userWillAddedAfter:",userWillAddedAfter)
     await addUsersExistChatRoom(userWillAddedAfter, selectedChatroomInfo.roomId)
     window.location.reload();
   };
@@ -73,7 +73,7 @@ const ThisChatUserModal: React.FC<ThisChatUserModalProps> = ({ usersInChat, onAd
         </div>
         <ModalThisChatResult usersInChat={usersInChat} />
         <div className="mt-6 flex justify-between">
-          <Button className="bg-main text-white font-semibold hover:bg-main-hover shadow-lg " onClick={()=>setShowConfirmation(false)}>
+          <Button className="bg-main text-white font-semibold hover:bg-main-hover shadow-lg " onClick={onClose}>
             닫기
           </Button>
           <Button className="bg-point text-white font-semibold hover:bg-point-hover shadow-lg" onClick={()=>setShowConfirmation(true)}>
