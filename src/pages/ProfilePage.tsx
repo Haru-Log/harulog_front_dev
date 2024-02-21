@@ -23,7 +23,7 @@ const today = new Date(); // dummy data용
 
 const ProfilePage = () => {
 
-  const nickname = useParams().nickname;
+  const nickname = useParams().nickname || localStorage.getItem('nickname');
   const myName = localStorage.getItem('nickname');
   const [userProfile, setUserProfile] = useState<any>();
   const [feed, setFeed] = useState<FeedItem[]>([])
@@ -46,15 +46,14 @@ const ProfilePage = () => {
   const [followState, setFollowState] = useState(false);
 
   useEffect(() => {
-    console.log('nickname', nickname)
     const getUserProfile = async () => {
       const userInfo = await fetchProfile(nickname);
       const imgUrl = await fetchImgFromFirebase(userInfo.data.imageUrl)
-      setUserProfile({...userInfo.data, imageUrl: imgUrl})
+      setUserProfile({ ...userInfo.data, imageUrl: imgUrl })
       setFollowState(userInfo.data.following)
+
       //Heatmap
-      const heatmap = await fetchHeatmap();
-      // const heatmap = await fetchHeatmap(nickname);
+      const heatmap = await fetchHeatmap(nickname);
       const heat = heatmap.data.map((x: any) => {
         return {
           ...x,
@@ -66,10 +65,7 @@ const ProfilePage = () => {
 
       const mergedJandi = mergeJandi(chartData, merge.mergedJandi)
       setCategoryMax(merge.categoryMax)
-
-      if (mergedJandi.length) {
-        setChartData(mergedJandi)
-      }
+      setChartData(mergedJandi)
 
       const response = await fetchFeedAll();
       const myFeed = response.data.filter((x: FeedItem) => x.nickname === nickname)
@@ -96,7 +92,7 @@ const ProfilePage = () => {
     window.location.reload();
   }
 
-  const handleCancelFollow = async() => {
+  const handleCancelFollow = async () => {
     await cancelFollow(nickname);
     window.location.reload();
   }
@@ -111,16 +107,16 @@ const ProfilePage = () => {
           <div className="flex flex-col w-full">
             <div className="flex w-full items-baseline justify-between">
               <div className="font-bold text-3xl">
-                {userProfile && userProfile.userName}
+                {userProfile && userProfile.nickname}
               </div>
-              {(!nickname || nickname === myName) ? <Button className="bg-point hover:bg-point-hover active:bg-point-active shadow-xl rounded-full">
-                <Link to={'edit'}>
+              {(nickname === myName) ? <Button className="bg-point hover:bg-point-hover active:bg-point-active shadow-xl rounded-full">
+                <Link to={'/profile/edit'}>
                   <span className='font-bold'>프로필 편집</span>
                 </Link>
               </Button>
                 : <Button className="bg-point hover:bg-point-hover active:bg-point-active shadow-xl rounded-xl font-bold"
                   onClick={() => setShowConfirmation(true)}>
-                  {followState ? <><XCircle color="#ffffff" className='mr-2 h-5 w-5'/><p>팔로우 취소</p></> : <><UserPlus color="#ffffff" className='mr-2 h-5 w-5' /><p>팔로우</p></>}
+                  {followState ? <><XCircle color="#ffffff" className='mr-2 h-5 w-5' /><p>팔로우 취소</p></> : <><UserPlus color="#ffffff" className='mr-2 h-5 w-5' /><p>팔로우</p></>}
                 </Button>}
             </div>
             <div className="flex p-6 justify-between">
@@ -161,7 +157,7 @@ const ProfilePage = () => {
       {showConfirmation && (
         <ConfirmationModal
           message={followState ? "정말 팔로우를 취소하시겠습니까?" : "정말 팔로우 하시겠습니까?"}
-          onConfirm={() => {followState ? handleCancelFollow() : handleActionFollow(); setShowConfirmation(false)}}
+          onConfirm={() => { followState ? handleCancelFollow() : handleActionFollow(); setShowConfirmation(false) }}
           onCancel={() => setShowConfirmation(false)}
         />
       )}
