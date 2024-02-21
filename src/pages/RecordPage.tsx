@@ -12,15 +12,15 @@ import { dummy_categories } from "../types/Category.type"
 import { Textarea } from "../ui/textarea"
 import { Input } from "../ui/input"
 import { Button } from "../ui/button"
-// import { Switch } from "../ui/switch"
 import { useNavigate, useParams } from "react-router-dom"
 import { SelectLabel } from "@radix-ui/react-select"
 import { useFeedStore } from "../zustand/feedStore"
-// import axios from "axios"
 import { createPost } from "../api/feed/CreatePost"
 import { editPost } from "../api/feed/EditPost"
 import { deletePost } from "../api/feed/DeletePost"
 import { sendPostImage } from "../api/profile/SendPostImage"
+import axios from "axios"
+import { Switch } from "../ui/switch"
 
 const RecordPage = () => {
 
@@ -121,7 +121,7 @@ const RecordPage = () => {
     if (window.confirm("피드 수정을 완료하시겠습니까?")) {
       const response = await editPost({
         categoryName: category,
-        activityTime: minute,
+        activityTime: category === "기상" ? hour * 60 + minute : minute,
         content: content,
         id: id
       })
@@ -158,29 +158,29 @@ const RecordPage = () => {
     }
   }
 
-  // const autoGenerateContent = () => {
-  //   const max_tokens = 32;
-  //   const temperature = 0.3;
-  //   const top_p = 0.85;
-  //   const n = 3;
-  //   axios.post("https://api.kakaobrain.com/v1/inference/kogpt/generation",
-  //     {
-  //       'prompt': content,
-  //       'max_tokens': max_tokens,
-  //       'temperature': temperature,
-  //       'top_p': top_p,
-  //       'n': n
-  //     },
-  //     {
-  //       headers: {
-  //         'Authorization': 'KakaoAK ' + REST_API_KEY,
-  //         'Content-Type': 'application/json'
-  //       }
-  //     }
-  //   ).then((res) => {
-  //     console.log(res);
-  //   })
-  // }
+  const autoGenerateContent = () => {
+    const max_tokens = 32;
+    const temperature = 0.3;
+    const top_p = 0.85;
+    const n = 3;
+    axios.post("https://api.kakaobrain.com/v1/inference/kogpt/generation",
+      {
+        'prompt': content,
+        'max_tokens': max_tokens,
+        'temperature': temperature,
+        'top_p': top_p,
+        'n': n
+      },
+      {
+        headers: {
+          'Authorization': `KakaoAK ${process.env.REACT_KOGPT_API_KEY}`,
+          'Content-type': 'application/json',
+        }
+      }
+    ).then((res) => {
+      console.log(res);
+    })
+  }
 
   const handleDeletePost = async () => {
     const response = await deletePost(id);
@@ -191,7 +191,7 @@ const RecordPage = () => {
   }
 
   useEffect(() => {
-    if (imgRef.current && imgURL.length) {
+    if (imgRef.current && imgURL?.length) {
       imgRef.current.setAttribute('src', imgURL)
     }
   }, [imgURL])
@@ -259,9 +259,9 @@ const RecordPage = () => {
           </div>
           <img ref={imgRef} alt="사진을 업로드하세요." className="object-contain mb-5 h-[265px] rounded-lg max-h-96 border-2 " />
           <Textarea className="resize-none w-full border-2" placeholder="내용을 입력하세요." value={content} onChange={(e) => setContent(e.target.value)} ref={contentRef} />
-          {/* <div className="flex mt-8 justify-end items-center">
+          <div className="flex mt-8 justify-end items-center">
             <div className="mr-5 font-bold">자동게시</div>
-            <Switch onClick={autoGenerateContent} /></div> */}
+            <Switch onClick={autoGenerateContent} /></div>
         </div>
       </div>
       <div className='flex justify-between mt-10'>

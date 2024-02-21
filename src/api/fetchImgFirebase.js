@@ -2,7 +2,7 @@ import firebase from './../firebase'
 
 export const fetchImgFromFirebase = async (imgUrl) => {
 
-  if (imgUrl.startsWith('image')) {
+  if (imgUrl?.startsWith('image')) {
     try {
       const storageRef = firebase.storage().ref()
       const response = await storageRef.child(imgUrl).getDownloadURL()

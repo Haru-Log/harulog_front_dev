@@ -1,7 +1,8 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { Heart, MessageSquareMore } from "lucide-react";
 import { CommentType } from "@/src/types/CommentType";
 import { useNavigate } from "react-router-dom";
+import { fetchImgFromFirebase } from './../../api/fetchImgFirebase';
 
 const FeedCard: React.FC<{
   id: number;
@@ -22,10 +23,21 @@ const FeedCard: React.FC<{
 
     const navigate = useNavigate()
 
+    const [postImg, setPostImg] = useState("")
+
+    useEffect(()=>{
+      const fetchPostImg = async () => {
+        const response = await fetchImgFromFirebase(imgUrl)
+
+        setPostImg(response)
+      }
+      fetchPostImg()
+    }, [imgUrl])
+
     return (
       <div className="cursor-pointer drop-shadow-xl mb-5 transform transition-transform hover:scale-110" onClick={() => navigate(`/feed/${id}`)}>
         <div className="w-[100%] aspect-square rounded-xl">
-          <img src={imgUrl} alt="피드 이미지" className="object-cover w-full h-full rounded-xl" />
+          <img src={postImg} alt="피드 이미지" className="object-cover w-full h-full rounded-xl" />
         </div>
         <div className="flex flex-row w-full justify-start text-xs h-6 mt-2">
           <div className={`text-white px-3 py-1 rounded-full h-fit w-fit text-center mr-5 bg-${categoryName}`}>
