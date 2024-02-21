@@ -4,6 +4,7 @@ import { useChatStore } from 'src/zustand/chatStore'
 import { getChatRoomName } from 'src/utils/getChatRoomName'
 import { enterChatRoom } from 'src/api/chats/EnterChatRoom'
 import { outChatRoom } from 'src/api/chats/OutChatRoom'
+import MessageListImage from './MessageListImage'
 
 const MessageList = () => {
   const { chatList, selectedChatroomInfo, selectChatroomInfo } = useChatStore();
@@ -29,6 +30,8 @@ const MessageList = () => {
   const truncateChatroomName = (name: string, maxLength: number) => {
     return name && name.length > maxLength ? `${name.slice(0, maxLength)}...` : name;
   };
+  
+  
 
   return (
     <div>
@@ -41,7 +44,7 @@ const MessageList = () => {
           <div className="text-sm py-3 whitespace-nowrap flex flex-row justify-between items-center">
             <div className='flex flex-row justify-start items-center' >
               <div className="relative">
-                <img src={'chatList.chatroom_profile'} alt="Chatroom Profile" className='object-cover rounded-full w-12 h-12 ml-3 mr-3' />
+              <MessageListImage roomType={chats.roomType} imgUrl={chats.users[0].profileImage} />
                 <div>{chats.unreadCount > 0 && (
                   <div className="absolute top-0 right-1">
                     <div className="bg-[#ff7676] w-4 h-4 rounded-full flex justify-center items-center">
