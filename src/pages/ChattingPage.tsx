@@ -30,6 +30,7 @@ const ChattingPage = () => {
         stompClient.subscribe(`/queue/user.${myName}`, (message) => {
           console.log('Received message:', message.body);
           selectChatroomInfo({ ...selectedChatroomInfo, messages: [...selectedChatroomInfo.messages, JSON.parse(message.body)] });
+          console.log('selectedChatroomInfo: ', selectedChatroomInfo);
         });
       }, function(e:any) {
         alert('STOMP error ' + e);
@@ -39,12 +40,14 @@ const ChattingPage = () => {
     initializeStompClient();
 
     return () => {
-      if (stompClient && stompClient.connected) {
-        stompClient.disconnect();
-        console.log('STOMP disconnected');
+      if (stompClient) {
+        stompClient.disconnect(() => {
+          console.log('STOMP disconnected');
+        });
       }
     };
-  }, [accessToken, myName, stompClient ,selectedChatroomInfo, selectChatroomInfo]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [accessToken, myName, stompClient]);
 
   // useEffect(() => {
   //   if (selectedChatroomInfo.roomId) {
@@ -72,7 +75,7 @@ const ChattingPage = () => {
     fetchChats();
   }, [setChatList]);
 
-  
+
   return (
 
     <div className='mt-12 font-ibm'>

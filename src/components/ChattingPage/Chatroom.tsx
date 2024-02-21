@@ -4,9 +4,9 @@ import { Send } from 'lucide-react'
 import Chat from './Chat'
 import ChatroomHeader from './ChatroomHeader'
 import ShowPrevMessage from './ShowPrevMessage'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useChatStore } from 'src/zustand/chatStore'
-import {CompatClient} from "@stomp/stompjs";
+import { CompatClient } from "@stomp/stompjs";
 interface ChatroomProps {
   stompClient: CompatClient | undefined;
 }
@@ -16,7 +16,7 @@ const Chatroom: React.FC<ChatroomProps> = ({ stompClient }) => {
   const [messageInput, setMessageInput] = useState('');
   const myName = localStorage.getItem('nickname');
 
-  const sendMessage = async() => {
+  const sendMessage = async () => {
     if (!stompClient || !stompClient.connected) {
       console.error("Stomp client is not available");
       return;
@@ -31,6 +31,13 @@ const Chatroom: React.FC<ChatroomProps> = ({ stompClient }) => {
     stompClient.send(destination, { "content-type": "application/json" }, JSON.stringify(message));
     setMessageInput('');
   };
+
+  useEffect(() => {
+    const element = document.getElementById('scrollTarget');
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth', block: 'end', inline: 'nearest' });
+    }
+  }, [selectedChatroomInfo]);
 
   return (
     <div className='h-[1000px] flex flex-col'>
