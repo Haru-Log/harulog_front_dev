@@ -23,9 +23,9 @@ const ChallengeMemberList = () => {
     try {
       await joinChallenge(challenge.challengeId);
       alert('Challenge joined successfully!');
-    } catch (error) {
+    } catch (error: any) {
       console.error('Error joining challenge:', error);
-      alert('Failed to join challenge. Please try again.');
+      alert(error.response.data.message);
     }
     setShowConfirmation(false);
     window.location.reload();
