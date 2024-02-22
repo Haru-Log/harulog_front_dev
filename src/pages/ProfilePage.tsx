@@ -100,33 +100,38 @@ const ProfilePage = () => {
   return (
     <div className="w-full flex justify-center py-16 font-ibm">
       <div className="w-[80%] h-full flex flex-col">
-        <section className="flex h-[30%] w-full items-start">
-          <div className="maax-w-40 max-h-40">
-            <img src={userProfile && userProfile.imageUrl} className="w-40 h-40 rounded-full object-fill mr-40 whitespace-nowrap" alt="Profile" />
-          </div>
-          <div className="flex flex-col w-full">
-            <div className="flex w-full items-baseline justify-between">
-              <div className="font-bold text-3xl">
-                {userProfile && userProfile.nickname}
+        <div className="flex flex-col">
+          <section className="flex w-full items-start">
+            <div className="max-w-40 max-h-40 justify-center h-fit mr-5">
+              <img src={userProfile && userProfile.imageUrl} className="w-40 h-40 rounded-full object-fill mr-40 whitespace-nowrap" alt="Profile" />
+            </div>
+            <div className="flex flex-col w-full">
+              <div className="flex w-full items-baseline justify-between">
+                <div className="font-bold text-3xl">
+                  {userProfile && userProfile.nickname}
+                </div>
+                {(nickname === myName) ? <Button className="bg-point hover:bg-point-hover active:bg-point-active shadow-xl rounded-full">
+                  <Link to={'/profile/edit'}>
+                    <span className='font-bold'>프로필 편집</span>
+                  </Link>
+                </Button>
+                  : <Button className="bg-point hover:bg-point-hover active:bg-point-active shadow-xl rounded-xl font-bold"
+                    onClick={() => setShowConfirmation(true)}>
+                    {followState ? <><XCircle color="#ffffff" className='mr-2 h-5 w-5' /><p>팔로우 취소</p></> : <><UserPlus color="#ffffff" className='mr-2 h-5 w-5' /><p>팔로우</p></>}
+                  </Button>}
               </div>
-              {(nickname === myName) ? <Button className="bg-point hover:bg-point-hover active:bg-point-active shadow-xl rounded-full">
-                <Link to={'/profile/edit'}>
-                  <span className='font-bold'>프로필 편집</span>
-                </Link>
-              </Button>
-                : <Button className="bg-point hover:bg-point-hover active:bg-point-active shadow-xl rounded-xl font-bold"
-                  onClick={() => setShowConfirmation(true)}>
-                  {followState ? <><XCircle color="#ffffff" className='mr-2 h-5 w-5' /><p>팔로우 취소</p></> : <><UserPlus color="#ffffff" className='mr-2 h-5 w-5' /><p>팔로우</p></>}
-                </Button>}
+              <div className="flex p-6 justify-between">
+                <ProfileNumber title={"게시물"} count={feed.length} />
+                <ProfileNumber title={"챌린지"} count={challenge.length} />
+                <ProfileNumber title={"팔로워"} count={userProfile && userProfile.followerCount} />
+                <ProfileNumber title={"팔로잉"} count={userProfile && userProfile.followingCount} />
+              </div>
             </div>
-            <div className="flex p-6 justify-between">
-              <ProfileNumber title={"게시물"} count={feed.length} />
-              <ProfileNumber title={"챌린지"} count={challenge.length} />
-              <ProfileNumber title={"팔로워"} count={userProfile && userProfile.followerCount} />
-              <ProfileNumber title={"팔로잉"} count={userProfile && userProfile.followingCount} />
-            </div>
+          </section>
+          <div className="px-5 mb-5">
+            {userProfile?.introduction}
           </div>
-        </section>
+        </div>
         <section>
           <Heatmap data={chartData} categoryMax={categoryMax} />
         </section>
