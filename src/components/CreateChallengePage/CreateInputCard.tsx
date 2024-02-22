@@ -69,7 +69,7 @@ const CreateInputCard = () => {
       const responseChallenge = await createChallenge(newChallenge);
       try {
         const responseImg = await imageUpload(formData, responseChallenge.data.challengeId);
-        console.log('이미지 업로드 성공: ', responseImg.data.data.imageUrl)
+        console.log('이미지 업로드 성공: ', responseImg)
       }
       catch (error) {
         console.error('Error uploading image:', error);

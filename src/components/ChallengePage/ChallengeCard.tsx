@@ -6,9 +6,9 @@ import { useFilterStore } from 'src/zustand/filterStore';
 import MainChallengeImg from "../MainPage/MainChallengeImg";
 
 const ChallengeCard = () => {
-  const challenge = useChallengeAllStore(state => state.challenge); 
+  const challenge = useChallengeAllStore(state => state.challenge);
   const navigate = useNavigate();
-  const selectedValue = useFilterStore(state => state.selectedValue); 
+  const selectedValue = useFilterStore(state => state.selectedValue);
   const filteredCards = selectedValue === '전체' ? challenge : challenge.filter(item => item.categoryName === selectedValue);
 
   return (
@@ -18,8 +18,7 @@ const ChallengeCard = () => {
           <div className="min-w-96 min-h-96 w-[90%] h-[90%] aspect-square rounded-xl">
             <MainChallengeImg key={challenge.imageUrl} imageUrl={challenge.imageUrl} />
             <div className={`absolute top-0 right-[10%] text-white text-xs font-bold px-3 py-1 mr-2 mt-2 rounded-lg bg-${challenge.categoryName}`}>
-              {challenge.categoryName}
-            M</div>
+              {challenge.categoryName}</div>
             <div className="absolute bottom-[10%] left-0 right-0 p-3 pt-9 bg-gradient-to-b from-transparent to-slate-800 rounded-b-xl w-[90%]">
               <span className="text-white text-lg font-semibold whitespace-nowrap">{challenge.challengeTitle}</span>
               <div className="flex flex-col items-center absolute bottom-0 right-0 pb-3 pr-3">

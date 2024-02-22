@@ -39,7 +39,7 @@ const EditInputCard = () => {
 
         try {
           const responseImg = await imageUpload(formData, challenge.challengeId);
-          console.log('이미지 수정 성공: ', responseImg.data.data.imageUrl);
+          console.log('이미지 수정 성공: ', responseImg.data.imageUrl);
         } catch (error) {
           console.error('Error uploading image:', error);
           alert('Failed to upload image. Please try again.');
