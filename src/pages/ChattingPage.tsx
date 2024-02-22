@@ -6,8 +6,6 @@ import MessageList from '../components/ChattingPage/MessageList'
 import Chatroom from '../components/ChattingPage/Chatroom'
 import { useChatStore } from '../zustand/chatStore'
 import { fetchChatsList } from '../api/chats/FetchChatsList'
-import { ChatRoom } from '../types/ChatRoom.type'
-import { outChatRoom } from '../api/chats/OutChatRoom'
 import { Stomp } from "@stomp/stompjs";
 import SockJS from "sockjs-client";
 
@@ -30,6 +28,7 @@ const ChattingPage = () => {
         stompClient.subscribe(`/queue/user.${myName}`, (message) => {
           console.log('Received message:', message.body);
           selectChatroomInfo({ ...selectedChatroomInfo, messages: [...selectedChatroomInfo.messages, JSON.parse(message.body)] });
+          
           console.log('selectedChatroomInfo: ', selectedChatroomInfo);
         });
       }, function(e:any) {
@@ -46,21 +45,8 @@ const ChattingPage = () => {
         });
       }
     };
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [accessToken, myName, stompClient]);
+  }, [accessToken, myName, stompClient, selectChatroomInfo, selectedChatroomInfo]);
 
-  // useEffect(() => {
-  //   if (selectedChatroomInfo.roomId) {
-  //     outChatRoom(selectedChatroomInfo.roomId);
-  //   }
-  //   const initialChatroomInfo: ChatRoom = {
-  //     roomId: '',
-  //     userCount: 0,
-  //     messages: [],
-  //   };
-  //   selectChatroomInfo(initialChatroomInfo);
-  //   // eslint-disable-next-line react-hooks/exhaustive-deps
-  // }, []);
 
   useEffect(() => {
     const fetchChats = async () => {

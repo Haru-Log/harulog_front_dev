@@ -42,7 +42,7 @@ const Chatroom: React.FC<ChatroomProps> = ({ stompClient }) => {
       <ChatroomHeader />
       <div className='flex-1'>
         <ShowPrevMessage />
-        {selectedChatroomInfo.messages.map((message) => (
+        {selectedChatroomInfo.messages.length && selectedChatroomInfo.messages.map((message) => (
           <Chat
             message={message}
             key={message.messageId}
@@ -56,7 +56,13 @@ const Chatroom: React.FC<ChatroomProps> = ({ stompClient }) => {
           placeholder='메세지를 입력하세요'
           className='resize-none h-12 mr-3'
           value={messageInput}
-          onChange={(e) => setMessageInput(e.target.value)} />
+          onChange={(e) => setMessageInput(e.target.value)} 
+          onKeyDown={(e) => {
+            if (e.key === 'Enter') {
+              e.preventDefault();
+              sendMessage();
+            }
+          }}/>
         <Button className='w-14 h-12 p-1 bg-point hover:bg-point-hover active:bg-point-active' onClick={sendMessage} disabled={!messageInput}><Send color="#ffffff" size={20} /></Button>
       </div>
     </div>
