@@ -1,31 +1,27 @@
-import { FeedItem } from "@/src/types/FeedItem.type"
-import  { useEffect, useState } from 'react'
-
+import { useEffect, useState } from 'react';
 import { Scrollbar, Mousewheel, Autoplay } from 'swiper/modules';
 import { Swiper, SwiperSlide } from 'swiper/react';
+import FeedCard from './FeedCard';
+import { fetchFeedAll } from '../../api/feed/FetchFeedAll';
+import { FeedItem } from '@/types/FeedItem.type';
 
 import 'swiper/css';
 import 'swiper/css/mousewheel';
 import 'swiper/css/autoplay';
 
-
-import FeedCard from "./FeedCard";
-import { fetchFeedAll } from "../../api/feed/FetchFeedAll";
-
 const FeedSlide = () => {
-
-  const [data, setData] = useState<FeedItem[]>([])
+  const [data, setData] = useState<FeedItem[]>([]);
 
   useEffect(() => {
     const fetchRandomFeed = async () => {
       const response = await fetchFeedAll();
 
-      if (response && response.message === "OK") {
-        setData(response.data.filter((_: FeedItem, idx: number) => idx < 10))
+      if (response && response.message === 'OK') {
+        setData(response.data.filter((_: FeedItem, idx: number) => idx < 10));
       }
-    }
-    fetchRandomFeed()
-  }, [])
+    };
+    fetchRandomFeed();
+  }, []);
 
   return (
     <section className="pb-[2rem] w-full">
@@ -69,15 +65,15 @@ const FeedSlide = () => {
           }}
           className="pb-20"
         >
-          {data.map((post, index) =>
+          {data.map((post, index) => (
             <SwiperSlide key={index}>
               <FeedCard {...post} />
             </SwiperSlide>
-          )}
+          ))}
         </Swiper>
       </div>
     </section>
-  )
-}
+  );
+};
 
-export default FeedSlide
+export default FeedSlide;

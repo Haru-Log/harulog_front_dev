@@ -5,4 +5,4 @@ function convertDateFormat(dateString: string): string {
   return String(isoString);
 }
 
-export default convertDateFormat
+export default convertDateFormat;

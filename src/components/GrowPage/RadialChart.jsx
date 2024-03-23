@@ -1,5 +1,5 @@
-import React, { memo, useEffect, useState } from 'react'
-import Chart from 'react-apexcharts'
+import { memo, useEffect, useState } from 'react';
+import Chart from 'react-apexcharts';
 
 const RadialChart = ({ category, goal, achievement, theme }) => {
   const [chartState, setChartState] = useState({
@@ -8,8 +8,8 @@ const RadialChart = ({ category, goal, achievement, theme }) => {
       chart: {
         type: 'radialBar',
         toolbar: {
-          show: false
-        }
+          show: false,
+        },
       },
       plotOptions: {
         radialBar: {
@@ -20,11 +20,10 @@ const RadialChart = ({ category, goal, achievement, theme }) => {
             margin: 0,
             size: '70%',
             image: undefined,
-            background: "transparent",
+            background: 'transparent',
             imageOffsetX: 0,
             imageOffsetY: 0,
             position: 'back',
-
           },
           track: {
             background: '#ececec',
@@ -49,15 +48,15 @@ const RadialChart = ({ category, goal, achievement, theme }) => {
               fontWeight: 600,
               show: true,
               offsetY: 25,
-            }
-          }
-        }
+            },
+          },
+        },
       },
       fill: {
-        colors: [theme]
+        colors: [theme],
       },
       stroke: {
-        lineCap: 'round'
+        lineCap: 'round',
       },
       labels: [category],
       grid: {
@@ -65,17 +64,19 @@ const RadialChart = ({ category, goal, achievement, theme }) => {
           top: 0,
           right: 0,
           bottom: 0,
-          left: 0
+          left: 0,
         },
-      }
+      },
     },
-  }
-  )
+  });
 
   useEffect(() => {
-    setChartState({ ...chartState, series: [achievement / (goal ? goal : 1) * 100] })
+    setChartState({
+      ...chartState,
+      series: [(achievement / (goal ? goal : 1)) * 100],
+    });
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [goal, achievement])
+  }, [goal, achievement]);
 
   return (
     <div className="w-full h-full relative">
@@ -86,11 +87,12 @@ const RadialChart = ({ category, goal, achievement, theme }) => {
       />
       <div className="absolute left-[41%] top-[38%] translate-x-[-50%] text-center flex flex-col items-center">
         <div className="text font-ibm font-bold">
-          {`${parseInt(achievement)}${category === "기상" ? 'd' : 'm'} `}/{` ${parseInt(goal)}${category === "기상" ? 'd' : 'm'}`}
+          {`${parseInt(achievement)}${category === '기상' ? 'd' : 'm'} `}/
+          {` ${parseInt(goal)}${category === '기상' ? 'd' : 'm'}`}
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default memo(RadialChart)
+export default memo(RadialChart);

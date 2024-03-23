@@ -7,15 +7,13 @@ interface PasswordToggleProps {
   isVisible: boolean;
 }
 
-const PasswordToggle: React.FC<PasswordToggleProps> = ({ onToggle, isVisible }) => {
+const PasswordToggle: React.FC<PasswordToggleProps> = ({
+  onToggle,
+  isVisible,
+}) => {
   return (
-    <button
-      type="button"
-      onClick={onToggle}
-      className="cursor-pointer"
-    >
+    <button type="button" onClick={onToggle} className="cursor-pointer">
       {isVisible ? <Eye /> : <EyeOff />}
-
     </button>
   );
 };

@@ -1,18 +1,22 @@
-import { EditProfileImg } from "../../api/profile/EditProfileImg";
+import { EditProfileImg } from '../../api/profile/EditProfileImg';
 import React, { useState, useRef, useEffect } from 'react';
 
 const ProfileImageUpload: React.FC<{
-  userName: string; email: string; createdAt: string; imageUrl: string
+  userName: string;
+  email: string;
+  createdAt: string;
+  imageUrl: string;
 }> = ({ userName, email, createdAt, imageUrl }) => {
-
   const [image, setImage] = useState<string | null>(imageUrl);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
-  useEffect(()=>{
-    setImage(imageUrl)
-  }, [imageUrl])
+  useEffect(() => {
+    setImage(imageUrl);
+  }, [imageUrl]);
 
-  const handleImageChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleImageChange = async (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
     const file = event.target.files?.[0];
 
     if (file) {
@@ -26,11 +30,11 @@ const ProfileImageUpload: React.FC<{
         // 이미지 업로드는 변경된 부분 없음
         const formData = new FormData();
 
-        formData.append('image', file)
+        formData.append('image', file);
         const response = await EditProfileImg(formData);
 
         if (response) {
-          window.location.reload()
+          window.location.reload();
         }
       }
     }
@@ -46,15 +50,23 @@ const ProfileImageUpload: React.FC<{
   return (
     <div className="flex flex-col w-full items-center">
       {/* 파일 입력을 위한 input 엘리먼트 (숨겨져 있음) */}
-      <input type="file" accept="image/*" ref={fileInputRef} onChange={handleImageChange} style={{ display: 'none' }} />
+      <input
+        type="file"
+        accept="image/*"
+        ref={fileInputRef}
+        onChange={handleImageChange}
+        style={{ display: 'none' }}
+      />
 
       {/* 고정된 프로필 이미지 표시 */}
       <div>
         <img
-          src={image || 'https://i.pinimg.com/564x/0d/64/98/0d64989794b1a4c9d89bff571d3d5842.jpg'} // 이미지가 있으면 업로드한 이미지, 없으면 기본 이미지 사용
+          src={
+            image ||
+            'https://i.pinimg.com/564x/0d/64/98/0d64989794b1a4c9d89bff571d3d5842.jpg'
+          } // 이미지가 있으면 업로드한 이미지, 없으면 기본 이미지 사용
           alt="Profile"
-          className='w-60 h-60 min-w-60 rounded-full object-cover'
-
+          className="w-60 h-60 min-w-60 rounded-full object-cover"
         />
       </div>
 

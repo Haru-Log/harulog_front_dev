@@ -1,11 +1,11 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import ModalToggle from './ModalToggle';
-import { useNavigate } from "react-router-dom";
-import { deleteAccount } from "../../api/profile/DeleteAccount";
+import { useNavigate } from 'react-router-dom';
+import { deleteAccount } from '../../api/profile/DeleteAccount';
 
 const Modal = () => {
   const [isOpen, setIsOpen] = useState(false);
-  const [email, setEmail] = useState("");
+  const [email, setEmail] = useState('');
   const navigate = useNavigate();
 
   const openModal = () => {
@@ -13,13 +13,12 @@ const Modal = () => {
   };
 
   const handleDeleteAccount = async () => {
-    if(window.confirm('정말로 삭제하시겠습니까?'))
-    {
+    if (window.confirm('정말로 삭제하시겠습니까?')) {
       const response = await deleteAccount(email);
       if (response) {
         setIsOpen(false);
-        localStorage.removeItem('AccessToken')
-        navigate('/', { replace: true })
+        localStorage.removeItem('AccessToken');
+        navigate('/', { replace: true });
       }
     }
   };
@@ -30,7 +29,10 @@ const Modal = () => {
       <span className="mr-2 font-bold mb-2 text-sm ">계정 제거</span>
       <div className="flex flex-row justify-between items-center">
         <p className="text-xs mt-3">계정을 삭제하시면 복구는 불가능합니다.</p>
-        <button onClick={openModal} className=" bg-red-500 text-sm  text-white px-4 py-1 rounded shadow-md mr-6">
+        <button
+          onClick={openModal}
+          className=" bg-red-500 text-sm  text-white px-4 py-1 rounded shadow-md mr-6"
+        >
           계정삭제
         </button>
       </div>
@@ -47,9 +49,7 @@ const Modal = () => {
                 정말로 계정을 삭제하시겠습니까? 계정을 삭제하시면 복구는
                 불가능합니다.
               </p>
-              <h6 className="mt-6 mb-2 text-sm">
-                이메일
-              </h6>
+              <h6 className="mt-6 mb-2 text-sm">이메일</h6>
               <ModalToggle email={email} setEmail={setEmail} />
               <button
                 onClick={() => setIsOpen(false)}

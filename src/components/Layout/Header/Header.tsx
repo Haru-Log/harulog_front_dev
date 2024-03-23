@@ -1,10 +1,10 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import TopNav from './TopNav';
 import Title from './Title';
 import NavLogin from './NavLogin';
 import NavRegister from './NavRegister';
-import NavLogout from "./NavLogout";
-import NavMyPage from "./NavMyPage";
+import NavLogout from './NavLogout';
+import NavMyPage from './NavMyPage';
 const Header = () => {
   const [isHeaderVisible, setIsHeaderVisible] = useState(true);
 
@@ -13,7 +13,9 @@ const Header = () => {
 
     const handleScroll = () => {
       const currentScrollPos = document.documentElement.scrollTop;
-      setIsHeaderVisible(currentScrollPos <= 0 || prevScrollPos > currentScrollPos);
+      setIsHeaderVisible(
+        currentScrollPos <= 0 || prevScrollPos > currentScrollPos
+      );
       prevScrollPos = currentScrollPos;
     };
 
@@ -25,21 +27,27 @@ const Header = () => {
   }, []);
 
   return (
-    <div className={`flex w-full h-12 px-3 items-center justify-between bg-white border-b border-gray-400 z-50 transition-transform duration-900 ease-in-out ${isHeaderVisible ? 'fixed top-0 transform translateY(0)' : 'transform -translate-y-full'}`}>
+    <div
+      className={`flex w-full h-12 px-3 items-center justify-between bg-white border-b border-gray-400 z-50 transition-transform duration-900 ease-in-out ${
+        isHeaderVisible
+          ? 'fixed top-0 transform translateY(0)'
+          : 'transform -translate-y-full'
+      }`}
+    >
       <TopNav />
       <Title />
-      <div className='flex'>
-        {localStorage.getItem('AccessToken') ?
+      <div className="flex">
+        {localStorage.getItem('AccessToken') ? (
           <>
-          <NavLogout />
-          <NavMyPage />
+            <NavLogout />
+            <NavMyPage />
           </>
-          :
+        ) : (
           <>
             <NavLogin />
             <NavRegister />
           </>
-        }
+        )}
       </div>
     </div>
   );

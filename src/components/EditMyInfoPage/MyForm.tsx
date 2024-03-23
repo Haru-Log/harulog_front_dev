@@ -1,22 +1,23 @@
 // MyForm.tsx
 
-import { Input } from 'src/ui/input';
 import React, { useEffect, useState } from 'react';
-import { editProfileInfo } from "../../api/profile/EditProfileInfo";
+import { editProfileInfo } from '../../api/profile/EditProfileInfo';
+import { Input } from '@/ui/input';
 
 const MyForm: React.FC<{
-  userNickname: string; contactNumber: string; userIntroduction: string;
+  userNickname: string;
+  contactNumber: string;
+  userIntroduction: string;
 }> = ({ userNickname, contactNumber, userIntroduction }) => {
-
-  const [nickname, setNickname] = useState<string>("");
-  const [phoneNumber, setPhoneNumber] = useState<string>("");
-  const [introduction, setIntroduction] = useState<string>("");
+  const [nickname, setNickname] = useState<string>('');
+  const [phoneNumber, setPhoneNumber] = useState<string>('');
+  const [introduction, setIntroduction] = useState<string>('');
 
   useEffect(() => {
-    setNickname(userNickname)
-    setPhoneNumber(contactNumber)
-    setIntroduction(userIntroduction)
-  }, [userNickname, contactNumber, userIntroduction])
+    setNickname(userNickname);
+    setPhoneNumber(contactNumber);
+    setIntroduction(userIntroduction);
+  }, [userNickname, contactNumber, userIntroduction]);
 
   const validatePhoneNumber = (number: string): boolean => {
     const regex = /^(010|070|02|0[3-9]{1}[0-9]{1})[0-9]{3,4}[0-9]{4}$/;
@@ -41,11 +42,11 @@ const MyForm: React.FC<{
     const response = await editProfileInfo({
       nickname: nickname,
       contactNumber: contactNumber,
-      introduction: introduction
-    })
+      introduction: introduction,
+    });
 
-    if(response.message === "OK"){
-      alert('변경완료!')
+    if (response.message === 'OK') {
+      alert('변경완료!');
     }
   };
 

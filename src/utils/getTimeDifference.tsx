@@ -8,7 +8,7 @@ const getTimeDifference = (lastMessageTime: string) => {
   const days = Math.floor(hours / 24);
 
   if (seconds < 60) {
-    return "지금";
+    return '지금';
   } else if (minutes < 60) {
     return `${minutes}분 전`;
   } else if (hours < 24) {
@@ -18,4 +18,4 @@ const getTimeDifference = (lastMessageTime: string) => {
   }
 };
 
-export default getTimeDifference
+export default getTimeDifference;

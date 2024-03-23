@@ -1,12 +1,10 @@
-import React from 'react'
-import Header from './Header/Header'
-import { Outlet } from 'react-router'
-import Footer from './Footer/Footer'
-import PageTitle from './PageTitle'
-import GetTitle from '../../utils/getTitle'
+import Header from './Header/Header';
+import { Outlet } from 'react-router';
+import Footer from './Footer/Footer';
+import PageTitle from './PageTitle';
+import GetTitle from '../../utils/getTitle';
 
 const LayoutWithTitle = () => {
-
   return (
     <div>
       <Header />
@@ -14,7 +12,7 @@ const LayoutWithTitle = () => {
       <Outlet />
       <Footer />
     </div>
-  )
-}
+  );
+};
 
-export default LayoutWithTitle
+export default LayoutWithTitle;

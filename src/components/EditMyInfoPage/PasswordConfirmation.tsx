@@ -21,7 +21,12 @@ const PasswordConfirmation: React.FC = () => {
   };
 
   const validatePassword = () => {
-    if (password.length < 10 || !/[A-Z]/.test(password) || !/[a-z]/.test(password) || !/[!@#$%^&*(),.?":{}|<>]/.test(password)) {
+    if (
+      password.length < 10 ||
+      !/[A-Z]/.test(password) ||
+      !/[a-z]/.test(password) ||
+      !/[!@#$%^&*(),.?":{}|<>]/.test(password)
+    ) {
       setError('10자 이상 대, 소문자 포함, 특수문자 포함해야 합니다.');
     } else {
       setError('');
@@ -53,11 +58,7 @@ const PasswordConfirmation: React.FC = () => {
           )}
         </div>
       </div>
-      {error && (
-        <div className="text-red-500 text-xs mt-2">
-          {error}
-        </div>
-      )}
+      {error && <div className="text-red-500 text-xs mt-2">{error}</div>}
     </div>
   );
 };

@@ -1,8 +1,10 @@
-import { ChallengeDetail } from '../types/ChallengeDetail.type'
+import { ChallengeDetail } from '../types/ChallengeDetail.type';
 
 const getLeaderName = (challenge: ChallengeDetail): string | undefined => {
-  const leaderUser = challenge.challengeUserList.find(user => user.role === "LEADER");
+  const leaderUser = challenge.challengeUserList.find(
+    (user) => user.role === 'LEADER'
+  );
 
-  return leaderUser?.nickname; 
-}
-export default getLeaderName
+  return leaderUser?.nickname;
+};
+export default getLeaderName;

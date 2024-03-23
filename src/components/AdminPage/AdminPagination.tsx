@@ -1,9 +1,16 @@
-import { Button } from 'src/ui/button'
-import React from 'react'
-import { useAdminStore } from 'src/zustand/adminStore';
+import { Button } from '@/ui/button';
+import { useAdminStore } from '@/zustand/adminStore';
 
 const AdminPagination = () => {
-  const { toggle, currentFeedPage, currentUserPage, totalFeedPage, totalUserPage, setCurrentFeedPage, setCurrentUserPage } = useAdminStore();
+  const {
+    toggle,
+    currentFeedPage,
+    currentUserPage,
+    totalFeedPage,
+    totalUserPage,
+    setCurrentFeedPage,
+    setCurrentUserPage,
+  } = useAdminStore();
 
   const handlePrevFeedClick = () => {
     setCurrentFeedPage(currentFeedPage - 1);
@@ -23,32 +30,55 @@ const AdminPagination = () => {
 
   return (
     <div className="flex items-center w-full justify-center">
-      {toggle === 'posts' ? <div className='w-full mt-7 rounded-xl flex justify-between'>
-        <div>
-          {(currentFeedPage > 0) && <Button className='bg-main w-20 rounded-lg font-bold shadow-sm hover:bg-main-hover active:bg-main-active' onClick={handlePrevFeedClick}>
-            이전
-          </Button>}
-        </div>
-        <div>
-          {(currentFeedPage < totalFeedPage - 1) && <Button className='bg-point w-20 rounded-lg font-bold shadow-sm hover:bg-point-hover active:bg-point-active' onClick={handleNextFeedClick}>
-            다음
-          </Button>}
-        </div>
-      </div> :
-        <div className='w-full mt-7 rounded-xl flex justify-between'>
+      {toggle === 'posts' ? (
+        <div className="w-full mt-7 rounded-xl flex justify-between">
           <div>
-            {(currentUserPage > 0) && <Button className='bg-main w-20 rounded-lg font-bold shadow-sm hover:bg-main-hover active:bg-main-active' onClick={handlePrevUserClick}>
-              이전
-            </Button>}
+            {currentFeedPage > 0 && (
+              <Button
+                className="bg-main w-20 rounded-lg font-bold shadow-sm hover:bg-main-hover active:bg-main-active"
+                onClick={handlePrevFeedClick}
+              >
+                이전
+              </Button>
+            )}
           </div>
           <div>
-            {(currentUserPage < totalUserPage - 1) && <Button className='bg-point w-20 rounded-lg font-bold shadow-sm hover:bg-point-hover active:bg-point-active' onClick={handleNextUserClick}>
-              다음
-            </Button>}
+            {currentFeedPage < totalFeedPage - 1 && (
+              <Button
+                className="bg-point w-20 rounded-lg font-bold shadow-sm hover:bg-point-hover active:bg-point-active"
+                onClick={handleNextFeedClick}
+              >
+                다음
+              </Button>
+            )}
           </div>
-        </div>}
+        </div>
+      ) : (
+        <div className="w-full mt-7 rounded-xl flex justify-between">
+          <div>
+            {currentUserPage > 0 && (
+              <Button
+                className="bg-main w-20 rounded-lg font-bold shadow-sm hover:bg-main-hover active:bg-main-active"
+                onClick={handlePrevUserClick}
+              >
+                이전
+              </Button>
+            )}
+          </div>
+          <div>
+            {currentUserPage < totalUserPage - 1 && (
+              <Button
+                className="bg-point w-20 rounded-lg font-bold shadow-sm hover:bg-point-hover active:bg-point-active"
+                onClick={handleNextUserClick}
+              >
+                다음
+              </Button>
+            )}
+          </div>
+        </div>
+      )}
     </div>
-  )
-}
+  );
+};
 
-export default AdminPagination
+export default AdminPagination;

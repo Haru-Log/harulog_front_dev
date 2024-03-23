@@ -1,12 +1,11 @@
-import React from 'react'
-import CreateInputCard from '../components/CreateChallengePage/CreateInputCard'
+import CreateInputCard from '../components/CreateChallengePage/CreateInputCard';
 
 const CreateChallengePage = () => {
   return (
-    <div className='font-ibm'>
+    <div className="font-ibm">
       <CreateInputCard />
     </div>
-  )
-}
+  );
+};
 
-export default CreateChallengePage
+export default CreateChallengePage;

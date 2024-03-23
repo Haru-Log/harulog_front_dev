@@ -1,5 +1,5 @@
 import { useParams } from 'react-router-dom';
-import ChallengeDetailHeader from '../components/ChallengeDetailPage/ChallengeDetailHeader'
+import ChallengeDetailHeader from '../components/ChallengeDetailPage/ChallengeDetailHeader';
 import ChallengeInfo from '../components/ChallengeDetailPage/ChallengeInfo';
 import ChallengeMemberList from '../components/ChallengeDetailPage/ChallengeMemberList';
 import { useChallengeDetailStore } from '../zustand/challengeDetailStore';
@@ -8,7 +8,7 @@ import { fetchChallengeADetail } from '../api/challenge/FetchChallengeDetail';
 
 const ChallengeDetailPage = () => {
   const { id } = useParams();
-  const setChallenge = useChallengeDetailStore(state => state.setChallenge);
+  const setChallenge = useChallengeDetailStore((state) => state.setChallenge);
   const challenge = useChallengeDetailStore((state) => state.challenge);
 
   useEffect(() => {
@@ -24,16 +24,18 @@ const ChallengeDetailPage = () => {
   }, [id, setChallenge]);
 
   return (
-    <div className='mx-10 font-ibm'>
-      {challenge ?
+    <div className="mx-10 font-ibm">
+      {challenge ? (
         <div>
           <ChallengeDetailHeader />
           <ChallengeInfo />
           <ChallengeMemberList />
         </div>
-        : <div className='text-center'>챌린지를 찾을 수 없습니다.</div>}
+      ) : (
+        <div className="text-center">챌린지를 찾을 수 없습니다.</div>
+      )}
     </div>
-  )
-}
+  );
+};
 
-export default ChallengeDetailPage
+export default ChallengeDetailPage;

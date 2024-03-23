@@ -5,7 +5,10 @@ interface PasswordInputProps {
   isConfirmation?: boolean;
 }
 
-const PasswordInput: React.FC<PasswordInputProps> = ({ label, isConfirmation = false }) => {
+const PasswordInput: React.FC<PasswordInputProps> = ({
+  label,
+  isConfirmation = false,
+}) => {
   const [password, setPassword] = useState('');
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
   const [error, setError] = useState('');
@@ -26,7 +29,12 @@ const PasswordInput: React.FC<PasswordInputProps> = ({ label, isConfirmation = f
   };
 
   const validatePassword = () => {
-    if (password.length < 10 || !/[A-Z]/.test(password) || !/[a-z]/.test(password) || !/[!@#$%^&*(),.?":{}|<>]/.test(password)) {
+    if (
+      password.length < 10 ||
+      !/[A-Z]/.test(password) ||
+      !/[a-z]/.test(password) ||
+      !/[!@#$%^&*(),.?":{}|<>]/.test(password)
+    ) {
       setError('10자 이상 대, 소문자 포함, 특수문자 포함해야 합니다.');
     } else {
       setError('');
@@ -58,11 +66,7 @@ const PasswordInput: React.FC<PasswordInputProps> = ({ label, isConfirmation = f
           )}
         </div>
       </div>
-      {error && (
-        <div className="text-red-500 text-xs mt-2">
-          {error}
-        </div>
-      )}
+      {error && <div className="text-red-500 text-xs mt-2">{error}</div>}
     </div>
   );
 };

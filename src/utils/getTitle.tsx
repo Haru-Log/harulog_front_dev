@@ -15,7 +15,7 @@ const GetTitle = (): string => {
     '/profile/edit': '내 정보 수정',
     '/admin': '관리자 페이지',
   };
-  
+
   if (location.pathname.includes('/feed/edit/')) {
     return '활동 수정';
   }
@@ -27,6 +27,6 @@ const GetTitle = (): string => {
   const title: string = titleMap[location.pathname.replace(/[0-9]/g, '')] || '';
 
   return title;
-}
+};
 
 export default GetTitle;
